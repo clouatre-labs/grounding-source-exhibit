@@ -120,14 +120,14 @@ def summarize_arm(arm: str, records):
 
 
 def _answerable_for(family: str) -> set:
-    # Mirrors recipe/score-v2.py ANSWERABLE.
+    # Mirrors recipe/score-v2.py ANSWERABLE (seal v2.1).
     return {"F1": {"kg-json"}, "F2": {"kg-json"},
-            "F3": {"kg-json", "okf-bundle"},
+            "F3": {"kg-json", "llms-txt"},
             "F4": {"llms-txt", "kg-json", "okf-bundle"}}[family]
 
 
 def pilot_gate(pilot_questions: dict) -> int:
-    """Evaluate the seal-v2 pilot gate from pilot run records.
+    """Evaluate the seal-v2.1 pilot gate from pilot run records.
 
     Gates (seal-v2.json pilot_gate):
       floor:               BLOCKING: best arm >= 3/20
@@ -138,6 +138,10 @@ def pilot_gate(pilot_questions: dict) -> int:
       f3_competitiveness:  BLOCKING: >= 2 arms with >= 2/5 on F3 items
       llms-txt_f4_guard:   BLOCKING: llms-txt >= 2/5 on F4 items
                            (extraction, not abstention)
+
+    Every reported column, including per-family columns, uses the SAME
+    primary item_score rule as the composite so the table is internally
+    consistent (fix for the v2.0 pilot reporting mismatch).
     """
     n_pilot = len(pilot_questions["items"])
     per_arm = {}
@@ -148,17 +152,16 @@ def pilot_gate(pilot_questions: dict) -> int:
                              f"results/raw-v2/{arm}/")
         scores = [1 if r.get("item_score") is True or
                   r.get("item_score") == 1 else 0 for _, r in records]
-        f3 = [1 if s == 1 else 0 for (item, _), s in zip(records, scores)
-              if item["family"] == "F3"]
-        f4 = [1 if s == 1 else 0 for (item, _), s in zip(records, scores)
-              if item["family"] == "F4"]
+        per_family = {f: 0 for f in ("F1", "F2", "F3", "F4")}
+        counts = {f: 0 for f in ("F1", "F2", "F3", "F4")}
+        for (item, _), s in zip(records, scores):
+            per_family[item["family"]] += s
+            counts[item["family"]] += 1
         per_arm[arm] = {
             "n": len(scores),
             "item_score": sum(scores),
-            "f3_score": sum(f3),
-            "f3_n": len(f3),
-            "f4_score": sum(f4),
-            "f4_n": len(f4),
+            "per_family": per_family,
+            "per_family_n": counts,
         }
 
     best = max(v["item_score"] for v in per_arm.values())
@@ -166,17 +169,24 @@ def pilot_gate(pilot_questions: dict) -> int:
     # Scoped saturation: only okf-bundle is capped; llms-txt and kg-json
     # are exempt from the cap.
     sat_ok = per_arm["okf-bundle"]["item_score"] <= 18
-    f3_competitive = sum(1 for v in per_arm.values()
-                         if v["f3_n"] and v["f3_score"] >= 2) >= 2
+    f3_competitive = sum(
+        1 for v in per_arm.values()
+        if v["per_family_n"]["F3"]
+        and v["per_family"]["F3"] >= 2) >= 2
     # NEW: llms-txt compliance guard on F4 (extraction, not abstention).
-    f4_guard_ok = per_arm["llms-txt"]["f4_score"] >= 2
+    f4_guard_ok = per_arm["llms-txt"]["per_family"]["F4"] >= 2
     ok = floor_ok and sat_ok and f3_competitive and f4_guard_ok
 
-    print("# Pilot gate (seal-v2, scoped saturation)\n")
+    print("# Pilot gate (seal v2.1, scoped saturation)\n")
+    print("All columns use the SAME primary item_score rule as the "
+          "composite (answerable + correct = 1; non-null attempt on an "
+          "unanswerable item = 0; correct abstention = 1).\n")
     for arm, v in per_arm.items():
-        print(f"- {arm}: item_score={v['item_score']}/{v['n']}, "
-              f"F3={v['f3_score']}/{v['f3_n']}, "
-              f"F4={v['f4_score']}/{v['f4_n']}")
+        fams = " ".join(
+            f"{f}={v['per_family'][f]}/{v['per_family_n'][f]}"
+            for f in ("F1", "F2", "F3", "F4"))
+        print(f"- {arm}: item_score={v['item_score']}/{v['n']} "
+              f"({fams})")
     print(f"\nfloor (best arm >= 3/{n_pilot}): "
           f"{'PASS' if floor_ok else 'FAIL'} (best={best})")
     print(f"saturation (okf-bundle <= 18/20 ONLY; llms-txt and "
@@ -189,8 +199,8 @@ def pilot_gate(pilot_questions: dict) -> int:
           f"{'PASS' if f3_competitive else 'FAIL'}")
     print(f"llms-txt_f4_guard (llms-txt >= 2/5 on F4, extraction): "
           f"{'PASS' if f4_guard_ok else 'FAIL'} "
-          f"(F4={per_arm['llms-txt']['f4_score']}/"
-          f"{per_arm['llms-txt']['f4_n']})")
+          f"(F4={per_arm['llms-txt']['per_family']['F4']}/"
+          f"{per_arm['llms-txt']['per_family_n']['F4']})")
     verdict = "PROCEED" if ok else "STOP, redesign, re-register"
     print(f"\nverdict: {verdict}")
     return 0 if ok else 1

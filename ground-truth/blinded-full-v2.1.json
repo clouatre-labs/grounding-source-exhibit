@@ -1,0 +1,322 @@
+{
+  "seed": 20261125,
+  "snapshot_sha256": "73dfafca11e15a45b62664d4740f7d16cd394f881b264fb2470355bebb4c91d9",
+  "questions_sha256": "10638a1a8dfec0a87f3efa851e18d6c63dd87fd7173c31966c89711a0abeea12",
+  "items": [
+    {
+      "id": "q-20261125-001",
+      "family": "F1",
+      "prompt": "Which posts does the post \"When Accuracy Misleads: Cost Matrix Metrics and Thresholds\" (slug accuracy-cost-matrix-threshold) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-002",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug sre-ai-agents-production have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-003",
+      "family": "F3",
+      "prompt": "Which posts belong to the cluster with id multi-agent-architecture according to the payload? Respond with JSON {\"answer\": [<post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-004",
+      "family": "F4",
+      "prompt": "Which cluster(s) does the post with slug webmcp-beyond-checkout belong to, according to the payload? Respond with JSON {\"answer\": [<cluster id or name>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-005",
+      "family": "F1",
+      "prompt": "Which posts does the post \"AI SDLC Governance: Three Layers for Engineering Leaders\" (slug ai-sdlc-governance-stack) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-006",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug agent-payments-x402 have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-007",
+      "family": "F3",
+      "prompt": "Which posts belong to the cluster with id cost-roi according to the payload? Respond with JSON {\"answer\": [<post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-008",
+      "family": "F4",
+      "prompt": "Which cluster(s) does the post with slug mcp-tool-docs belong to, according to the payload? Respond with JSON {\"answer\": [<cluster id or name>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-009",
+      "family": "F1",
+      "prompt": "Which posts does the post \"How Much Tool Documentation Do AI Agents Actually Need?\" (slug mcp-tool-docs) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-010",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug accuracy-cost-matrix-threshold have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-011",
+      "family": "F3",
+      "prompt": "Which posts belong to the cluster with id devops-implementation according to the payload? Respond with JSON {\"answer\": [<post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-012",
+      "family": "F4",
+      "prompt": "Which cluster(s) does the post with slug ai-agent-enumerate-or-delegate belong to, according to the payload? Respond with JSON {\"answer\": [<cluster id or name>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-013",
+      "family": "F1",
+      "prompt": "Which posts does the post \"Pay-Per-Call APIs: $0.005 Calls, Measured Treasury Costs\" (slug pay-per-call-margins-treasury) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-014",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug rag-legacy-systems have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-015",
+      "family": "F3",
+      "prompt": "Which posts belong to the cluster with id evaluation-reliability according to the payload? Respond with JSON {\"answer\": [<post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-016",
+      "family": "F4",
+      "prompt": "Which cluster(s) does the post with slug ai-assisted-development belong to, according to the payload? Respond with JSON {\"answer\": [<cluster id or name>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-017",
+      "family": "F1",
+      "prompt": "Which posts does the post \"AI-Assisted Development: The Accountability Layer\" (slug ai-assisted-development) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-018",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug ai-observability-gaps have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-019",
+      "family": "F3",
+      "prompt": "Which posts belong to the cluster with id security-supply-chain according to the payload? Respond with JSON {\"answer\": [<post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-020",
+      "family": "F4",
+      "prompt": "Which cluster(s) does the post with slug decision-frameworks-ai-delivery belong to, according to the payload? Respond with JSON {\"answer\": [<cluster id or name>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-021",
+      "family": "F1",
+      "prompt": "Which posts does the post \"x402 on Cloudflare Workers: AI Agents Pay Per Call in USDC\" (slug agent-payments-x402) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-022",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug prompt-repetition-agent-evaluation have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-023",
+      "family": "F3",
+      "prompt": "Which posts belong to the cluster with id legacy-modernization according to the payload? Respond with JSON {\"answer\": [<post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-024",
+      "family": "F4",
+      "prompt": "Which cluster(s) does the post with slug zero-downtime-dns-migration belong to, according to the payload? Respond with JSON {\"answer\": [<cluster id or name>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-025",
+      "family": "F1",
+      "prompt": "Which posts does the post \"Orchestrating AI Agents: A Subagent Architecture\" (slug orchestrating-ai-agents-subagent-architecture) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-026",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug ai-agents-legacy-roi have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-027",
+      "family": "F3",
+      "prompt": "Which posts belong to the cluster with id subagent-orchestration-tooling according to the payload? Respond with JSON {\"answer\": [<post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-028",
+      "family": "F4",
+      "prompt": "Which cluster(s) does the post with slug ai-approval-gates belong to, according to the payload? Respond with JSON {\"answer\": [<cluster id or name>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-029",
+      "family": "F1",
+      "prompt": "Which posts does the post \"How Does Context Engineering Drive Multi-Agent Reliability?\" (slug context-engineering-multi-agent-reliability) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-030",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug agent-ready-website have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-031",
+      "family": "F4",
+      "prompt": "Which cluster(s) does the post with slug prompt-repetition-agent-evaluation belong to, according to the payload? Respond with JSON {\"answer\": [<cluster id or name>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-032",
+      "family": "F1",
+      "prompt": "Which posts does the post \"AI Agents in Legacy Systems: ROI Without Modernization\" (slug ai-agents-legacy-roi) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-033",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug ai-assisted-development have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-034",
+      "family": "F4",
+      "prompt": "Which cluster(s) does the post with slug agent-payments-x402 belong to, according to the payload? Respond with JSON {\"answer\": [<cluster id or name>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-035",
+      "family": "F1",
+      "prompt": "Which posts does the post \"Does WebMCP Pay Off for Content Sites?\" (slug webmcp-beyond-checkout) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-036",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug ai-agent-enumerate-or-delegate have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-037",
+      "family": "F4",
+      "prompt": "Which cluster(s) does the post with slug ai-observability-gaps belong to, according to the payload? Respond with JSON {\"answer\": [<cluster id or name>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-038",
+      "family": "F1",
+      "prompt": "Which posts does the post \"RAG for Legacy Systems: 7,432 Pages to 3s Answers\" (slug rag-legacy-systems) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-039",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug ai-approval-gates have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-040",
+      "family": "F4",
+      "prompt": "Which cluster(s) does the post with slug ai-supply-chain-attack-vectors belong to, according to the payload? Respond with JSON {\"answer\": [<cluster id or name>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-041",
+      "family": "F1",
+      "prompt": "Which posts does the post \"SRE for AI Agents: Error Budgets, Trust, and 90 Trials\" (slug sre-ai-agents-production) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-042",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug ai-sdlc-governance-stack have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-043",
+      "family": "F4",
+      "prompt": "Which cluster(s) does the post with slug ai-sdlc-governance-stack belong to, according to the payload? Respond with JSON {\"answer\": [<cluster id or name>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-044",
+      "family": "F1",
+      "prompt": "Which posts does the post \"What a Null Result Taught Us About AI Agent Evaluation\" (slug prompt-repetition-agent-evaluation) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-045",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug pay-per-call-margins-treasury have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-046",
+      "family": "F4",
+      "prompt": "Which cluster(s) does the post with slug ai-adoption-engineering belong to, according to the payload? Respond with JSON {\"answer\": [<cluster id or name>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-047",
+      "family": "F1",
+      "prompt": "Which posts does the post \"When Should an AI Agent Enumerate, and When Delegate?\" (slug ai-agent-enumerate-or-delegate) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-048",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug ai-adoption-engineering have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-049",
+      "family": "F4",
+      "prompt": "Which cluster(s) does the post with slug verify-x402-endpoints belong to, according to the payload? Respond with JSON {\"answer\": [<cluster id or name>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-050",
+      "family": "F1",
+      "prompt": "Which posts does the post \"Why Your AI Agent Failed in Production\" (slug ai-observability-gaps) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-051",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug ai-supply-chain-attack-vectors have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-052",
+      "family": "F4",
+      "prompt": "Which cluster(s) does the post with slug sre-ai-agents-production belong to, according to the payload? Respond with JSON {\"answer\": [<cluster id or name>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-053",
+      "family": "F1",
+      "prompt": "Which posts does the post \"AI Delivery Decision Frameworks: Type 1, Type 2, DACI\" (slug decision-frameworks-ai-delivery) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-054",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug zero-downtime-dns-migration have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-055",
+      "family": "F4",
+      "prompt": "Which cluster(s) does the post with slug open-weights-structured-output-cost belong to, according to the payload? Respond with JSON {\"answer\": [<cluster id or name>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-056",
+      "family": "F1",
+      "prompt": "Which posts does the post \"AI-Governed DNS Migration Without Maintenance Windows\" (slug zero-downtime-dns-migration) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-057",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug mcp-tool-docs have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-058",
+      "family": "F1",
+      "prompt": "Which posts does the post \"AI Approval Gates: Engineering Oversight at Machine Speed\" (slug ai-approval-gates) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-059",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug decision-frameworks-ai-delivery have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-060",
+      "family": "F1",
+      "prompt": "Which posts does the post \"Verifying x402 Endpoints: The 5-Check Buyer Recipe\" (slug verify-x402-endpoints) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-061",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug open-weights-structured-output-cost have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-062",
+      "family": "F1",
+      "prompt": "Which posts does the post \"Agent-Ready Websites: The 5-Layer Implementation Stack\" (slug agent-ready-website) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    },
+    {
+      "id": "q-20261125-063",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug orchestrating-ai-agents-subagent-architecture have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}."
+    }
+  ]
+}

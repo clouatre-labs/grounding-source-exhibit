@@ -17,10 +17,11 @@ text is plain content, LAST when the --reasoning-fallback flag is given
 (reasoning_content scan).
 
 Abstention: answer is null (or unparseable to a non-null answer) counts
-as abstained. With --arm, the seal-v2 primary item score rule is applied
+as abstained. With --arm, the seal-v2.1 primary item score rule is applied
 using the answerability map: F1 and F2 answerable only by kg-json; F3
-answerable by kg-json and okf-bundle, not by llms-txt; F4 answerable by
-ALL THREE arms (membership extraction, not abstention).
+(forward cluster membership) answerable by kg-json and llms-txt, NOT by
+okf-bundle (okf cluster indexes list only subsets of kg membership and 2
+of 9 kg clusters have no okf directory); F4 answerable by ALL THREE arms.
 
 Usage:
     score-v2.py <questions-file> <item-id> <raw-response> [--arm A]
@@ -43,7 +44,7 @@ import sys
 ANSWERABLE = {
     "F1": {"kg-json"},
     "F2": {"kg-json"},
-    "F3": {"kg-json", "okf-bundle"},
+    "F3": {"kg-json", "llms-txt"},
     "F4": {"llms-txt", "kg-json", "okf-bundle"},
 }
 
