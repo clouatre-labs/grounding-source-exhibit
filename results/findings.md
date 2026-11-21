@@ -2,7 +2,7 @@
 
 ## Headline
 
-**The okf bundle failed as a machine-grounding surface: 31/63 item score (0.492, Wilson 95% [0.373, 0.612]), losing to both other arms (Holm p < 1e-5), with 23 of 63 runs truncating their context and only 37.5% extraction accuracy on the 16 items it was supposed to answer.** A curated llms.txt carried as much answerable signal as the full knowledge graph: 55/63 vs 61/63, not separated by the preregistered McNemar exact test with Holm correction (p = 0.070).
+**The whole-bundle okf payload failed as a machine-grounding surface in this run: 31/63 item score (0.492, Wilson 95% [0.373, 0.612]), losing to both other arms (Holm p < 1e-5), with 23 of 63 runs truncating their context and only 37.5% extraction accuracy on the 16 items it was supposed to answer.** A curated llms.txt carried as much answerable signal as the full knowledge graph: 55/63 vs 61/63, not separated by the preregistered McNemar exact test with Holm correction (p = 0.070).
 
 ## Design Recap
 
@@ -52,7 +52,7 @@ The discriminative signal sits in F4 and F3: on items every arm can answer in pr
 
 - Single model, single site, one deterministic attempt per item; run-to-run variance is unquantified by design (temperature 0), so rates carry item-sampling variance only (MDD ~22-24pp aggregate at n=63, per the seal).
 - The composite endpoint mixes extraction and abstention credit; read conditional accuracies, not just headline rates.
-- okf-bundle truncations reflect payload size interacting with the 4096-token completion budget, not ranking quality of the bundle's content; a larger budget or chunked retrieval could change its extraction accuracy (phase 2 candidate).
+- okf-bundle truncations reflect payload size interacting with the 4096-token completion budget, not ranking quality of the bundle's content; a larger budget or chunked retrieval could change its extraction accuracy (phase 2 candidate). Delivery-mode analysis and revival hypotheses: [docs/okf-postmortem.md](../docs/okf-postmortem.md).
 - The v2.0 abort means the preregistered question set changed once; the v2.1 seal is the operative registration and was sealed before any v2.1 item ran.
 
 ## Artifacts

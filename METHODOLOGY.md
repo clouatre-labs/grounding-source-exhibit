@@ -38,5 +38,5 @@ Scoring is deterministic and sealed, not model-judged: [recipe/score-v2.py](reci
 
 - Single model, single site, one deterministic attempt per item; run-to-run variance is unquantified by design (temperature 0), so rates carry item-sampling variance only (MDD ~22-24pp aggregate at n=63, per the seal).
 - The composite endpoint mixes extraction and abstention credit; read conditional accuracies, not just headline rates.
-- okf-bundle truncations reflect payload size interacting with the 4096-token completion budget, not ranking quality of the bundle's content; a larger budget or chunked retrieval could change its extraction accuracy (phase 2 candidate).
+- okf-bundle truncations reflect payload size interacting with the 4096-token completion budget, not ranking quality of the bundle's content; a larger budget or chunked retrieval could change its extraction accuracy (phase 2 candidate; delivery-mode analysis and revival hypotheses in [docs/okf-postmortem.md](docs/okf-postmortem.md)). The headline conclusion is therefore scoped to whole-bundle delivery under this model and budget, not to OKF as a format.
 - The v2.0 abort means the preregistered question set changed once; the v2.1 seal is the operative registration and was sealed before any v2.1 item ran.
