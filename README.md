@@ -1,24 +1,33 @@
 <p align="center">
-  <a href="https://conventionalcommits.org"><img alt="Conventional Commits" src="https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=for-the-badge" height="20"></a>
-  <a href="https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template"><img alt="GitHub Template" src="https://img.shields.io/badge/GitHub-Template-blue.svg?style=for-the-badge&logo=github" height="20"></a>
+  <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/License-Apache--2.0-blue.svg?style=for-the-badge" height="28"></a>
+  <a href="https://conventionalcommits.org"><img alt="Conventional Commits" src="https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=for-the-badge" height="28"></a>
+  <a href="seal.json"><img alt="Result" src="https://img.shields.io/badge/result-pending_pilot_gate-3%2F20-orange.svg?style=for-the-badge" height="28"></a>
+  <a href="seal.json"><img alt="Arms" src="https://img.shields.io/badge/arms-3_llms.txt_%7C_kg.json_%7C_okf-blue.svg?style=for-the-badge" height="28"></a>
+  <a href="results/raw/"><img alt="Runs" src="https://img.shields.io/badge/runs-0%2F309_(103x3)_seeded-lightgrey.svg?style=for-the-badge" height="28"></a>
 </p>
+
+<!-- DOI badge: add here after Zenodo deposit, e.g. [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXXX) -->
 
 <h1 align="center">grounding-source-exhibit</h1>
 
-grounding-source-exhibit is a template repository for pre-registered LLM experiments. Each experiment is committed before it runs: a protocol, runner prompt, and scorer prompt are fixed in git, results are collected as raw sessions, scoring is performed blind against a rubric, and the analyzed record validates against the schema in [DATA_DICTIONARY.md](DATA_DICTIONARY.md) in CI. This structure makes every reported number traceable to a pre-registered design and reproducible by anyone with repository access.
+grounding-source-exhibit is a pre-registered grounding-source comparison on reading-chain questions derived from clouatre.ca `readingChains`. [seal.json](seal.json) was committed before any run: it fixes 103 reading-chain questions across three grounding arms (`llms-txt`, `kg-json`, `okf-bundle`), a primary exact-match metric (scorer `resolveChainSequence` pinned to clouatre-labs/clouatre.ca at commit 74105922), a secondary partial-credit metric computed post-hoc from full raw responses, and a blocking 3/20 pilot gate. Every reported number re-derives from [results/raw/](results/raw/) by the committed [analysis.py](analysis.py) against the schema in [DATA_DICTIONARY.md](DATA_DICTIONARY.md). No runs have completed yet; the experiment is sealed and awaiting execution.
 
-## Lifecycle
+## Pipeline
 
 ```mermaid
 graph TD
-    A[hypothesis] --> B[pre-register]
-    B --> C[run]
-    C --> D[score]
-    D --> E[analyze]
-    E --> F[paper]
+    frozen["Frozen question set\n103 reading-chain questions"] --> arm1["Arm 1\nllms.txt"]
+    frozen --> arm2["Arm 2\nKG + cluster"]
+    frozen --> arm3["Arm 3\nokf index"]
+    arm1 --> bench["Bench runs\nresults/raw/"]
+    arm2 --> bench
+    arm3 --> bench
+    bench --> score["Scoring\nexact + partial credit"]
+    score --> analysis["analysis.py\nsealed statistics"]
+    analysis --> figures["Figures\nmatplotlib"]
 ```
 
-The rendered diagram is optional; the Mermaid source above is the canonical artifact and is committed inline in this README.
+*Figure 1: The experiment pipeline. The frozen question set feeds all three arms, each grounded by a distinct payload (llms.txt alone; knowledge-graph.json plus its cluster slice; the /okf/ index plus concept files); the bench stores full raw responses per arm, scoring computes exact match plus post-hoc partial credit from those logs, analysis.py derives the sealed statistics, and the figures render from the same raw records.*
 
 ## Experiment Index
 
@@ -52,11 +61,19 @@ Each experiment directory under `experiments/` contains its protocol, runner and
 
 ## Figures
 
-Figure scripts live in `figures/` and render from committed `results/raw/` records only; each exits with a message until the run produces data.
+Figure scripts live in `figures/` and render from committed `results/raw/` records only; each exits with a message until the run produces data. The PNGs below render once `results/raw/` records exist.
 
-- `figures/fig1-arm-comparison.py` - exact-match proportion per arm with 95% Wilson score intervals
-- `figures/fig2-partial-credit.py` - per-arm partial-credit distributions (jittered strip over box plot) with Welch t annotation
-- `figures/fig3-per-question-deltas.py` - paired per-question exact-match deltas (improved/tied/worsened) for the two pairwise arm comparisons
+![Exact-match proportion per grounding arm with 95% Wilson score intervals](figures/fig1-arm-comparison.png)
+
+*Figure 2: Exact-match proportion per arm with 95% Wilson score intervals on the 103 reading-chain questions, the primary metric endpoint per arm.*
+
+![Per-arm partial-credit distributions as a jittered strip over box plots with Welch t annotation](figures/fig2-partial-credit.png)
+
+*Figure 3: Per-arm partial-credit distributions (jittered strip over box plot) with the Welch t annotation for the secondary metric.*
+
+![Paired per-question exact-match deltas shown as improved, tied, or worsened counts for the two pairwise arm comparisons](figures/fig3-per-question-deltas.png)
+
+*Figure 4: Paired per-question exact-match deltas (improved/tied/worsened) for the two pairwise arm comparisons.*
 
 Regenerate with:
 
