@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0.0",
+  "experiment": "grounding-source-exhibit",
+  "title": "Grounding-Source Comparison Exhibit: llms.txt vs knowledge-graph.json vs OKF v0.3",
+  "sealed_before_run": true,
+  "status": "sealed",
+  "sealed_date": "2026-11-20",
+  "issue": "clouatre-labs/clouatre.ca#2388",
+  "dataset": {
+    "name": "reading-chain questions derived from clouatre.ca knowledge-graph.json readingChains",
+    "n_per_arm": 103,
+    "source": "clouatre.ca experiments/src/idea-bank.ts reading-chain generation (deterministic from public/knowledge-graph.json)",
+    "upstream_repo": "clouatre-labs/clouatre.ca",
+    "upstream_head_at_sealing": "74105922c993a06d06a2291d5b73c48dc445aa1a"
+  },
+  "arms": {
+    "llms-txt": {
+      "payload": "/llms.txt alone",
+      "source": "https://clouatre.ca/llms.txt (Astro endpoint, src/pages/llms.txt.ts)"
+    },
+    "kg-json": {
+      "payload": "/knowledge-graph.json plus the deterministic cluster slice for the target post",
+      "cluster_slice_rule": "target post clusters frontmatter first entry -> public/knowledge-graph/<id>.json",
+      "source": "https://clouatre.ca/knowledge-graph.json and https://clouatre.ca/knowledge-graph/<cluster>.json"
+    },
+    "okf-bundle": {
+      "payload": "/okf/ root index plus concept files reachable via the same cluster rule",
+      "source": "https://clouatre.ca/okf/ (index.md, clusters/, log.md)"
+    }
+  },
+  "primary_metric": {
+    "name": "exact sequence match",
+    "definition": "resolveChainSequence exact match of predicted slug sequence against the readingChains ground truth",
+    "scorer": {
+      "function": "resolveChainSequence",
+      "source_file": "experiments/src/bench-do.ts",
+      "repo": "clouatre-labs/clouatre.ca",
+      "pinned_commit": "74105922c993a06d06a2291d5b73c48dc445aa1a"
+    }
+  },
+  "secondary_metric": {
+    "name": "partial credit (per-step prefix credit)",
+    "definition": "fraction of leading steps in the predicted sequence that match the expected ordered slug prefix, computed post-hoc by analysis.py from raw logs",
+    "computed": "post-hoc from results/raw/ full raw responses"
+  },
+  "pilot_gate": {
+    "blocking": true,
+    "rule": "best arm must achieve >= 3/20 exact matches on the pilot subset; otherwise STOP and re-register",
+    "pilot_n_per_arm": 20
+  },
+  "statistics": {
+    "primary": "two-proportion score test on pairwise exact-match deltas",
+    "secondary": "Welch t-test on partial-credit scores",
+    "reporting": "raw p-values only, no multiplicity adjustment"
+  },
+  "raw_response_logging": {
+    "requirement": "full raw response per run persisted to results/raw/ for all arms",
+    "rationale": "upstream bench D1 samples table caps captured bodies at body_512b; partial credit requires untruncated responses",
+    "mechanism": "recipe/run-bench.sh exhibit-side capture; see README"
+  }
+}

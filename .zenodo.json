@@ -1,0 +1,34 @@
+{
+  "title": "Grounding-Source Comparison Exhibit",
+  "description": "Pre-registered comparison of three grounding-source payloads (llms.txt, knowledge-graph.json with a deterministic cluster slice, and the OKF v0.3 bundle) on 103 reading-chain questions per arm, with an exact sequence match primary metric and a pre-registered per-step prefix-credit secondary metric.",
+  "upload_type": "dataset",
+  "access_right": "open",
+  "license": "Apache-2.0",
+  "version": "0.1.0",
+  "publication_date": "2026-11-20",
+  "creators": [
+    {
+      "name": "Clouatre, Hugues",
+      "orcid": "0009-0002-4291-1999",
+      "affiliation": "Universite de Bordeaux"
+    }
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/clouatre-labs/grounding-source-exhibit",
+      "relation": "isIdenticalTo",
+      "resource_type": "software"
+    }
+  ],
+  "keywords": [
+    "llm-agents",
+    "knowledge-graph",
+    "open-knowledge-format",
+    "pre-registered-experiment",
+    "reproducibility",
+    "llm-evaluation"
+  ],
+  "custom": {
+    "code:codeRepository": "https://github.com/clouatre-labs/grounding-source-exhibit"
+  }
+}

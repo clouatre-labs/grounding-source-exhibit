@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this dataset, please cite it using the metadata below."
+type: dataset
+title: "Grounding-Source Comparison Exhibit"
+authors:
+  - family-names: "Clouatre"
+    given-names: "Hugues"
+    orcid: "https://orcid.org/0009-0002-4291-1999"
+    affiliation: "Universite de Bordeaux"
+repository-code: https://github.com/clouatre-labs/grounding-source-exhibit
+license: Apache-2.0
+date-released: "2026-11-20"
+version: "0.1.0"
+abstract: >
+  Pre-registered comparison of three grounding-source payloads (llms.txt,
+  knowledge-graph.json with a deterministic cluster slice, and the OKF v0.3
+  bundle) on 103 reading-chain questions per arm, with an exact sequence
+  match primary metric and a pre-registered per-step prefix-credit
+  secondary metric. DOI identifiers will be added after Zenodo deposit.
+keywords:
+  - llm-agents
+  - knowledge-graph
+  - open-knowledge-format
+  - pre-registered-experiment
+  - reproducibility
+  - llm-evaluation
+# TODO: add identifiers (concept DOI and version DOI) after Zenodo deposit.
