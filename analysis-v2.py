@@ -23,6 +23,7 @@ from datetime import datetime, timezone
 
 REPO = pathlib.Path(__file__).resolve().parent
 RAW = REPO / "results" / "raw-v2"
+PILOT_RAW = REPO / "results" / "raw-v2-pilot-pass"
 OUT = REPO / "results" / "analysis-v2.json"
 ARMS = ["llms-txt", "kg-json", "okf-bundle"]
 PERM_SEED = 20261123
@@ -73,10 +74,10 @@ def paired_permutation(xs, ys, seed: int = PERM_SEED, perms: int = PERMS):
     return count / perms, sum(diffs) / n
 
 
-def load_arm(arm: str, questions: dict):
+def load_arm(arm: str, questions: dict, records_dir: pathlib.Path = RAW):
     items = {i["id"]: i for i in questions["items"]}
     records = []
-    for path in sorted((RAW / arm).glob("run-*.json")):
+    for path in sorted((records_dir / arm).glob("run-*.json")):
         rec = json.loads(path.read_text())
         item = items.get(rec.get("item_id"))
         if item is None:
@@ -146,10 +147,10 @@ def pilot_gate(pilot_questions: dict) -> int:
     n_pilot = len(pilot_questions["items"])
     per_arm = {}
     for arm in ARMS:
-        records = load_arm(arm, pilot_questions)
+        records = load_arm(arm, pilot_questions, PILOT_RAW)
         if not records:
             raise SystemExit(f"ERROR: no pilot records under "
-                             f"results/raw-v2/{arm}/")
+                             f"results/raw-v2-pilot-pass/{arm}/")
         scores = [1 if r.get("item_score") is True or
                   r.get("item_score") == 1 else 0 for _, r in records]
         per_family = {f: 0 for f in ("F1", "F2", "F3", "F4")}
@@ -269,7 +270,7 @@ def main() -> int:
             adj < 0.05
 
     result = {
-        "schema_version": "2.0.0",
+        "schema_version": "2.1.0",
         "experiment": "grounding-source-exhibit-v2",
         "analyzed_at": datetime.now(timezone.utc).isoformat(),
         "statistics": {
