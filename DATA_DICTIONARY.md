@@ -4,14 +4,20 @@ This document defines the schema and field meanings for experiment data files in
 
 ## Layout
 
-Each experiment directory `experiments/<slug>/` contains:
+Experiment directories hold pre-registration artifacts and v1-format analysis records:
 
-- `analysis.json`: run metadata, message counts, and evaluation scores (schema below)
-- `scores.json`: per-criterion rubric scores with justifications
-- `protocol.md`, `runner-prompt.md`, `scorer-prompt.md`: pre-registration artifacts
-- `sessions/`: raw session logs or database exports
+- `experiments/<slug>/analysis.json`: run metadata, message counts, and evaluation scores (schema below)
+- `experiments/<slug>/scores.json`: per-criterion rubric scores with justifications
+- `experiments/<slug>/protocol.md`, `runner-prompt.md`, `scorer-prompt.md`: pre-registration artifacts
+- `experiments/<slug>/sessions/`: raw session logs or database exports
 
-## analysis.json
+The v2.1 run data lives elsewhere:
+
+- `results/raw-v2/<arm>/run-*.json`: per-run records (schema below)
+- `results/analysis-v2.json`: sealed statistics (`statistics.primary` McNemar + Holm, `statistics.secondary` permutation, `comparisons` per pair)
+- `results/findings.md`: reported findings
+
+## analysis.json (`experiments/<slug>/analysis.json`)
 
 ### Top-level schema
 
@@ -38,7 +44,9 @@ Each experiment directory `experiments/<slug>/` contains:
 | `conclusion` | string | no | Result summary |
 | `pre_acknowledged_limitations` | array | no | Limitations stated before analysis |
 
-### Run record schema
+## Run record (`results/raw-v2/<arm>/run-*.json`)
+
+One JSON record per run; full raw response plus sealed scorer output:
 
 | Field | Type | Nullable | Description |
 |-------|------|----------|-------------|
@@ -50,9 +58,18 @@ Each experiment directory `experiments/<slug>/` contains:
 | `total_tokens` | integer | no | Sum of input and output tokens |
 | `wall_clock_seconds` | number | no | Elapsed wall-clock seconds |
 | `bytes` | integer \| null | yes | Session byte size, if recorded |
-| `raw_response` | string | no | Full, untruncated raw model response for the run. The upstream bench caps captured bodies at `body_512b`; this field supersedes it so post-hoc partial-credit scoring can be re-derived from the record itself. |
-| `exact_match` | boolean | no | Primary metric: `resolveChainSequence` exact sequence match against the reading-chain ground truth |
-| `partial_credit` | number \| null | yes | Secondary metric: per-step prefix credit (fraction of leading steps matching the expected ordered slug prefix); null if the run produced no parseable sequence |
+| `raw_response` | string | no | Full raw model response for the run, stored verbatim so scoring can be re-derived post-hoc |
+| `item_id` | string | no | Sealed question identifier (`ground-truth/full-v2.1.json`) |
+| `family` | string | no | Preregistered family: `F1` (citation edges), `F2` (edgeStats link counts), `F3` (forward cluster membership), or `F4` (cluster membership of a post) |
+| `model` | string | no | Model identifier used for the run |
+| `exact_match` | integer | no | Sealed scorer output: 1 if the parsed answer matches the sealed ground truth under the per-family metric (set equality / dice for F1, F3, F4; integer match for F2), else 0 |
+| `partial_credit` | number | no | Secondary metric: dice overlap on set-valued families (F1, F3, F4) or fraction of correct integers on F2; 0.0 when the run abstained |
+| `abstained` | boolean | no | True when the scorer found no parseable answer (counted as abstention) |
+| `item_score` | integer \| null | no | Primary metric under the seal answerability map: 1 on a correct answer (answerable item) or a correct abstention (unanswerable item), 0 otherwise; null if scored without `--arm` |
+| `prompt_tokens` | integer | no | Prompt tokens reported by the provider |
+| `completion_tokens` | integer | no | Completion tokens reported by the provider |
+| `reasoning_tokens` | integer \| null | yes | Reasoning tokens reported by the provider, if any |
+| `finish_reason` | string | no | Provider finish reason (`stop`, `length`, ...); `length` flags a context truncation |
 | `note` | string \| null | yes | Optional note (e.g. failure reason) |
 
 ## scores.json

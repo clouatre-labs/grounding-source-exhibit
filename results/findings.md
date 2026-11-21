@@ -26,7 +26,7 @@ Pairwise McNemar exact tests with Holm-Bonferroni across the 3 pairs:
 
 ## Secondary Endpoint
 
-Paired permutation test on partial credit (10000 permutations, seed 20261123), as sealed: kg-json separates from both llms-txt (mean difference 0.574, p < 1e-4) and okf-bundle (p < 1e-4); llms-txt and okf-bundle do **not** separate on partial credit (mean difference 0.057, p = 0.44) despite a 38-point item-score gap. The composite mixes extraction and abstention credit, so the pair reads as follows: llms-txt earns its item score mostly through correct abstentions (abstention accuracy 0.800) and perfect extraction on what it answers, while okf-bundle's partial credit comes from its few extraction attempts, and its item score collapses because it fails to abstain where the payload cannot answer.
+Paired permutation test on partial credit (10000 permutations, seed 20261123), as sealed: kg-json separates from both other arms on partial credit (kg-json minus llms-txt +0.574, p < 1e-4; kg-json minus okf-bundle +0.52, p < 1e-4); llms-txt and okf-bundle do **not** separate (llms-txt minus okf-bundle +0.057, p = 0.44) despite a 38-point item-score gap. The composite mixes extraction and abstention credit, so the pair reads as follows: llms-txt earns its item score mostly through correct abstentions (abstention accuracy 0.800) and perfect extraction on what it answers, while okf-bundle's partial credit comes from its few extraction attempts, and its item score collapses because it fails to abstain where the payload cannot answer.
 
 ## Exploratory: Per-Family Breakdown
 

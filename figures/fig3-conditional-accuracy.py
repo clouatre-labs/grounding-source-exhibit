@@ -78,12 +78,12 @@ def main():
         ax.tick_params(axis="y", labelsize=8)
     axes[0].set_ylabel("Accuracy", fontsize=9)
 
-    fig.suptitle("The okf bundle fails at both extracting and abstaining;\n"
-                 "llms.txt extracts perfectly but mis-abstains on F1",
+    fig.suptitle("The okf bundle fails at both extracting and abstaining; "
+                 "llms.txt extracts\nperfectly but mis-abstains on unanswerable F1",
                  fontsize=10)
-    fig.tight_layout(rect=(0, 0, 1, 0.9))
+    fig.tight_layout(rect=(0, 0, 1, 0.87))
     out = pathlib.Path(__file__).resolve().parent / "fig3-conditional-accuracy.png"
-    fig.savefig(out)
+    fig.savefig(out, bbox_inches="tight")
     print(f"wrote {out}")
 
 
