@@ -9,14 +9,16 @@ authors:
     affiliation: "Universite de Bordeaux"
 repository-code: https://github.com/clouatre-labs/grounding-source-exhibit
 license: Apache-2.0
-date-released: "2026-11-20"
-version: "0.1.0"
+date-released: "2026-11-21"
+version: "2.1.0"
 abstract: >
-  Pre-registered comparison of three grounding-source payloads (llms.txt,
-  knowledge-graph.json with a deterministic cluster slice, and the OKF v0.3
-  bundle) on 103 reading-chain questions per arm, with an exact sequence
-  match primary metric and a pre-registered per-step prefix-credit
-  secondary metric. DOI identifiers will be added after Zenodo deposit.
+  Pre-registered, three-arm comparison of grounding-source payloads
+  (frozen llms.txt, full frozen knowledge-graph.json, and the frozen OKF
+  v0.3 bundle) on 63 sealed questions per arm across four preregistered
+  families with a per-family answerability map (correct abstention scores
+  1). Item score: kg-json 61/63, llms.txt 55/63 (McNemar exact, Holm
+  p=0.070), okf-bundle 31/63 (Holm p<1e-5 against both). Supersedes
+  version 0.1.0 (v1 seal, DOI 10.5281/zenodo.24410381).
 keywords:
   - llm-agents
   - knowledge-graph
@@ -26,5 +28,8 @@ keywords:
   - llm-evaluation
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.24410381
+    value: 10.5281/zenodo.24410380
     description: Concept DOI (all versions)
+  - type: doi
+    value: 10.5281/zenodo.24422535
+    description: Version DOI (v2.1.0, three-arm run)
