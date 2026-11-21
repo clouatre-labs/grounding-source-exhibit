@@ -77,6 +77,13 @@ Pairwise McNemar exact tests with Holm-Bonferroni, and the secondary paired perm
    uv run python analysis-v2.py --questions ground-truth/full-v2.1.json
    ```
 
+   The blocking gates are also re-derivable: the pilot gate (floor, saturation, F3 competitiveness, llms-txt F4 extraction guard) and the F3 answerability precondition over the sealed payloads:
+
+   ```bash
+   uv run python analysis-v2.py --questions ground-truth/full-v2.1.json --pilot-questions ground-truth/pilot-v2.1.json
+   uv run python scripts/verify-f3-payloads.py ground-truth/full-v2.1.json
+   ```
+
 4. Regenerate figures from committed raw records:
 
    ```bash
