@@ -1,0 +1,18 @@
+{
+  "group": "okf-bundle",
+  "session_id": "v2-okf-bundle-run-035",
+  "item_id": "q-20261125-035",
+  "family": "F1",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "finish_reason": "stop",
+  "prompt_tokens": 10083,
+  "completion_tokens": 3190,
+  "reasoning_tokens": null,
+  "wall_clock_seconds": 28,
+  "raw_response": "```json\n{\"answer\": [\"agent-ready-website\", \"mcp-tool-docs\", \"prompt-repetition-agent-evaluation\"]}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "abstained": false,
+  "item_score": false,
+  "note": null
+}

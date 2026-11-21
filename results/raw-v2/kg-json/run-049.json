@@ -1,0 +1,18 @@
+{
+  "group": "kg-json",
+  "session_id": "v2-kg-json-run-049",
+  "item_id": "q-20261125-049",
+  "family": "F4",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "finish_reason": "stop",
+  "prompt_tokens": 18763,
+  "completion_tokens": 1037,
+  "reasoning_tokens": null,
+  "wall_clock_seconds": 23,
+  "raw_response": "```json\n{\"answer\": [\"agent-infrastructure\"]}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "abstained": false,
+  "item_score": true,
+  "note": null
+}
