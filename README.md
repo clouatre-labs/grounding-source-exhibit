@@ -50,6 +50,22 @@ The rendered diagram is optional; the Mermaid source above is the canonical arti
 
 Each experiment directory under `experiments/` contains its protocol, runner and scorer prompts, raw sessions, and analysis records, so any result can be traced back to its pre-registered design.
 
+## Figures
+
+Figure scripts live in `figures/` and render from committed `results/raw/` records only; each exits with a message until the run produces data.
+
+- `figures/fig1-arm-comparison.py` - exact-match proportion per arm with 95% Wilson score intervals
+- `figures/fig2-partial-credit.py` - per-arm partial-credit distributions (jittered strip over box plot) with Welch t annotation
+- `figures/fig3-per-question-deltas.py` - paired per-question exact-match deltas (improved/tied/worsened) for the two pairwise arm comparisons
+
+Regenerate with:
+
+```bash
+uv run --with matplotlib python figures/fig1-arm-comparison.py
+uv run --with matplotlib python figures/fig2-partial-credit.py
+uv run --with matplotlib python figures/fig3-per-question-deltas.py
+```
+
 ## Raw-Response Logging
 
 The upstream bench (clouatre-labs/clouatre.ca experiments/) persists captured bodies truncated to 512 bytes (`body_512b` in its D1 samples table). The pre-registered secondary metric (per-step prefix credit) is computed post-hoc from raw logs and requires untruncated responses, so this repository commits its own runner, `recipe/run-bench.sh`, which drives the bench per arm and stores the FULL raw response for every run under `results/raw/<arm>/run-<id>.json` before any scoring. This satisfies the pre-run verification requirement that raw responses are captured without truncation for all three arms (`llms-txt`, `kg-json`, `okf-bundle`), and `analysis.py` re-derives every reported number, including partial credit, from these artifacts.
