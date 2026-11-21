@@ -1,0 +1,18 @@
+{
+  "group": "llms-txt",
+  "session_id": "v2-llms-txt-run-056",
+  "item_id": "q-20261125-056",
+  "family": "F1",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "finish_reason": "stop",
+  "prompt_tokens": 4206,
+  "completion_tokens": 2198,
+  "reasoning_tokens": null,
+  "wall_clock_seconds": 50,
+  "raw_response": "```json\n{\"answer\": null}\n```",
+  "exact_match": false,
+  "partial_credit": 0.0,
+  "abstained": false,
+  "item_score": true,
+  "note": null
+}

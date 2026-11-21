@@ -1,0 +1,18 @@
+{
+  "group": "llms-txt",
+  "session_id": "v2-llms-txt-run-011",
+  "item_id": "q-20261124-011",
+  "family": "F3",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "finish_reason": "stop",
+  "prompt_tokens": 4186,
+  "completion_tokens": 332,
+  "reasoning_tokens": null,
+  "wall_clock_seconds": 10,
+  "raw_response": "```json\n{\"answer\": [\"ai-agents-legacy-roi\", \"rag-legacy-systems\"]}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "abstained": false,
+  "item_score": true,
+  "note": null
+}

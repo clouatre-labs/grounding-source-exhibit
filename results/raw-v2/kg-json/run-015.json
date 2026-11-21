@@ -1,0 +1,18 @@
+{
+  "group": "kg-json",
+  "session_id": "v2-kg-json-run-015",
+  "item_id": "q-20261125-015",
+  "family": "F3",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "finish_reason": "stop",
+  "prompt_tokens": 18751,
+  "completion_tokens": 452,
+  "reasoning_tokens": null,
+  "wall_clock_seconds": 18,
+  "raw_response": "```json\n{\"answer\": [\"prompt-repetition-agent-evaluation\", \"accuracy-cost-matrix-threshold\", \"ai-agent-enumerate-or-delegate\", \"ai-observability-gaps\", \"decision-frameworks-ai-delivery\", \"open-weights-structured-output-cost\", \"sre-ai-agents-production\"]}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "abstained": false,
+  "item_score": true,
+  "note": null
+}

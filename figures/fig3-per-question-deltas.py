@@ -1,11 +1,11 @@
 """Figure 3: paired per-question exact-match deltas between arms.
 
 Regenerate: uv run --with matplotlib python figures/fig3-per-question-deltas.py
-Reads only committed results/raw/<arm>/run-*.json records (exact_match bool),
+Reads only committed results/raw-v2/<arm>/run-*.json records (item_score bool),
 pairing runs by question index (question_index field or run-<arm>-NNN.json
 suffix). Shows stacked proportions of questions improved / tied / worsened
 for kg-json vs llms-txt and okf-bundle vs llms-txt. Exits gracefully if
-results/raw/ has no records yet.
+results/raw-v2/ has no records yet.
 """
 
 import json
@@ -17,10 +17,10 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-RAW = pathlib.Path(__file__).resolve().parents[1] / "results" / "raw"
+RAW = pathlib.Path(__file__).resolve().parents[1] / "results" / "raw-v2"
 BASE_ARM = "llms-txt"
 COMPARISONS = ["kg-json", "okf-bundle"]
-IDX_RE = re.compile(r"run-.*-(\d+)\.json$")
+IDX_RE = re.compile(r"run-(\d+)\.json$")
 
 
 def load_exact(arm):
@@ -33,7 +33,7 @@ def load_exact(arm):
             if not match:
                 continue
             idx = int(match.group(1))
-        by_question[int(idx)] = bool(rec["exact_match"])
+        by_question[int(idx)] = bool(rec["item_score"])
     return by_question
 
 
@@ -52,12 +52,12 @@ def delta_counts(treatment, base):
 
 def main():
     if not list(RAW.glob("*/run-*.json")):
-        print("no records under results/raw/ yet; run the bench first "
+        print("no records under results/raw-v2/ yet; run the bench first "
               "(recipe/run-bench.sh)")
         return
     base = load_exact(BASE_ARM)
     if not base:
-        print(f"no records under results/raw/{BASE_ARM}/ yet")
+        print(f"no records under results/raw-v2/{BASE_ARM}/ yet")
         return
 
     labels, improved, tied, worsened = [], [], [], []

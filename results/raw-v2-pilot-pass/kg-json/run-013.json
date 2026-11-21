@@ -1,0 +1,18 @@
+{
+  "group": "kg-json",
+  "session_id": "v2-kg-json-run-013",
+  "item_id": "q-20261124-013",
+  "family": "F1",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "finish_reason": "stop",
+  "prompt_tokens": 18778,
+  "completion_tokens": 679,
+  "reasoning_tokens": null,
+  "wall_clock_seconds": 19,
+  "raw_response": "```json\n{\"answer\": [\"agent-ready-website\", \"webmcp-beyond-checkout\", \"pay-per-call-margins-treasury\", \"verify-x402-endpoints\"]}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "abstained": false,
+  "item_score": true,
+  "note": null
+}

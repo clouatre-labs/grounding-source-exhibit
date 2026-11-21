@@ -1,8 +1,8 @@
 """Figure 1: exact-match proportion per arm with 95% Wilson score intervals.
 
 Regenerate: uv run --with matplotlib python figures/fig1-arm-comparison.py
-Reads only committed results/raw/<arm>/run-*.json records (exact_match bool).
-Exits gracefully if results/raw/ has no records yet.
+Reads only committed results/raw-v2/<arm>/run-*.json records (item_score bool).
+Exits gracefully if results/raw-v2/ has no records yet.
 """
 
 import json
@@ -14,7 +14,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-RAW = pathlib.Path(__file__).resolve().parents[1] / "results" / "raw"
+RAW = pathlib.Path(__file__).resolve().parents[1] / "results" / "raw-v2"
 ARMS = ["llms-txt", "kg-json", "okf-bundle"]
 COLORS = {"llms-txt": "#7f7f7f", "kg-json": "#0072B2", "okf-bundle": "#D55E00"}
 
@@ -26,7 +26,7 @@ def load_counts():
         if not paths:
             continue
         records = [json.loads(p.read_text()) for p in paths]
-        k = sum(1 for rec in records if rec["exact_match"])
+        k = sum(1 for rec in records if rec["item_score"])
         counts[arm] = (k, len(records))
     return counts
 
@@ -44,7 +44,7 @@ def wilson_interval(k, n, z=1.959963985):
 def main():
     counts = load_counts()
     if not counts:
-        print("no records under results/raw/ yet; run the bench first "
+        print("no records under results/raw-v2/ yet; run the bench first "
               "(recipe/run-bench.sh)")
         return
     arms = [a for a in ARMS if a in counts]
