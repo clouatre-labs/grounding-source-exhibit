@@ -1,30 +1,43 @@
 #!/usr/bin/env bash
-# run-bench.sh - Exhibit-side bench runner with full raw-response capture.
+# run-bench.sh - Exhibit-side bench runner for grounding-source-exhibit v2.
 #
-# Standalone driver hitting Workers AI REST directly (same pinned model and
-# temperature 0 as the upstream bench) and persisting the FULL raw model
-# response for every run to results/raw/<arm>/run-NNN.json per the
-# DATA_DICTIONARY.md run-record schema. The upstream bench D1 samples table
-# caps captured bodies at body_512b, insufficient for the pre-registered
-# post-hoc partial-credit metric; this runner records untruncated responses.
+# v2 interface (seal-v2.json):
 #
-# Usage:
-#   bash recipe/run-bench.sh <arm> <n> [base-url]
+#   bash recipe/run-bench.sh <arm> <questions-file> <start> <count>
 #
-# Arguments:
-#   arm       one of: llms-txt | kg-json | okf-bundle
-#   n         number of questions to run (103 full; 20 pilot)
-#   base-url  grounding payload base URL (default: https://clouatre.ca)
+#   arm             one of: llms-txt | kg-json | okf-bundle
+#   questions-file  questions.json (blinded for pilot, plaintext for full;
+#                   the runner only reads items[i].prompt, so both work)
+#   start           1-based index of the first item to run (pilot: 1)
+#   count           number of items to run (pilot: 18, full: 58; F1=20, F2=20, F3=18)
 #
-# Requires: curl, jq, recipe/score.py. Env: CLOUDFLARE_API_TOKEN and
+# Writes results/raw-v2/<arm>/run-NNN.json with the full raw response,
+# finish_reason, usage, and v2 scores. Scoring via recipe/score-v2.py per
+# the seal-v2 metric definitions (set equality + dice for F1/F3, integer
+# match for F2, abstention scoring with the arm answerability map: F1 and
+# F2 answerable only by kg-json, F3 answerable by kg-json and okf-bundle).
+#
+# Payload per arm:
+#   llms-txt    the frozen snapshot text from freeze/llms.txt
+#   kg-json     the FULL frozen snapshot text from freeze/knowledge-graph.json
+#   okf-bundle  the FULL frozen bundle text: freeze/okf/index.md plus every
+#               freeze/okf/clusters/<cluster>/index.md and concept page
+#               (all frozen payloads are sha256-verified against
+#               seal-v2.json frozen_payloads at run start; aborts loudly on
+#               a missing file or hash mismatch)
+#
+# Requires: jq, uv (for score-v2.py). Env: CLOUDFLARE_API_TOKEN and
 # CLOUDFLARE_ACCOUNT_ID must be set (never written to any file).
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ARM=${1:?usage: run-bench.sh <arm> <n> [base-url]}
-N=${2:?usage: run-bench.sh <arm> <n> [base-url]}
-BASE_URL=${3:-https://clouatre.ca}
+ARM=${1:?usage: run-bench.sh <arm> <questions-file> <start> <count>}
+QUESTIONS=${2:?usage: run-bench.sh <arm> <questions-file> <start> <count>}
+START=${3:?usage: run-bench.sh <arm> <questions-file> <start> <count>}
+COUNT=${4:?usage: run-bench.sh <arm> <questions-file> <start> <count>}
+SEAL="seal-v2.json"
+SNAPSHOT="freeze/knowledge-graph.json"
 
 : "${CLOUDFLARE_API_TOKEN:?CLOUDFLARE_API_TOKEN must be set}"
 : "${CLOUDFLARE_ACCOUNT_ID:?CLOUDFLARE_ACCOUNT_ID must be set}"
@@ -32,41 +45,61 @@ BASE_URL=${3:-https://clouatre.ca}
 MODEL="@cf/google/gemma-4-26b-a4b-it"
 AI_URL="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/ai/run/${MODEL}"
 
-# Deterministic question order: sort readingChains ids once.
-KG_JSON="$(curl -sf "${BASE_URL}/knowledge-graph.json")"
-CHAIN_IDS="$(jq -r '.readingChains | map(.id) | sort | .[]' <<<"$KG_JSON")"
-# Word-split assignment (chain ids are slugs with no whitespace); avoids
-# readarray/mapfile, which macOS's stock bash 3.2 lacks.
-SORTED_CHAINS=($CHAIN_IDS)
-CHAIN_COUNT=${#SORTED_CHAINS[@]}
-if [ "$CHAIN_COUNT" -eq 0 ]; then
-  echo "ERROR: no readingChains in ${BASE_URL}/knowledge-graph.json" >&2
-  exit 1
-fi
+# Frozen snapshot: the sha256 pin is verified before every run.
+SEAL="seal-v2.json"
+SNAPSHOT="freeze/knowledge-graph.json"
 
-# Cluster lookup: the clusters[] entry whose posts array contains a slug.
-find_cluster() {
-  local slug=$1
-  jq -r --arg slug "$slug" \
-    '.clusters[]? | select(.id != null and (.posts | type == "array") and ($slug as $s | .posts | index($s)) != null) | .id' \
-    <<<"$KG_JSON" | head -1
-}
+# Verify every frozen payload listed in seal-v2.json frozen_payloads before
+# running: missing file or sha256 mismatch aborts loudly.
+while IFS=$'\t' read -r EXPECTED_SHA FREEZE_PATH; do
+  if [ ! -f "$FREEZE_PATH" ]; then
+    echo "ERROR: frozen payload missing: $FREEZE_PATH" >&2
+    exit 1
+  fi
+  ACTUAL_SHA=$(shasum -a 256 "$FREEZE_PATH" | awk '{print $1}')
+  if [ "$ACTUAL_SHA" != "$EXPECTED_SHA" ]; then
+    echo "ERROR: frozen payload sha256 mismatch: $FREEZE_PATH: $ACTUAL_SHA (expected $EXPECTED_SHA)" >&2
+    exit 1
+  fi
+done < <(jq -r '.frozen_payloads[] | "\(.sha256)\t\(.path)"' "$SEAL")
 
-OUT_DIR="results/raw/${ARM}"
+# Per-arm grounding payload, read once at run start from the frozen tree.
+case "$ARM" in
+  llms-txt)
+    PAYLOAD="$(cat freeze/llms.txt)"
+    ;;
+  kg-json)
+    PAYLOAD="$(cat "$SNAPSHOT")"
+    ;;
+  okf-bundle)
+    PAYLOAD="$(cat freeze/okf/index.md)"
+    # Every cluster index and concept page (full frozen bundle), same
+    # enumeration the freeze used over index.md links.
+    for CLUSTER_LINK in $(grep -oE '\]\(/clusters/[^)]+\)' freeze/okf/index.md \
+        | tr -d '()]' | sort -u); do
+      PAYLOAD="${PAYLOAD}
+$(cat "freeze/okf${CLUSTER_LINK}")"
+    done
+    for CLUSTER in $(ls freeze/okf/clusters); do
+      for CONCEPT in $(grep -oE '\]\([a-z0-9-]+\.md\)' \
+          "freeze/okf/clusters/${CLUSTER}/index.md" | tr -d '()]' | sort -u); do
+        PAYLOAD="${PAYLOAD}
+$(cat "freeze/okf/clusters/${CLUSTER}/${CONCEPT}")"
+      done
+    done
+    ;;
+  *) echo "ERROR: unknown arm '$ARM' (expected llms-txt|kg-json|okf-bundle)" >&2; exit 1 ;;
+esac
+
+OUT_DIR="results/raw-v2/${ARM}"
 mkdir -p "$OUT_DIR"
 
-fetch() {
-  local url=$1
-  curl -sf "$url" || { echo "ERROR: fetch failed: $url" >&2; exit 1; }
-}
-
 echo "Arm: $ARM"
-echo "Base URL: $BASE_URL"
-echo "Runs: $N"
+echo "Questions: $QUESTIONS (items $START..$((START + COUNT - 1)))"
 echo "Output: $OUT_DIR"
 EMPTY_COUNT=0
 
-for i in $(seq 1 "$N"); do
+for i in $(seq "$START" $((START + COUNT - 1))); do
   RUN_ID="$(printf 'run-%03d' "$i")"
   OUT="${OUT_DIR}/${RUN_ID}.json"
   if [ -s "$OUT" ]; then
@@ -74,65 +107,51 @@ for i in $(seq 1 "$N"); do
     continue
   fi
 
-  CHAIN="${SORTED_CHAINS[$(( (i - 1) % CHAIN_COUNT ))]}"
-
-  # Expected sequence for scoring (resolved from knowledge-graph.json).
-  EXPECTED=$(jq -c --arg chain "$CHAIN" \
-    '[.readingChains[] | select(.id == $chain) | .sequence][0]' <<<"$KG_JSON")
-  FIRST_SLUG=$(jq -r '.[0]' <<<"$EXPECTED")
-  CLUSTER=$(find_cluster "$FIRST_SLUG")
-  if [ -z "$CLUSTER" ]; then
-    echo "ERROR: no cluster found for first slug '$FIRST_SLUG' (chain $CHAIN)" >&2
+  ITEM_ID=$(jq -r --argjson idx "$((i - 1))" '.items[$idx].id' "$QUESTIONS")
+  FAMILY=$(jq -r --argjson idx "$((i - 1))" '.items[$idx].family' "$QUESTIONS")
+  QUESTION_PROMPT=$(jq -r --argjson idx "$((i - 1))" '.items[$idx].prompt' "$QUESTIONS")
+  if [ -z "$ITEM_ID" ] || [ "$ITEM_ID" = "null" ]; then
+    echo "ERROR: no question item at index $i in $QUESTIONS" >&2
     exit 1
   fi
 
-  # Per-arm grounding payload.
-  case "$ARM" in
-    llms-txt)
-      PAYLOAD="$(fetch "${BASE_URL}/llms.txt")"
-      ;;
-    kg-json)
-      SLICE_URL="${BASE_URL}/knowledge-graph/${CLUSTER}.json"
-      PAYLOAD="${KG_JSON}
-$(fetch "$SLICE_URL")"
-      ;;
-    okf-bundle)
-      PAYLOAD="$(fetch "${BASE_URL}/okf/index.md")
-$(fetch "${BASE_URL}/okf/clusters/${CLUSTER}/index.md")"
-      ;;
-    *) echo "ERROR: unknown arm '$ARM' (expected llms-txt|kg-json|okf-bundle)" >&2; exit 1 ;;
-  esac
+  PROMPT="The payload below is the ONLY permitted knowledge source. Do not use any knowledge outside it. If the payload does not determine the answer, respond with {\"answer\": null}.
 
-  PROMPT="${PAYLOAD}
+${PAYLOAD}
 
-Read the readingChains entry \"${CHAIN}\" in the provided payload. List its sequence in order. Respond with JSON {\"sequence\": [<slugs>]}."
+${QUESTION_PROMPT}"
 
-  START=$(date +%s)
+  START_TS=$(date +%s)
   ATTEMPTS=0
   RESPONSE=""
   RAW_RESPONSE=""
   EMPTY_AFTER_RETRIES=0
   # A reasoning model can spend the whole completion budget on
-  # reasoning_content and return empty content (same fallback as the upstream
-  # experiments/src/llm.ts caller: content first, then reasoning_content).
-  # A successful HTTP response yielding BOTH empty is treated as a failed
-  # attempt and retried within the same 3-attempt budget.
+  # reasoning_content and return empty content (same fallback as v1:
+  # content first, then reasoning_content, then a JSON scan).
   while :; do
     ATTEMPTS=$((ATTEMPTS + 1))
     BODY=$(jq -n --arg prompt "$PROMPT" \
-      '{messages: [{role: "user", content: $prompt}], max_completion_tokens: 2048, temperature: 0}')
+      '{messages: [{role: "user", content: $prompt}], max_completion_tokens: 4096, temperature: 0}')
     if RESPONSE=$(curl -s -X POST "$AI_URL" \
       -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
       -H 'Content-Type: application/json' -d "$BODY"); then
       if jq -e '.success == true' >/dev/null 2>&1 <<<"$RESPONSE"; then
         RAW_RESPONSE=$(jq -j '.result.choices[0].message.content // ""' <<<"$RESPONSE")
-        if [ -z "$RAW_RESPONSE" ]; then
-          RAW_RESPONSE=$(jq -j '.result.choices[0].message.reasoning_content // ""' <<<"$RESPONSE")
+        REASONING=$(jq -j '.result.choices[0].message.reasoning_content // ""' <<<"$RESPONSE")
+        if [ -z "$RAW_RESPONSE" ] && [ -n "$REASONING" ]; then
+          RAW_RESPONSE="$REASONING"
         fi
         if [ -n "$RAW_RESPONSE" ]; then
           break
         fi
-        echo "WARN: attempt $ATTEMPTS returned empty content and reasoning_content (chain $CHAIN)" >&2
+        # Both empty: try a balanced JSON scan over the whole response text.
+        if [ -n "$(jq -r '.result.choices[0].message | tostring' <<<"$RESPONSE" \
+            | grep -o '{"answer"[^}]*}' | head -1)" ]; then
+          RAW_RESPONSE=$(jq -r '.result.choices[0].message | tostring' <<<"$RESPONSE")
+          break
+        fi
+        echo "WARN: attempt $ATTEMPTS returned empty content and reasoning_content (item $ITEM_ID)" >&2
         if [ "$ATTEMPTS" -ge 3 ]; then
           EMPTY_AFTER_RETRIES=1
           break
@@ -142,59 +161,82 @@ Read the readingChains entry \"${CHAIN}\" in the provided payload. List its sequ
       fi
     fi
     if [ "$ATTEMPTS" -ge 3 ]; then
-      echo "ERROR: Workers AI failed after 3 attempts (chain $CHAIN)" >&2
+      echo "ERROR: Workers AI failed after 3 attempts (item $ITEM_ID)" >&2
       exit 1
     fi
     sleep $((2 ** ATTEMPTS))
   done
   END=$(date +%s)
 
-  INPUT_TOKENS=$(jq -r '.result.usage.prompt_tokens' <<<"$RESPONSE")
-  OUTPUT_TOKENS=$(jq -r '.result.usage.completion_tokens' <<<"$RESPONSE")
+  FINISH_REASON=$(jq -r '.result.choices[0].finish_reason // "unknown"' <<<"$RESPONSE")
+  PROMPT_TOKENS=$(jq -r '.result.usage.prompt_tokens // 0' <<<"$RESPONSE")
+  COMPLETION_TOKENS=$(jq -r '.result.usage.completion_tokens // 0' <<<"$RESPONSE")
+  REASONING_TOKENS=$(jq -r '.result.usage.reasoning_tokens // null' <<<"$RESPONSE")
 
   RAW_FILE="$(mktemp)"
   printf '%s' "$RAW_RESPONSE" > "$RAW_FILE"
   if [ "$EMPTY_AFTER_RETRIES" -eq 1 ]; then
-    # Nothing to score; persist usage metadata with a loud note.
     EXACT_MATCH=false
     PARTIAL_CREDIT=null
+    ABSTAINED=null
+    ITEM_SCORE=null
     NOTE="empty response after retries"
     EMPTY_COUNT=$((EMPTY_COUNT + 1))
-    echo "EMPTY AFTER RETRIES: $RUN_ID (chain $CHAIN)"
+    echo "EMPTY AFTER RETRIES: $RUN_ID (item $ITEM_ID)"
   else
-    SCORE=$(uv run python "${SCRIPT_DIR}/score.py" \
-      <(printf '%s' "$KG_JSON") "$CHAIN" "$RAW_FILE")
+    # Reasoning fallback: score LAST balanced answer object when the text
+    # came from reasoning_content (mirrors score-v2.py semantics).
+    SCORE_FLAGS=()
+    if [ -n "$REASONING" ] && [ -z "$(jq -j '.result.choices[0].message.content // ""' <<<"$RESPONSE")" ]; then
+      SCORE_FLAGS+=(--reasoning-fallback)
+    fi
+    SCORE=$(uv run python "${SCRIPT_DIR}/score-v2.py" "$QUESTIONS" "$ITEM_ID" "$RAW_FILE" --arm "$ARM" "${SCORE_FLAGS[@]+"${SCORE_FLAGS[@]}"}")
     EXACT_MATCH=$(jq -r '.exact_match' <<<"$SCORE")
     PARTIAL_CREDIT=$(jq -r '.partial_credit' <<<"$SCORE")
+    ABSTAINED=$(jq -r '.abstained' <<<"$SCORE")
+    ITEM_SCORE=$(jq -r '.item_score' <<<"$SCORE")
     NOTE=null
   fi
   rm -f "$RAW_FILE"
 
   jq -n \
     --arg group "$ARM" \
-    --arg session_id "${ARM}-${RUN_ID}" \
-    --argjson input "$INPUT_TOKENS" \
-    --argjson output "$OUTPUT_TOKENS" \
-    --argjson wall "$((END - START))" \
+    --arg session_id "v2-${ARM}-${RUN_ID}" \
+    --arg item_id "$ITEM_ID" \
+    --arg family "$FAMILY" \
+    --arg model "$MODEL" \
     --arg raw "$RAW_RESPONSE" \
+    --arg finish_reason "$FINISH_REASON" \
+    --argjson prompt_tokens "$PROMPT_TOKENS" \
+    --argjson completion_tokens "$COMPLETION_TOKENS" \
+    --argjson reasoning_tokens "$REASONING_TOKENS" \
+    --argjson wall "$((END - START_TS))" \
     --argjson exact "$EXACT_MATCH" \
     --argjson partial "$PARTIAL_CREDIT" \
+    --argjson abstained "$ABSTAINED" \
+    --argjson item_score "$ITEM_SCORE" \
     --arg note "$NOTE" \
-    '{group: $group, session_id: $session_id, messages: 1,
-      input_tokens: $input, output_tokens: $output,
-      total_tokens: ($input + $output),
-      wall_clock_seconds: $wall, bytes: ($raw | length),
-      raw_response: $raw, exact_match: ($exact == 1),
+    '{group: $group, session_id: $session_id, item_id: $item_id,
+      family: $family, model: $model,
+      finish_reason: $finish_reason,
+      prompt_tokens: $prompt_tokens,
+      completion_tokens: $completion_tokens,
+      reasoning_tokens: (if $reasoning_tokens == null then null else $reasoning_tokens end),
+      wall_clock_seconds: $wall,
+      raw_response: $raw,
+      exact_match: ($exact == 1),
       partial_credit: (if $partial == null then null else $partial end),
+      abstained: (if $abstained == null then null else ($abstained == 1) end),
+      item_score: (if $item_score == null then null else ($item_score == 1) end),
       note: ($note | if . == "null" then null else . end)}' > "$OUT"
-  echo "captured $RUN_ID (chain $CHAIN, cluster $CLUSTER, exact=$EXACT_MATCH, partial=$PARTIAL_CREDIT)"
+  echo "captured $RUN_ID (item $ITEM_ID, family $FAMILY, exact=$EXACT_MATCH, partial=$PARTIAL_CREDIT, abstained=$ABSTAINED)"
 done
 
 if [ "$EMPTY_COUNT" -gt 0 ]; then
   echo "============================================================" >&2
   echo "WARNING: $EMPTY_COUNT run(s) in arm '$ARM' returned empty" >&2
-  echo "content and reasoning_content after 3 attempts (note:" >&2
-  echo "'empty response after retries'). Inspect before scoring." >&2
+  echo "content and reasoning_content after 3 attempts. Inspect" >&2
+  echo "before scoring." >&2
   echo "============================================================" >&2
 fi
 

@@ -1,0 +1,14 @@
+{
+  "group": "kg-json",
+  "session_id": "kg-json-run-082",
+  "messages": 1,
+  "input_tokens": 22896,
+  "output_tokens": 567,
+  "total_tokens": 23463,
+  "wall_clock_seconds": 15,
+  "bytes": 257,
+  "raw_response": "```json\n{\n  \"sequence\": [\n    \"ai-adoption-engineering\",\n    \"ai-approval-gates\",\n    \"ai-observability-gaps\",\n    \"sre-ai-agents-production\",\n    \"ai-sdlc-governance-stack\",\n    \"decision-frameworks-ai-delivery\",\n    \"zero-downtime-dns-migration\"\n  ]\n}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "note": null
+}

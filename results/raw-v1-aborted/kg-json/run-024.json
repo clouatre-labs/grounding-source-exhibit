@@ -1,0 +1,14 @@
+{
+  "group": "kg-json",
+  "session_id": "kg-json-run-024",
+  "messages": 1,
+  "input_tokens": 21121,
+  "output_tokens": 331,
+  "total_tokens": 21452,
+  "wall_clock_seconds": 566,
+  "bytes": 129,
+  "raw_response": "```json\n{\n  \"sequence\": [\n    \"ai-supply-chain-attack-vectors\",\n    \"ai-augmented-cicd\",\n    \"ai-sdlc-governance-stack\"\n  ]\n}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "note": null
+}

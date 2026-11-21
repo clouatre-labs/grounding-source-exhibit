@@ -1,0 +1,14 @@
+{
+  "group": "llms-txt",
+  "session_id": "llms-txt-run-053",
+  "messages": 1,
+  "input_tokens": 4144,
+  "output_tokens": 458,
+  "total_tokens": 4602,
+  "wall_clock_seconds": 10,
+  "bytes": 112,
+  "raw_response": "```json\n{\n  \"sequence\": [\n    \"agent-ready-website\",\n    \"mcp-tool-docs\",\n    \"webmcp-beyond-checkout\"\n  ]\n}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "note": null
+}

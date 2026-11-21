@@ -1,0 +1,1692 @@
+{
+  "meta": {
+    "version": "1",
+    "generated": "2026-11-21T02:11:38.774Z",
+    "post_count": 24,
+    "edge_count": 91,
+    "contentHash": "ba4b5e97d23b438ed194dac600adc27431be804ca2ff7da2900061840b4c4d62",
+    "gitRef": "7410592"
+  },
+  "nodes": [
+    {
+      "kind": "post",
+      "slug": "accuracy-cost-matrix-threshold",
+      "title": "When Accuracy Misleads: Cost Matrix Metrics and Thresholds",
+      "url": "https://clouatre.ca/posts/accuracy-cost-matrix-threshold/",
+      "pubDate": "2026-11-15T18:19:21.000Z",
+      "tags": [
+        "evaluation",
+        "case-studies",
+        "ai-engineering",
+        "ai-governance"
+      ],
+      "concepts": [
+        "cost-sensitive-learning",
+        "confusion-matrix",
+        "decision-threshold",
+        "model-evaluation"
+      ],
+      "category": "evaluation-reliability",
+      "wordCount": 2245,
+      "sectionAnchors": [
+        "what-does-the-exhibit-show",
+        "why-is-accuracy-the-wrong-kpi-when-errors-are-asymmetric",
+        "how-does-the-decision-threshold-change-the-ranking",
+        "who-should-own-the-decision-threshold",
+        "what-caveats-bound-the-claim",
+        "what-should-a-model-review-ask",
+        "references"
+      ],
+      "edgeStats": {
+        "inbound": 2,
+        "outbound": 2
+      }
+    },
+    {
+      "kind": "post",
+      "slug": "agent-payments-x402",
+      "title": "x402 on Cloudflare Workers: AI Agents Pay Per Call in USDC",
+      "url": "https://clouatre.ca/posts/agent-payments-x402/",
+      "pubDate": "2026-10-23T12:00:00.000Z",
+      "tags": [
+        "agentic-ai",
+        "ai-engineering",
+        "implementation-guide"
+      ],
+      "concepts": [],
+      "category": "agent-infrastructure",
+      "wordCount": 2588,
+      "sectionAnchors": [
+        "what-is-x402",
+        "how-does-the-settlement-state-machine-work",
+        "what-does-replay-protection-look-like-in-practice",
+        "what-did-the-kiss-re-scope-cut",
+        "what-doesn-t-this-prove-yet",
+        "where-agents-find-this-endpoint",
+        "what-comes-next"
+      ],
+      "edgeStats": {
+        "inbound": 3,
+        "outbound": 4
+      }
+    },
+    {
+      "kind": "post",
+      "slug": "agent-ready-website",
+      "title": "Agent-Ready Websites: The 5-Layer Implementation Stack",
+      "url": "https://clouatre.ca/posts/agent-ready-website/",
+      "pubDate": "2026-08-09T13:30:00.000Z",
+      "tags": [
+        "agentic-ai",
+        "architecture",
+        "implementation-guide"
+      ],
+      "concepts": [],
+      "category": "agent-infrastructure",
+      "wordCount": 2328,
+      "sectionAnchors": [
+        "why-does-your-website-now-have-two-audiences",
+        "what-does-fully-agent-ready-look-like",
+        "how-is-the-webmcp-tool-layer-built",
+        "what-is-the-knowledge-graph-layer-and-why-does-it-matter",
+        "how-do-agents-actually-discover-all-of-this",
+        "how-do-you-measure-agent-readiness",
+        "what-should-engineering-leaders-ship-first",
+        "references"
+      ],
+      "edgeStats": {
+        "inbound": 3,
+        "outbound": 7
+      }
+    },
+    {
+      "kind": "post",
+      "slug": "ai-adoption-engineering",
+      "title": "AI Adoption in Engineering: Breaking the 50% Plateau",
+      "url": "https://clouatre.ca/posts/ai-adoption-engineering/",
+      "pubDate": "2026-05-29T09:34:00.000Z",
+      "tags": [
+        "agentic-ai",
+        "implementation-guide",
+        "ai-governance",
+        "case-studies"
+      ],
+      "concepts": [
+        "adoption-plateau",
+        "change-management",
+        "ai-strategy"
+      ],
+      "category": "governance-oversight",
+      "wordCount": 2441,
+      "sectionAnchors": [
+        "why-do-enterprise-ai-programs-stall-at-50",
+        "who-is-actually-blocked-and-why",
+        "what-does-purpose-built-tooling-change",
+        "how-do-you-instrument-before-you-deploy",
+        "what-operating-model-sustains-adoption",
+        "which-ai-adoption-plays-waste-budget",
+        "how-do-you-measure-adoption-not-just-activity",
+        "what-should-engineering-leaders-do-next",
+        "references"
+      ],
+      "edgeStats": {
+        "inbound": 2,
+        "outbound": 5
+      }
+    },
+    {
+      "kind": "post",
+      "slug": "ai-agent-enumerate-or-delegate",
+      "title": "When Should an AI Agent Enumerate, and When Delegate?",
+      "url": "https://clouatre.ca/posts/ai-agent-enumerate-or-delegate/",
+      "pubDate": "2026-10-16T20:00:00.000Z",
+      "tags": [
+        "agentic-ai",
+        "architecture",
+        "case-studies",
+        "evaluation"
+      ],
+      "concepts": [
+        "decision-routing",
+        "exact-enumeration",
+        "typed-judges",
+        "dual-prices"
+      ],
+      "category": "multi-agent-architecture",
+      "wordCount": 2504,
+      "sectionAnchors": [
+        "what-does-exact-enumeration-look-like-at-small-scale",
+        "what-does-rounding-a-solver-output-cost",
+        "what-do-dual-prices-offer-capacity-planning",
+        "where-do-typed-judges-win",
+        "what-routing-rule-should-an-agent-apply",
+        "what-does-a-sealed-exhibit-measure-at-the-boundary",
+        "what-caveats-bound-the-claim",
+        "what-should-an-agent-architecture-review-ask",
+        "references"
+      ],
+      "edgeStats": {
+        "inbound": 5,
+        "outbound": 3
+      }
+    },
+    {
+      "kind": "post",
+      "slug": "ai-agents-legacy-roi",
+      "title": "AI Agents in Legacy Systems: ROI Without Modernization",
+      "url": "https://clouatre.ca/posts/ai-agents-legacy-roi/",
+      "pubDate": "2026-01-20T06:27:00.000Z",
+      "tags": [
+        "agentic-ai",
+        "legacy-systems",
+        "architecture",
+        "case-studies"
+      ],
+      "concepts": [
+        "roi",
+        "legacy-modernization",
+        "cost-benefit",
+        "migration-strategy"
+      ],
+      "category": "cost-roi",
+      "wordCount": 2170,
+      "sectionAnchors": [
+        "why-did-legacy-systems-become-the-1-ai-adoption-obstacle",
+        "what-is-the-reverse-modernization-strategy",
+        "how-do-ai-agents-actually-integrate-with-legacy-systems",
+        "why-is-observability-infrastructure-non-negotiable",
+        "what-roi-can-you-actually-expect",
+        "why-do-40-of-ai-agent-projects-still-fail",
+        "which-implementation-framework-applies",
+        "why-should-your-board-fund-this-now",
+        "references"
+      ],
+      "edgeStats": {
+        "inbound": 4,
+        "outbound": 5
+      }
+    },
+    {
+      "kind": "post",
+      "slug": "ai-approval-gates",
+      "title": "AI Approval Gates: Engineering Oversight at Machine Speed",
+      "url": "https://clouatre.ca/posts/ai-approval-gates/",
+      "pubDate": "2026-06-11T09:00:00.000Z",
+      "tags": [
+        "agentic-ai",
+        "implementation-guide",
+        "ai-governance"
+      ],
+      "concepts": [
+        "reversibility",
+        "approval-gates",
+        "reviewer-atrophy",
+        "decision-provenance",
+        "human-oversight"
+      ],
+      "category": "governance-oversight",
+      "wordCount": 2415,
+      "sectionAnchors": [
+        "why-are-ai-agents-causing-production-incidents-without-any-external-attacker",
+        "why-does-adding-a-human-reviewer-sometimes-make-things-worse",
+        "what-is-reversibility-and-why-does-it-define-the-gate-design",
+        "how-does-a-three-tier-reversibility-gate-work-in-practice",
+        "how-do-you-prevent-reviewer-atrophy-from-hollowing-out-the-judgment-tier",
+        "how-do-you-measure-whether-your-gates-are-holding",
+        "what-should-engineering-leaders-act-on",
+        "references"
+      ],
+      "edgeStats": {
+        "inbound": 3,
+        "outbound": 8
+      }
+    },
+    {
+      "kind": "post",
+      "slug": "ai-assisted-development",
+      "title": "AI-Assisted Development: The Accountability Layer",
+      "url": "https://clouatre.ca/posts/ai-assisted-development/",
+      "pubDate": "2025-11-07T12:00:00.000Z",
+      "tags": [
+        "agentic-ai",
+        "ai-engineering",
+        "devops",
+        "goose",
+        "ai-governance"
+      ],
+      "concepts": [
+        "pair-programming",
+        "reviewer-atrophy",
+        "code-review",
+        "comprehension-loss"
+      ],
+      "category": "devops-implementation",
+      "wordCount": 2535,
+      "sectionAnchors": [
+        "why-does-ai-assisted-development-create-an-accountability-gap",
+        "how-does-ai-shift-time-from-implementation-to-judgment",
+        "how-do-structured-workflows-enforce-human-decision-points",
+        "how-do-you-maintain-accountability-when-ai-writes-the-code",
+        "what-do-measured-time-savings-actually-look-like",
+        "when-does-this-approach-work-and-when-does-it-not",
+        "what-does-this-mean-for-technical-leaders",
+        "references"
+      ],
+      "edgeStats": {
+        "inbound": 6,
+        "outbound": 2
+      }
+    },
+    {
+      "kind": "post",
+      "slug": "ai-augmented-cicd",
+      "title": "AI-Augmented CI/CD: Shift Left Security With Bounded Risk",
+      "url": "https://clouatre.ca/posts/ai-augmented-cicd/",
+      "pubDate": "2025-12-06T12:00:00.000Z",
+      "tags": [
+        "agentic-ai",
+        "devops",
+        "security",
+        "implementation-guide"
+      ],
+      "concepts": [
+        "ci-cd",
+        "pipeline-security",
+        "automated-testing",
+        "deployment-gates"
+      ],
+      "category": "multi-agent-architecture",
+      "wordCount": 2289,
+      "sectionAnchors": [
+        "what-is-the-real-cost-of-manual-code-review",
+        "how-does-ai-integration-work-with-bounded-injection-risk",
+        "how-do-managed-review-and-direct-ci-compare",
+        "what-outcomes-does-ai-augmented-ci-cd-deliver",
+        "how-do-you-get-started-with-ai-augmented-ci-cd",
+        "grounding-rules",
+        "scope",
+        "rust-crates",
+        "general",
+        "review-criteria",
+        "what-conditions-justify-production-adoption",
+        "references"
+      ],
+      "edgeStats": {
+        "inbound": 5,
+        "outbound": 5
+      }
+    },
+    {
+      "kind": "post",
+      "slug": "ai-observability-gaps",
+      "title": "Why Your AI Agent Failed in Production",
+      "url": "https://clouatre.ca/posts/ai-observability-gaps/",
+      "pubDate": "2026-02-02T12:00:00.000Z",
+      "tags": [
+        "agentic-ai",
+        "architecture",
+        "observability",
+        "ai-governance"
+      ],
+      "concepts": [
+        "decision-provenance",
+        "observability",
+        "traceability",
+        "audit-trail"
+      ],
+      "category": "governance-oversight",
+      "wordCount": 1692,
+      "sectionAnchors": [
+        "why-should-observability-be-foundational-infrastructure",
+        "what-is-decision-provenance-and-why-does-compliance-require-it",
+        "how-do-silent-integration-failures-kill-ai-agents",
+        "why-do-token-costs-spiral-out-of-control",
+        "what-does-a-vendor-neutral-observability-stack-look-like",
+        "what-is-the-roi-and-how-do-you-start",
+        "are-you-ready-for-production",
+        "references"
+      ],
+      "edgeStats": {
+        "inbound": 8,
+        "outbound": 3
+      }
+    },
+    {
+      "kind": "post",
+      "slug": "ai-sdlc-governance-stack",
+      "title": "AI SDLC Governance: Three Layers for Engineering Leaders",
+      "url": "https://clouatre.ca/posts/ai-sdlc-governance-stack/",
+      "pubDate": "2026-08-04T09:00:00.000Z",
+      "tags": [
+        "ai-engineering",
+        "ai-governance",
+        "implementation-guide",
+        "security"
+      ],
+      "concepts": [
+        "governance-stack",
+        "three-layer-governance",
+        "attestation",
+        "policy-as-code"
+      ],
+      "category": "governance-oversight",
+      "wordCount": 2688,
+      "sectionAnchors": [
+        "what-is-a-governance-stack-for-ai-generated-code",
+        "how-does-the-comprehension-layer-work",
+        "how-does-the-review-gate-layer-work",
+        "what-does-the-ci-cd-harness-look-like-in-practice",
+        "how-does-the-attestation-chain-close-the-loop",
+        "how-should-engineering-leaders-measure-the-stack",
+        "where-does-the-governance-stack-go-next",
+        "references"
+      ],
+      "edgeStats": {
+        "inbound": 5,
+        "outbound": 7
+      }
+    },
+    {
+      "kind": "post",
+      "slug": "ai-supply-chain-attack-vectors",
+      "title": "AI Supply Chain Attacks: New Vectors in Dependencies",
+      "url": "https://clouatre.ca/posts/ai-supply-chain-attack-vectors/",
+      "pubDate": "2026-01-13T07:00:00.000Z",
+      "tags": [
+        "agentic-ai",
+        "security",
+        "ai-governance"
+      ],
+      "concepts": [
+        "supply-chain",
+        "dependency-attack",
+        "model-poisoning",
+        "sbom"
+      ],
+      "category": "security-supply-chain",
+      "wordCount": 2026,
+      "sectionAnchors": [
+        "what-are-the-three-attack-vectors",
+        "why-does-this-matter-at-enterprise-scale",
+        "how-does-the-two-tier-ecosystem-create-different-risks",
+        "how-should-organizations-assess-ai-exposure-risk",
+        "how-does-vibe-coding-multiply-supply-chain-risk",
+        "how-can-organizations-defend-against-ai-supply-chain-attacks",
+        "how-will-relicensing-reshape-the-stack",
+        "references"
+      ],
+      "edgeStats": {
+        "inbound": 2,
+        "outbound": 3
+      }
+    },
+    {
+      "kind": "post",
+      "slug": "context-engineering-multi-agent-reliability",
+      "title": "How Does Context Engineering Drive Multi-Agent Reliability?",
+      "url": "https://clouatre.ca/posts/context-engineering-multi-agent-reliability/",
+      "pubDate": "2026-07-24T15:00:00.000Z",
+      "tags": [
+        "agentic-ai",
+        "architecture",
+        "observability",
+        "implementation-guide"
+      ],
+      "concepts": [
+        "context-engineering",
+        "context-window",
+        "reliability",
+        "prompt-design"
+      ],
+      "category": "multi-agent-architecture",
+      "wordCount": 2489,
+      "sectionAnchors": [
+        "what-is-context-engineering-and-why-does-it-matter-now",
+        "how-does-context-engineering-relate-to-harness-engineering",
+        "what-are-the-three-failure-modes-of-context-in-multi-agent-systems",
+        "how-does-context-isolation-prevent-failure-at-scale",
+        "how-do-you-measure-context-quality-in-production",
+        "what-does-context-first-design-look-like-in-practice",
+        "takeaways",
+        "references"
+      ],
+      "edgeStats": {
+        "inbound": 2,
+        "outbound": 2
+      }
+    },
+    {
+      "kind": "post",
+      "slug": "decision-frameworks-ai-delivery",
+      "title": "AI Delivery Decision Frameworks: Type 1, Type 2, DACI",
+      "url": "https://clouatre.ca/posts/decision-frameworks-ai-delivery/",
+      "pubDate": "2026-05-22T10:00:00.000Z",
+      "tags": [
+        "agentic-ai",
+        "implementation-guide",
+        "ai-governance"
+      ],
+      "concepts": [
+        "type-1-type-2-decisions",
+        "reversibility",
+        "staffing-decisions",
+        "delivery-frameworks"
+      ],
+      "category": "governance-oversight",
+      "wordCount": 2578,
+      "sectionAnchors": [
+        "why-are-staffing-mismatches-misclassified-as-irreversible",
+        "what-is-the-type-1-type-2-decision-lens",
+        "how-does-the-eisenhower-matrix-add-triage-ordering",
+        "why-does-delivery-authority-collapse-without-a-daci",
+        "role",
+        "constraints",
+        "how-to-distinguish-a-stakeholder-failure-from-a-delivery-failure",
+        "how-does-ai-tooling-shift-the-staffing-reversibility-boundary",
+        "when-to-use",
+        "rules",
+        "how-do-the-four-frameworks-form-a-single-decision-cadence",
+        "what-operating-model-changes-prevent-delivery-failure-recurrence",
+        "references"
+      ],
+      "edgeStats": {
+        "inbound": 4,
+        "outbound": 4
+      }
+    },
+    {
+      "kind": "post",
+      "slug": "mcp-tool-docs",
+      "title": "How Much Tool Documentation Do AI Agents Actually Need?",
+      "url": "https://clouatre.ca/posts/mcp-tool-docs/",
+      "pubDate": "2026-09-19T15:26:35.000Z",
+      "tags": [
+        "agentic-ai",
+        "architecture",
+        "case-studies",
+        "mcp"
+      ],
+      "concepts": [],
+      "category": "multi-agent-architecture",
+      "wordCount": 2861,
+      "sectionAnchors": [
+        "why-does-tool-documentation-cost-ai-agents-so-much",
+        "how-did-we-test-tool-documentation-trims",
+        "what-did-480-blind-scored-tool-calls-show",
+        "what-does-leaner-tool-documentation-unlock-next",
+        "where-do-small-models-fit-in-the-tool-layer",
+        "what-should-platform-teams-do",
+        "how-do-you-estimate-the-monthly-token-savings",
+        "takeaways",
+        "references"
+      ],
+      "edgeStats": {
+        "inbound": 4,
+        "outbound": 4
+      }
+    },
+    {
+      "kind": "post",
+      "slug": "open-weights-structured-output-cost",
+      "title": "Open-Weight LLMs Reach the Structured Output Quality Ceiling",
+      "url": "https://clouatre.ca/posts/open-weights-structured-output-cost/",
+      "pubDate": "2026-07-08T07:40:00.000Z",
+      "tags": [
+        "agentic-ai",
+        "ai-engineering",
+        "case-studies",
+        "architecture"
+      ],
+      "concepts": [
+        "open-weights",
+        "structured-output",
+        "cost-analysis",
+        "model-evaluation"
+      ],
+      "category": "cost-roi",
+      "wordCount": 2615,
+      "sectionAnchors": [
+        "do-open-weight-models-match-closed-models-on-structured-output-quality",
+        "how-was-the-evaluation-designed-to-avoid-benchmark-gaming",
+        "how-large-is-the-cost-gap-at-identical-quality",
+        "when-does-switching-to-open-weight-models-make-economic-sense",
+        "why-do-truncated-outputs-mean-a-configuration-problem-not-a-model-problem",
+        "when-should-you-not-use-open-weight-models-for-structured-output",
+        "what-does-apache-2-0-licensing-change-for-enterprise-procurement",
+        "how-does-eu-ai-act-enforcement-shift-the-data-residency-calculus",
+        "takeaways",
+        "references"
+      ],
+      "edgeStats": {
+        "inbound": 3,
+        "outbound": 3
+      }
+    },
+    {
+      "kind": "post",
+      "slug": "orchestrating-ai-agents-subagent-architecture",
+      "title": "Orchestrating AI Agents: A Subagent Architecture",
+      "url": "https://clouatre.ca/posts/orchestrating-ai-agents-subagent-architecture/",
+      "pubDate": "2025-12-24T12:00:00.000Z",
+      "tags": [
+        "agentic-ai",
+        "architecture",
+        "goose",
+        "implementation-guide"
+      ],
+      "concepts": [
+        "subagent-architecture",
+        "orchestration",
+        "tool-calling",
+        "agent-loops"
+      ],
+      "category": "multi-agent-architecture",
+      "wordCount": 2490,
+      "sectionAnchors": [
+        "why-do-single-agent-ai-coding-workflows-hit-a-ceiling",
+        "how-does-subagent-architecture-solve-context-problems",
+        "how-does-model-selection-affect-cost-and-quality",
+        "commits",
+        "security",
+        "stack",
+        "project-specific-patterns",
+        "how-do-subagents-communicate",
+        "where-should-human-judgment-stay-in-ai-workflows",
+        "what-results-does-this-produce",
+        "when-does-this-work-and-when-doesn-t-it",
+        "takeaways",
+        "references"
+      ],
+      "edgeStats": {
+        "inbound": 8,
+        "outbound": 5
+      }
+    },
+    {
+      "kind": "post",
+      "slug": "pay-per-call-margins-treasury",
+      "title": "Pay-Per-Call APIs: $0.005 Calls, Measured Treasury Costs",
+      "url": "https://clouatre.ca/posts/pay-per-call-margins-treasury/",
+      "pubDate": "2026-11-04T23:59:00.000Z",
+      "tags": [
+        "agentic-ai",
+        "ai-governance",
+        "case-studies"
+      ],
+      "concepts": [],
+      "category": "agent-infrastructure",
+      "wordCount": 2687,
+      "sectionAnchors": [
+        "why-does-the-fee-floor-matter-for-unit-economics",
+        "how-does-settlement-change-revenue-mechanics",
+        "what-does-treasury-operations-actually-cost",
+        "what-does-accounting-for-micro-receipts-require",
+        "how-big-is-pay-per-call-demand-today",
+        "where-does-x402-sit-among-payment-protocols",
+        "what-should-executives-budget-for",
+        "references"
+      ],
+      "edgeStats": {
+        "inbound": 2,
+        "outbound": 2
+      }
+    },
+    {
+      "kind": "post",
+      "slug": "prompt-repetition-agent-evaluation",
+      "title": "What a Null Result Taught Us About AI Agent Evaluation",
+      "url": "https://clouatre.ca/posts/prompt-repetition-agent-evaluation/",
+      "pubDate": "2026-02-23T12:00:00.000Z",
+      "tags": [
+        "agentic-ai",
+        "goose",
+        "case-studies",
+        "evaluation"
+      ],
+      "concepts": [
+        "evaluation-methodology",
+        "blind-evaluation",
+        "pre-registration",
+        "prompt-repetition"
+      ],
+      "category": "evaluation-reliability",
+      "wordCount": 2743,
+      "sectionAnchors": [
+        "what-does-the-prompt-repetition-paper-claim",
+        "how-did-we-design-the-test",
+        "what-happened-when-we-tested-a-real-refactoring-task",
+        "did-a-stricter-methodology-change-the-result",
+        "what-infrastructure-confound-did-we-miss",
+        "why-did-both-experiments-hit-100",
+        "what-did-we-learn-about-ai-evaluation-design",
+        "when-should-you-use-prompt-repetition",
+        "references"
+      ],
+      "edgeStats": {
+        "inbound": 5,
+        "outbound": 4
+      }
+    },
+    {
+      "kind": "post",
+      "slug": "rag-legacy-systems",
+      "title": "RAG for Legacy Systems: 7,432 Pages to 3s Answers",
+      "url": "https://clouatre.ca/posts/rag-legacy-systems/",
+      "pubDate": "2026-01-23T12:31:00.000Z",
+      "tags": [
+        "agentic-ai",
+        "legacy-systems",
+        "case-studies"
+      ],
+      "concepts": [
+        "rag",
+        "retrieval-augmented-generation",
+        "legacy-systems",
+        "knowledge-base"
+      ],
+      "category": "cost-roi",
+      "wordCount": 2316,
+      "sectionAnchors": [
+        "why-rag-not-fine-tuning",
+        "how-does-rag-turn-pdfs-into-answers",
+        "does-reranking-work-across-different-models",
+        "what-are-the-real-performance-numbers",
+        "what-s-the-roi-without-modernization",
+        "when-does-rag-fail",
+        "how-do-you-migrate-from-prototype-to-production",
+        "what-should-you-do-next",
+        "references"
+      ],
+      "edgeStats": {
+        "inbound": 2,
+        "outbound": 1
+      }
+    },
+    {
+      "kind": "post",
+      "slug": "sre-ai-agents-production",
+      "title": "SRE for AI Agents: Error Budgets, Trust, and 90 Trials",
+      "url": "https://clouatre.ca/posts/sre-ai-agents-production/",
+      "pubDate": "2026-03-09T14:00:00.000Z",
+      "tags": [
+        "agentic-ai",
+        "architecture",
+        "case-studies",
+        "evaluation"
+      ],
+      "concepts": [
+        "sre",
+        "accountability",
+        "incident-response",
+        "production-reliability"
+      ],
+      "category": "governance-oversight",
+      "wordCount": 1972,
+      "sectionAnchors": [
+        "why-is-ai-widening-the-dev-ops-gap",
+        "how-did-we-measure-ai-s-scope-creep",
+        "what-does-sre-mean-in-a-regulated-enterprise",
+        "how-does-sre-act-as-ai-s-production-conscience",
+        "why-does-platform-maturity-gate-ai-readiness",
+        "where-should-you-start",
+        "references"
+      ],
+      "edgeStats": {
+        "inbound": 3,
+        "outbound": 4
+      }
+    },
+    {
+      "kind": "post",
+      "slug": "verify-x402-endpoints",
+      "title": "Verifying x402 Endpoints: The 5-Check Buyer Recipe",
+      "url": "https://clouatre.ca/posts/verify-x402-endpoints/",
+      "pubDate": "2026-11-06T22:00:00.000Z",
+      "tags": [
+        "agentic-ai",
+        "ai-engineering",
+        "implementation-guide",
+        "security"
+      ],
+      "concepts": [],
+      "category": "agent-infrastructure",
+      "wordCount": 2607,
+      "sectionAnchors": [
+        "what-can-go-wrong-before-an-agent-pays",
+        "what-does-a-valid-v2-challenge-look-like",
+        "how-do-you-cross-check-the-challenge-against-the-manifest",
+        "how-do-you-verify-settlement-actually-happened",
+        "can-a-signed-payment-be-replayed",
+        "what-do-real-third-party-endpoints-look-like",
+        "what-is-the-minimum-buyer-side-recipe",
+        "references"
+      ],
+      "edgeStats": {
+        "inbound": 2,
+        "outbound": 2
+      }
+    },
+    {
+      "kind": "post",
+      "slug": "webmcp-beyond-checkout",
+      "title": "Does WebMCP Pay Off for Content Sites?",
+      "url": "https://clouatre.ca/posts/webmcp-beyond-checkout/",
+      "pubDate": "2026-10-04T21:05:56.000Z",
+      "tags": [
+        "agentic-ai",
+        "architecture",
+        "case-studies",
+        "mcp"
+      ],
+      "concepts": [],
+      "category": "agent-infrastructure",
+      "wordCount": 3064,
+      "sectionAnchors": [
+        "why-does-stripe-s-checkout-benchmark-matter-beyond-commerce",
+        "what-do-independent-studies-say-about-tool-surfaces",
+        "how-was-disclosure-tested-on-a-read-only-site",
+        "what-did-the-agent-runs-show",
+        "what-mattered-more-than-webmcp-tool-count",
+        "where-does-webmcp-stop-reaching-and-what-should-leaders-fund",
+        "takeaways",
+        "references"
+      ],
+      "edgeStats": {
+        "inbound": 5,
+        "outbound": 3
+      }
+    },
+    {
+      "kind": "post",
+      "slug": "zero-downtime-dns-migration",
+      "title": "AI-Governed DNS Migration Without Maintenance Windows",
+      "url": "https://clouatre.ca/posts/zero-downtime-dns-migration/",
+      "pubDate": "2025-11-06T12:00:00.000Z",
+      "tags": [
+        "agentic-ai",
+        "devops",
+        "goose",
+        "case-studies",
+        "ai-governance"
+      ],
+      "concepts": [
+        "approval-gates",
+        "change-control",
+        "rollback",
+        "zero-downtime"
+      ],
+      "category": "governance-oversight",
+      "wordCount": 1909,
+      "sectionAnchors": [
+        "why-do-dns-migrations-still-require-weekend-windows",
+        "what-does-programmatic-pre-validation-actually-look-like",
+        "how-does-the-approval-gate-workflow-distribute-risk",
+        "what-did-the-migration-produce-as-artifacts",
+        "how-do-the-numbers-compare-to-a-manual-migration",
+        "when-does-this-pattern-apply-beyond-dns",
+        "takeaways",
+        "references"
+      ],
+      "edgeStats": {
+        "inbound": 3,
+        "outbound": 3
+      }
+    },
+    {
+      "kind": "page",
+      "slug": "about",
+      "title": "About",
+      "url": "https://clouatre.ca/about/",
+      "pubDate": null,
+      "tags": [],
+      "concepts": [],
+      "category": "about",
+      "wordCount": 526,
+      "sectionAnchors": [
+        "professional-experience",
+        "skills-certifications",
+        "research-open-source",
+        "patents",
+        "education",
+        "connect"
+      ],
+      "edgeStats": {
+        "inbound": 0,
+        "outbound": 0
+      }
+    },
+    {
+      "kind": "page",
+      "slug": "ai-governance",
+      "title": "AI Governance",
+      "url": "https://clouatre.ca/topics/ai-governance/",
+      "pubDate": null,
+      "tags": [],
+      "concepts": [],
+      "category": "topics",
+      "wordCount": 37,
+      "sectionAnchors": [],
+      "edgeStats": {
+        "inbound": 0,
+        "outbound": 0
+      }
+    },
+    {
+      "kind": "page",
+      "slug": "agent-reliability",
+      "title": "Agent Reliability",
+      "url": "https://clouatre.ca/topics/agent-reliability/",
+      "pubDate": null,
+      "tags": [],
+      "concepts": [],
+      "category": "topics",
+      "wordCount": 33,
+      "sectionAnchors": [],
+      "edgeStats": {
+        "inbound": 0,
+        "outbound": 0
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "accuracy-cost-matrix-threshold",
+      "to": "ai-agent-enumerate-or-delegate",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "When Accuracy Misleads: Cost Matrix Metrics and Thresholds links to When Should an AI Agent Enumerate, and When Delegate?"
+    },
+    {
+      "from": "agent-payments-x402",
+      "to": "agent-ready-website",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "x402 on Cloudflare Workers: AI Agents Pay Per Call in USDC links to Agent-Ready Websites: The 5-Layer Implementation Stack"
+    },
+    {
+      "from": "agent-payments-x402",
+      "to": "webmcp-beyond-checkout",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "x402 on Cloudflare Workers: AI Agents Pay Per Call in USDC links to Does WebMCP Pay Off for Content Sites?"
+    },
+    {
+      "from": "agent-payments-x402",
+      "to": "pay-per-call-margins-treasury",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "x402 on Cloudflare Workers: AI Agents Pay Per Call in USDC links to Pay-Per-Call APIs: $0.005 Calls, Measured Treasury Costs"
+    },
+    {
+      "from": "agent-payments-x402",
+      "to": "verify-x402-endpoints",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "x402 on Cloudflare Workers: AI Agents Pay Per Call in USDC links to Verifying x402 Endpoints: The 5-Check Buyer Recipe"
+    },
+    {
+      "from": "agent-ready-website",
+      "to": "ai-sdlc-governance-stack",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "Agent-Ready Websites: The 5-Layer Implementation Stack links to AI SDLC Governance: Three Layers for Engineering Leaders"
+    },
+    {
+      "from": "agent-ready-website",
+      "to": "context-engineering-multi-agent-reliability",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "Agent-Ready Websites: The 5-Layer Implementation Stack links to How Does Context Engineering Drive Multi-Agent Reliability?"
+    },
+    {
+      "from": "agent-ready-website",
+      "to": "orchestrating-ai-agents-subagent-architecture",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "Agent-Ready Websites: The 5-Layer Implementation Stack links to Orchestrating AI Agents: A Subagent Architecture"
+    },
+    {
+      "from": "agent-ready-website",
+      "to": "agent-payments-x402",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "Agent-Ready Websites: The 5-Layer Implementation Stack links to x402 on Cloudflare Workers: AI Agents Pay Per Call in USDC"
+    },
+    {
+      "from": "agent-ready-website",
+      "to": "webmcp-beyond-checkout",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "Agent-Ready Websites: The 5-Layer Implementation Stack links to Does WebMCP Pay Off for Content Sites?"
+    },
+    {
+      "from": "ai-adoption-engineering",
+      "to": "ai-agents-legacy-roi",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI Adoption in Engineering: Breaking the 50% Plateau links to AI Agents in Legacy Systems: ROI Without Modernization"
+    },
+    {
+      "from": "ai-adoption-engineering",
+      "to": "decision-frameworks-ai-delivery",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI Adoption in Engineering: Breaking the 50% Plateau links to AI Delivery Decision Frameworks: Type 1, Type 2, DACI"
+    },
+    {
+      "from": "ai-adoption-engineering",
+      "to": "ai-observability-gaps",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI Adoption in Engineering: Breaking the 50% Plateau links to Why Your AI Agent Failed in Production"
+    },
+    {
+      "from": "ai-adoption-engineering",
+      "to": "rag-legacy-systems",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI Adoption in Engineering: Breaking the 50% Plateau links to RAG for Legacy Systems: 7,432 Pages to 3s Answers"
+    },
+    {
+      "from": "ai-adoption-engineering",
+      "to": "sre-ai-agents-production",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI Adoption in Engineering: Breaking the 50% Plateau links to SRE for AI Agents: Error Budgets, Trust, and 90 Trials"
+    },
+    {
+      "from": "ai-agent-enumerate-or-delegate",
+      "to": "ai-approval-gates",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "When Should an AI Agent Enumerate, and When Delegate? links to AI Approval Gates: Engineering Oversight at Machine Speed"
+    },
+    {
+      "from": "ai-agent-enumerate-or-delegate",
+      "to": "prompt-repetition-agent-evaluation",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "When Should an AI Agent Enumerate, and When Delegate? links to What a Null Result Taught Us About AI Agent Evaluation"
+    },
+    {
+      "from": "ai-agent-enumerate-or-delegate",
+      "to": "accuracy-cost-matrix-threshold",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "When Should an AI Agent Enumerate, and When Delegate? links to When Accuracy Misleads: Cost Matrix Metrics and Thresholds"
+    },
+    {
+      "from": "ai-agents-legacy-roi",
+      "to": "orchestrating-ai-agents-subagent-architecture",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI Agents in Legacy Systems: ROI Without Modernization links to Orchestrating AI Agents: A Subagent Architecture"
+    },
+    {
+      "from": "ai-agents-legacy-roi",
+      "to": "rag-legacy-systems",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI Agents in Legacy Systems: ROI Without Modernization links to RAG for Legacy Systems: 7,432 Pages to 3s Answers"
+    },
+    {
+      "from": "ai-agents-legacy-roi",
+      "to": "ai-observability-gaps",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI Agents in Legacy Systems: ROI Without Modernization links to Why Your AI Agent Failed in Production"
+    },
+    {
+      "from": "ai-agents-legacy-roi",
+      "to": "ai-adoption-engineering",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI Agents in Legacy Systems: ROI Without Modernization links to AI Adoption in Engineering: Breaking the 50% Plateau"
+    },
+    {
+      "from": "ai-agents-legacy-roi",
+      "to": "ai-supply-chain-attack-vectors",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI Agents in Legacy Systems: ROI Without Modernization links to AI Supply Chain Attacks: New Vectors in Dependencies"
+    },
+    {
+      "from": "ai-approval-gates",
+      "to": "ai-assisted-development",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI Approval Gates: Engineering Oversight at Machine Speed links to AI-Assisted Development: The Accountability Layer"
+    },
+    {
+      "from": "ai-approval-gates",
+      "to": "ai-agent-enumerate-or-delegate",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI Approval Gates: Engineering Oversight at Machine Speed links to When Should an AI Agent Enumerate, and When Delegate?"
+    },
+    {
+      "from": "ai-approval-gates",
+      "to": "ai-augmented-cicd",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI Approval Gates: Engineering Oversight at Machine Speed links to AI-Augmented CI/CD: Shift Left Security With Bounded Risk"
+    },
+    {
+      "from": "ai-approval-gates",
+      "to": "zero-downtime-dns-migration",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI Approval Gates: Engineering Oversight at Machine Speed links to AI-Governed DNS Migration Without Maintenance Windows"
+    },
+    {
+      "from": "ai-assisted-development",
+      "to": "orchestrating-ai-agents-subagent-architecture",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI-Assisted Development: The Accountability Layer links to Orchestrating AI Agents: A Subagent Architecture"
+    },
+    {
+      "from": "ai-assisted-development",
+      "to": "ai-sdlc-governance-stack",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI-Assisted Development: The Accountability Layer links to AI SDLC Governance: Three Layers for Engineering Leaders"
+    },
+    {
+      "from": "ai-augmented-cicd",
+      "to": "ai-sdlc-governance-stack",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI-Augmented CI/CD: Shift Left Security With Bounded Risk links to AI SDLC Governance: Three Layers for Engineering Leaders"
+    },
+    {
+      "from": "ai-augmented-cicd",
+      "to": "ai-approval-gates",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI-Augmented CI/CD: Shift Left Security With Bounded Risk links to AI Approval Gates: Engineering Oversight at Machine Speed"
+    },
+    {
+      "from": "ai-augmented-cicd",
+      "to": "ai-observability-gaps",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI-Augmented CI/CD: Shift Left Security With Bounded Risk links to Why Your AI Agent Failed in Production"
+    },
+    {
+      "from": "ai-augmented-cicd",
+      "to": "decision-frameworks-ai-delivery",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI-Augmented CI/CD: Shift Left Security With Bounded Risk links to AI Delivery Decision Frameworks: Type 1, Type 2, DACI"
+    },
+    {
+      "from": "ai-observability-gaps",
+      "to": "ai-agents-legacy-roi",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "Why Your AI Agent Failed in Production links to AI Agents in Legacy Systems: ROI Without Modernization"
+    },
+    {
+      "from": "ai-observability-gaps",
+      "to": "sre-ai-agents-production",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "Why Your AI Agent Failed in Production links to SRE for AI Agents: Error Budgets, Trust, and 90 Trials"
+    },
+    {
+      "from": "ai-sdlc-governance-stack",
+      "to": "ai-assisted-development",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI SDLC Governance: Three Layers for Engineering Leaders links to AI-Assisted Development: The Accountability Layer"
+    },
+    {
+      "from": "ai-sdlc-governance-stack",
+      "to": "orchestrating-ai-agents-subagent-architecture",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI SDLC Governance: Three Layers for Engineering Leaders links to Orchestrating AI Agents: A Subagent Architecture"
+    },
+    {
+      "from": "ai-sdlc-governance-stack",
+      "to": "ai-approval-gates",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI SDLC Governance: Three Layers for Engineering Leaders links to AI Approval Gates: Engineering Oversight at Machine Speed"
+    },
+    {
+      "from": "ai-sdlc-governance-stack",
+      "to": "ai-observability-gaps",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI SDLC Governance: Three Layers for Engineering Leaders links to Why Your AI Agent Failed in Production"
+    },
+    {
+      "from": "ai-sdlc-governance-stack",
+      "to": "ai-adoption-engineering",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI SDLC Governance: Three Layers for Engineering Leaders links to AI Adoption in Engineering: Breaking the 50% Plateau"
+    },
+    {
+      "from": "ai-sdlc-governance-stack",
+      "to": "ai-augmented-cicd",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI SDLC Governance: Three Layers for Engineering Leaders links to AI-Augmented CI/CD: Shift Left Security With Bounded Risk"
+    },
+    {
+      "from": "ai-sdlc-governance-stack",
+      "to": "ai-supply-chain-attack-vectors",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI SDLC Governance: Three Layers for Engineering Leaders links to AI Supply Chain Attacks: New Vectors in Dependencies"
+    },
+    {
+      "from": "ai-supply-chain-attack-vectors",
+      "to": "orchestrating-ai-agents-subagent-architecture",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI Supply Chain Attacks: New Vectors in Dependencies links to Orchestrating AI Agents: A Subagent Architecture"
+    },
+    {
+      "from": "ai-supply-chain-attack-vectors",
+      "to": "ai-augmented-cicd",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI Supply Chain Attacks: New Vectors in Dependencies links to AI-Augmented CI/CD: Shift Left Security With Bounded Risk"
+    },
+    {
+      "from": "context-engineering-multi-agent-reliability",
+      "to": "mcp-tool-docs",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "How Does Context Engineering Drive Multi-Agent Reliability? links to How Much Tool Documentation Do AI Agents Actually Need?"
+    },
+    {
+      "from": "context-engineering-multi-agent-reliability",
+      "to": "orchestrating-ai-agents-subagent-architecture",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "How Does Context Engineering Drive Multi-Agent Reliability? links to Orchestrating AI Agents: A Subagent Architecture"
+    },
+    {
+      "from": "decision-frameworks-ai-delivery",
+      "to": "ai-assisted-development",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI Delivery Decision Frameworks: Type 1, Type 2, DACI links to AI-Assisted Development: The Accountability Layer"
+    },
+    {
+      "from": "decision-frameworks-ai-delivery",
+      "to": "prompt-repetition-agent-evaluation",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI Delivery Decision Frameworks: Type 1, Type 2, DACI links to What a Null Result Taught Us About AI Agent Evaluation"
+    },
+    {
+      "from": "decision-frameworks-ai-delivery",
+      "to": "orchestrating-ai-agents-subagent-architecture",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI Delivery Decision Frameworks: Type 1, Type 2, DACI links to Orchestrating AI Agents: A Subagent Architecture"
+    },
+    {
+      "from": "mcp-tool-docs",
+      "to": "open-weights-structured-output-cost",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "How Much Tool Documentation Do AI Agents Actually Need? links to Open-Weight LLMs Reach the Structured Output Quality Ceiling"
+    },
+    {
+      "from": "mcp-tool-docs",
+      "to": "agent-ready-website",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "How Much Tool Documentation Do AI Agents Actually Need? links to Agent-Ready Websites: The 5-Layer Implementation Stack"
+    },
+    {
+      "from": "mcp-tool-docs",
+      "to": "webmcp-beyond-checkout",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "How Much Tool Documentation Do AI Agents Actually Need? links to Does WebMCP Pay Off for Content Sites?"
+    },
+    {
+      "from": "open-weights-structured-output-cost",
+      "to": "prompt-repetition-agent-evaluation",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "Open-Weight LLMs Reach the Structured Output Quality Ceiling links to What a Null Result Taught Us About AI Agent Evaluation"
+    },
+    {
+      "from": "orchestrating-ai-agents-subagent-architecture",
+      "to": "context-engineering-multi-agent-reliability",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "Orchestrating AI Agents: A Subagent Architecture links to How Does Context Engineering Drive Multi-Agent Reliability?"
+    },
+    {
+      "from": "orchestrating-ai-agents-subagent-architecture",
+      "to": "mcp-tool-docs",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "Orchestrating AI Agents: A Subagent Architecture links to How Much Tool Documentation Do AI Agents Actually Need?"
+    },
+    {
+      "from": "orchestrating-ai-agents-subagent-architecture",
+      "to": "ai-sdlc-governance-stack",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "Orchestrating AI Agents: A Subagent Architecture links to AI SDLC Governance: Three Layers for Engineering Leaders"
+    },
+    {
+      "from": "orchestrating-ai-agents-subagent-architecture",
+      "to": "ai-agents-legacy-roi",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "Orchestrating AI Agents: A Subagent Architecture links to AI Agents in Legacy Systems: ROI Without Modernization"
+    },
+    {
+      "from": "orchestrating-ai-agents-subagent-architecture",
+      "to": "ai-assisted-development",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "Orchestrating AI Agents: A Subagent Architecture links to AI-Assisted Development: The Accountability Layer"
+    },
+    {
+      "from": "pay-per-call-margins-treasury",
+      "to": "agent-payments-x402",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "Pay-Per-Call APIs: $0.005 Calls, Measured Treasury Costs links to x402 on Cloudflare Workers: AI Agents Pay Per Call in USDC"
+    },
+    {
+      "from": "pay-per-call-margins-treasury",
+      "to": "verify-x402-endpoints",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "Pay-Per-Call APIs: $0.005 Calls, Measured Treasury Costs links to Verifying x402 Endpoints: The 5-Check Buyer Recipe"
+    },
+    {
+      "from": "prompt-repetition-agent-evaluation",
+      "to": "orchestrating-ai-agents-subagent-architecture",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "What a Null Result Taught Us About AI Agent Evaluation links to Orchestrating AI Agents: A Subagent Architecture"
+    },
+    {
+      "from": "prompt-repetition-agent-evaluation",
+      "to": "ai-observability-gaps",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "What a Null Result Taught Us About AI Agent Evaluation links to Why Your AI Agent Failed in Production"
+    },
+    {
+      "from": "prompt-repetition-agent-evaluation",
+      "to": "open-weights-structured-output-cost",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "What a Null Result Taught Us About AI Agent Evaluation links to Open-Weight LLMs Reach the Structured Output Quality Ceiling"
+    },
+    {
+      "from": "rag-legacy-systems",
+      "to": "ai-agents-legacy-roi",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "RAG for Legacy Systems: 7,432 Pages to 3s Answers links to AI Agents in Legacy Systems: ROI Without Modernization"
+    },
+    {
+      "from": "sre-ai-agents-production",
+      "to": "ai-augmented-cicd",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "SRE for AI Agents: Error Budgets, Trust, and 90 Trials links to AI-Augmented CI/CD: Shift Left Security With Bounded Risk"
+    },
+    {
+      "from": "sre-ai-agents-production",
+      "to": "zero-downtime-dns-migration",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "SRE for AI Agents: Error Budgets, Trust, and 90 Trials links to AI-Governed DNS Migration Without Maintenance Windows"
+    },
+    {
+      "from": "sre-ai-agents-production",
+      "to": "ai-observability-gaps",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "SRE for AI Agents: Error Budgets, Trust, and 90 Trials links to Why Your AI Agent Failed in Production"
+    },
+    {
+      "from": "verify-x402-endpoints",
+      "to": "agent-payments-x402",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "Verifying x402 Endpoints: The 5-Check Buyer Recipe links to x402 on Cloudflare Workers: AI Agents Pay Per Call in USDC"
+    },
+    {
+      "from": "verify-x402-endpoints",
+      "to": "pay-per-call-margins-treasury",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "Verifying x402 Endpoints: The 5-Check Buyer Recipe links to Pay-Per-Call APIs: $0.005 Calls, Measured Treasury Costs"
+    },
+    {
+      "from": "webmcp-beyond-checkout",
+      "to": "agent-ready-website",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "Does WebMCP Pay Off for Content Sites? links to Agent-Ready Websites: The 5-Layer Implementation Stack"
+    },
+    {
+      "from": "webmcp-beyond-checkout",
+      "to": "prompt-repetition-agent-evaluation",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "Does WebMCP Pay Off for Content Sites? links to What a Null Result Taught Us About AI Agent Evaluation"
+    },
+    {
+      "from": "webmcp-beyond-checkout",
+      "to": "mcp-tool-docs",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "Does WebMCP Pay Off for Content Sites? links to How Much Tool Documentation Do AI Agents Actually Need?"
+    },
+    {
+      "from": "zero-downtime-dns-migration",
+      "to": "ai-assisted-development",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI-Governed DNS Migration Without Maintenance Windows links to AI-Assisted Development: The Accountability Layer"
+    },
+    {
+      "from": "zero-downtime-dns-migration",
+      "to": "decision-frameworks-ai-delivery",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI-Governed DNS Migration Without Maintenance Windows links to AI Delivery Decision Frameworks: Type 1, Type 2, DACI"
+    },
+    {
+      "from": "zero-downtime-dns-migration",
+      "to": "ai-observability-gaps",
+      "type": "citation",
+      "weight": 0.7,
+      "evidence": "AI-Governed DNS Migration Without Maintenance Windows links to Why Your AI Agent Failed in Production"
+    },
+    {
+      "from": "ai-approval-gates",
+      "to": "ai-observability-gaps",
+      "type": "thematic_chain",
+      "weight": 1,
+      "evidence": "approval-gate health metrics require decision provenance instrumentation"
+    },
+    {
+      "from": "ai-observability-gaps",
+      "to": "sre-ai-agents-production",
+      "type": "thematic_chain",
+      "weight": 1,
+      "evidence": "observability gaps surface accountability gaps that SRE processes must own"
+    },
+    {
+      "from": "sre-ai-agents-production",
+      "to": "zero-downtime-dns-migration",
+      "type": "thematic_chain",
+      "weight": 1,
+      "evidence": "SRE accountability framework applied to a live approval-gate migration"
+    },
+    {
+      "from": "decision-frameworks-ai-delivery",
+      "to": "prompt-repetition-agent-evaluation",
+      "type": "thematic_chain",
+      "weight": 1,
+      "evidence": "pre-registered blind evaluation is the evidence layer for delivery decisions"
+    },
+    {
+      "from": "prompt-repetition-agent-evaluation",
+      "to": "open-weights-structured-output-cost",
+      "type": "thematic_chain",
+      "weight": 1,
+      "evidence": "structured-output cost study applies the same blind evaluation methodology"
+    },
+    {
+      "from": "open-weights-structured-output-cost",
+      "to": "ai-agent-enumerate-or-delegate",
+      "type": "thematic_chain",
+      "weight": 1,
+      "evidence": "sealed judge exhibit extends the pre-registered methodology to decision routing"
+    },
+    {
+      "from": "open-weights-structured-output-cost",
+      "to": "accuracy-cost-matrix-threshold",
+      "type": "thematic_chain",
+      "weight": 1,
+      "evidence": "cost-aware model selection carries the cost analysis into metric choice"
+    },
+    {
+      "from": "accuracy-cost-matrix-threshold",
+      "to": "ai-agent-enumerate-or-delegate",
+      "type": "thematic_chain",
+      "weight": 1,
+      "evidence": "cost-matrix thresholds decide which graded signal becomes a verdict"
+    },
+    {
+      "from": "ai-supply-chain-attack-vectors",
+      "to": "ai-augmented-cicd",
+      "type": "thematic_chain",
+      "weight": 1,
+      "evidence": "supply chain threat vectors map directly to CI/CD pipeline attack surfaces"
+    },
+    {
+      "from": "ai-augmented-cicd",
+      "to": "ai-sdlc-governance-stack",
+      "type": "thematic_chain",
+      "weight": 1,
+      "evidence": "CI/CD controls are one layer of the three-layer governance stack"
+    },
+    {
+      "from": "agent-ready-website",
+      "to": "mcp-tool-docs",
+      "type": "thematic_chain",
+      "weight": 1,
+      "evidence": "the WebMCP tool layer motivates measuring how lean tool definitions pay off"
+    },
+    {
+      "from": "agent-ready-website",
+      "to": "webmcp-beyond-checkout",
+      "type": "thematic_chain",
+      "weight": 1,
+      "evidence": "the 5-layer stack's WebMCP layer is measured end-to-end on this site's read-only tools"
+    },
+    {
+      "from": "mcp-tool-docs",
+      "to": "webmcp-beyond-checkout",
+      "type": "thematic_chain",
+      "weight": 1,
+      "evidence": "lean tool definitions extend to lean in-browser tool surfaces and responses"
+    },
+    {
+      "from": "ai-approval-gates",
+      "to": "decision-frameworks-ai-delivery",
+      "type": "concept_shared",
+      "weight": 0.8,
+      "evidence": "reversibility-tiered action control and Type 1/Type 2 decision lens are the same reversibility concept in different domains"
+    },
+    {
+      "from": "ai-approval-gates",
+      "to": "ai-assisted-development",
+      "type": "concept_shared",
+      "weight": 0.8,
+      "evidence": "reviewer atrophy in approval gates and comprehension-loss in AI-assisted development are the same human-judgment-degradation finding"
+    },
+    {
+      "from": "ai-approval-gates",
+      "to": "ai-agent-enumerate-or-delegate",
+      "type": "concept_shared",
+      "weight": 0.8,
+      "evidence": "routing decides how a decision is made and gates decide whether it executes; reversibility is the shared axis"
+    }
+  ],
+  "clusters": [
+    {
+      "id": "governance-oversight",
+      "name": "AI Governance and Human Oversight",
+      "hub": "ai-sdlc-governance-stack",
+      "posts": [
+        "ai-sdlc-governance-stack",
+        "ai-adoption-engineering",
+        "ai-approval-gates",
+        "ai-observability-gaps",
+        "decision-frameworks-ai-delivery",
+        "sre-ai-agents-production",
+        "zero-downtime-dns-migration"
+      ]
+    },
+    {
+      "id": "multi-agent-architecture",
+      "name": "Multi-Agent Architecture and Context",
+      "hub": "orchestrating-ai-agents-subagent-architecture",
+      "posts": [
+        "orchestrating-ai-agents-subagent-architecture",
+        "ai-agent-enumerate-or-delegate",
+        "ai-agents-legacy-roi",
+        "ai-augmented-cicd",
+        "ai-sdlc-governance-stack",
+        "context-engineering-multi-agent-reliability",
+        "mcp-tool-docs",
+        "prompt-repetition-agent-evaluation"
+      ]
+    },
+    {
+      "id": "security-supply-chain",
+      "name": "Security and Supply Chain Trust",
+      "hub": "ai-supply-chain-attack-vectors",
+      "posts": [
+        "ai-supply-chain-attack-vectors",
+        "ai-approval-gates",
+        "ai-augmented-cicd",
+        "ai-sdlc-governance-stack"
+      ]
+    },
+    {
+      "id": "cost-roi",
+      "name": "Cost, ROI, and Economic Decisioning",
+      "hub": "ai-agents-legacy-roi",
+      "posts": [
+        "ai-agents-legacy-roi",
+        "decision-frameworks-ai-delivery",
+        "open-weights-structured-output-cost",
+        "rag-legacy-systems"
+      ]
+    },
+    {
+      "id": "evaluation-reliability",
+      "name": "Evaluation and Production Reliability",
+      "hub": "prompt-repetition-agent-evaluation",
+      "posts": [
+        "prompt-repetition-agent-evaluation",
+        "accuracy-cost-matrix-threshold",
+        "ai-agent-enumerate-or-delegate",
+        "ai-observability-gaps",
+        "decision-frameworks-ai-delivery",
+        "open-weights-structured-output-cost",
+        "sre-ai-agents-production"
+      ]
+    },
+    {
+      "id": "devops-implementation",
+      "name": "DevOps and Implementation Practice",
+      "hub": "ai-assisted-development",
+      "posts": [
+        "ai-assisted-development",
+        "ai-augmented-cicd",
+        "ai-sdlc-governance-stack",
+        "context-engineering-multi-agent-reliability",
+        "zero-downtime-dns-migration"
+      ]
+    },
+    {
+      "id": "legacy-modernization",
+      "name": "Legacy System Modernization",
+      "hub": "ai-agents-legacy-roi",
+      "posts": [
+        "ai-agents-legacy-roi",
+        "rag-legacy-systems"
+      ]
+    },
+    {
+      "id": "subagent-orchestration-tooling",
+      "name": "Subagent Orchestration Tooling",
+      "hub": "orchestrating-ai-agents-subagent-architecture",
+      "posts": [
+        "orchestrating-ai-agents-subagent-architecture",
+        "ai-assisted-development",
+        "ai-sdlc-governance-stack",
+        "context-engineering-multi-agent-reliability"
+      ]
+    },
+    {
+      "id": "agent-infrastructure",
+      "name": "Agent Infrastructure",
+      "hub": "agent-ready-website",
+      "posts": [
+        "agent-ready-website",
+        "agent-payments-x402",
+        "pay-per-call-margins-treasury",
+        "verify-x402-endpoints",
+        "webmcp-beyond-checkout"
+      ]
+    }
+  ],
+  "readingChains": [
+    {
+      "id": "ai-governance-primer",
+      "goal": "Understand AI governance from first principles",
+      "sequence": [
+        "ai-adoption-engineering",
+        "ai-approval-gates",
+        "ai-observability-gaps",
+        "sre-ai-agents-production",
+        "ai-sdlc-governance-stack",
+        "decision-frameworks-ai-delivery",
+        "zero-downtime-dns-migration"
+      ]
+    },
+    {
+      "id": "evaluation-methodology-chain",
+      "goal": "Learn evidence-based agent evaluation methodology",
+      "sequence": [
+        "decision-frameworks-ai-delivery",
+        "prompt-repetition-agent-evaluation",
+        "open-weights-structured-output-cost",
+        "accuracy-cost-matrix-threshold",
+        "ai-agent-enumerate-or-delegate"
+      ]
+    },
+    {
+      "id": "security-chain",
+      "goal": "Understand the AI security threat-to-control pipeline",
+      "sequence": [
+        "ai-supply-chain-attack-vectors",
+        "ai-augmented-cicd",
+        "ai-sdlc-governance-stack"
+      ]
+    },
+    {
+      "id": "agent-tool-surface-chain",
+      "goal": "Build and measure a lean tool surface for AI agents",
+      "sequence": [
+        "agent-ready-website",
+        "mcp-tool-docs",
+        "webmcp-beyond-checkout"
+      ]
+    }
+  ],
+  "queryHints": {
+    "byCluster": "filter nodes where node.category == cluster.id",
+    "byEvidence": "filter nodes where node.tags includes case-studies",
+    "multiHop": "follow edges from a hub post to reach related concepts",
+    "skill": "/.well-known/agent-skills/knowledge-graph/SKILL.md",
+    "clusterSlice": "/knowledge-graph/{cluster.id}.json"
+  }
+}

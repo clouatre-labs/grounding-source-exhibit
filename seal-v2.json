@@ -1,0 +1,257 @@
+{
+  "schema_version": "2.0.0",
+  "experiment": "grounding-source-exhibit-v2",
+  "title": "Grounding-Source Comparison Exhibit v2: blinded re-registration after the v1 coverage-ceiling abort",
+  "sealed_before_run": true,
+  "status": "sealed-pending-pilot",
+  "sealed_date": "2026-11-21",
+  "issue": "clouatre-labs/clouatre.ca#2388",
+  "supersedes": {
+    "experiment": "grounding-source-exhibit (seal.json, v1, sealed 2026-11-20)",
+    "reason": "v1 run aborted 2026-11-21 for a coverage ceiling (llms.txt lists reading-chain sequences verbatim; okf-bundle lacks readingChains entirely); per the v1 seal.json pilot_gate rule the only sanctioned responses were proceed or STOP-and-re-register, and this is the latter",
+    "evidence": "results/raw-v1-aborted/RUN-ABORTED.md"
+  },
+  "model": {
+    "id": "@cf/google/gemma-4-26b-a4b-it",
+    "temperature": 0,
+    "max_completion_tokens": 4096,
+    "log_finish_reason": true
+  },
+  "arms": {
+    "llms-txt": {
+      "payload": "/llms.txt alone",
+      "source": "frozen snapshot: freeze/llms.txt (sha256 pinned in frozen_payloads)"
+    },
+    "kg-json": {
+      "payload": "the FULL frozen snapshot text from freeze/knowledge-graph.json (no cluster slice)",
+      "source": "frozen snapshot: freeze/knowledge-graph.json (sha256 pinned below); live origin https://clouatre.ca/knowledge-graph.json at freeze time only"
+    },
+    "okf-bundle": {
+      "payload": "the FULL frozen OKF bundle text: freeze/okf/index.md plus every cluster index and concept page under freeze/okf/clusters/ (33 markdown files); sha256 pinned per file in frozen_payloads, no live fetch",
+      "source": "frozen snapshot: the freeze/okf/ tree (sha256 pinned per file in frozen_payloads); live origin https://clouatre.ca/okf/ at freeze time only"
+    }
+  },
+  "dataset": {
+    "name": "discriminative question families derived from the frozen knowledge-graph.json snapshot",
+    "corpus": "finite-corpus evaluation of clouatre.ca (27 nodes: 24 posts + 3 pages, 91 citation edges)",
+    "n_per_arm": 74,
+    "variance_frame": "item-sampling variance, not decoding variance (temperature 0); the only randomness is the deterministic question-sampling seed",
+    "families": {
+      "F1": "citation edges: for a post with >=1 outbound citation edge, list the linked post slugs (edge list in snapshot document order)",
+      "F2": "edgeStats: inbound and outbound link counts for a post",
+      "F3": "node.concepts: the concept slugs associated with a post (3-4 slugs)",
+      "F4": "cluster membership: which cluster(s) a post belongs to (ground truth: the set of cluster identifiers whose clusters[].posts array contains the slug, in snapshot cluster document order; all 24 posts are eligible)"
+    },
+    "composite_ceiling_note": "Under the 74-item composite with correct abstention = 1, llms-txt has 58 abstention items (F1+F2+F3) and 16 extraction items (F4); kg-json has 74 extraction items (F1-F4). Both arms face the same 74/74 theoretical ceiling. The composite must NOT be read as pure extraction performance. Conditional extraction accuracy denominators: llms-txt = F4 only (16); okf-bundle = F3+F4 (34); kg-json = F1-F4 (74). Conditional abstention accuracy denominators: llms-txt = F1+F2+F3 (58); okf-bundle = F1+F2 (40); kg-json = none (0)."
+  },
+  "ground_truth": {
+    "snapshot": "freeze/knowledge-graph.json",
+    "snapshot_sha256": "73dfafca11e15a45b62664d4740f7d16cd394f881b264fb2470355bebb4c91d9",
+    "blinding": "ground-truth.json is committed BLINDED: only the sha256 of the full questions file appears in this seal; plaintext ground truth lands with the raw outputs post-run",
+    "generator": "scripts/generate-questions-v2.py"
+  },
+  "question_sampling": {
+    "prng": "deterministic, random.Random(seed), stdlib only",
+    "families_interleaved": true,
+    "sampling": "all items sampled without replacement per family",
+    "pilot": {
+      "seed": 20261121,
+      "n_items": 20,
+      "composition": "4 families x 5 items (5/5/5/5), family-interleaved",
+      "held_out_from_full_run": true,
+      "held_out_semantics": "the pilot is a separate held-out question set (its own seed and file, scored separately); it is never merged into the full-run file or the full-run scoring. Note: with a 24-post finite corpus, slug-level disjointness between pilot and full-run sets is impossible; the full run uses a fresh seed so the sampled question sets differ"
+    },
+    "full_run": {
+      "seed": 20261122,
+      "n_items": 74,
+      "composition": "F1: 20 items from posts with >=1 outbound edge; F2: 20 items from edgeStats; F3: 18 items from node.concepts arrays (3-5 concept slugs; only 18 posts in the frozen snapshot have >=3 concepts, so 20 without replacement is impossible); F4: 16 items sampled from all 24 posts without replacement (snapshot document order as tiebreak); FRESH seed"
+    }
+  },
+  "primary_item_score": {
+    "rule": "answerable item + correct answer = 1; answerable item + false abstention (null) = 0; unanswerable item + correct abstention (null) = 1; any non-null attempt on an unanswerable item = 0",
+    "answerability_map": "F1 and F2 are answerable only by kg-json; F3 is answerable by kg-json and okf-bundle and NOT by llms-txt; F4 is answerable by ALL THREE arms (extraction, not abstention; kg-json has no abstention-credit items). Applied to all 74 items per arm",
+    "cluster_label_rule": "F4 ground truth is stored as cluster ids from snapshot clusters[]; the scorer accepts EITHER the cluster id or the cluster name, normalized (lowercased, whitespace-collapsed), using the canonical id->name mapping from the frozen snapshot (cluster id and name per clusters[] entry). Label usage per payload: freeze/llms.txt Concept Index lists clusters by id only ('- governance-oversight: ai-sdlc-governance-stack, ...'); freeze/okf/ uses both the human-readable name and the id (okf/index.md: '* [Agent Infrastructure](/clusters/agent-infrastructure/index.md)'; cluster index headings '# Agent Infrastructure' and 'Concepts in the agent-infrastructure cluster.'); freeze/knowledge-graph.json carries both the id and name fields per clusters[] entry. Hence the F4 prompt says 'cluster id or name'.",
+    "secondary_diagnostics": {
+      "conditional_extraction_accuracy": "accuracy on answerable items only",
+      "conditional_abstention_accuracy": "accuracy on unanswerable items only"
+    }
+  },
+  "metrics": {
+    "F1": {
+      "primary_exact": "set equality on deduplicated, normalized (lowercased, .json suffix stripped) slugs",
+      "partial_credit": "F1 (dice) overlap 2|A and B| / (|A| + |B|), order-free"
+    },
+    "F2": {
+      "primary_exact": "both integers match",
+      "partial_credit": "fraction of the two integers correct"
+    },
+    "F3": {
+      "primary_exact": "set equality on deduplicated normalized concept slugs",
+      "partial_credit": "dice overlap, order-free"
+    },
+    "F4": {
+      "primary_exact": "set equality on normalized cluster labels (EITHER the cluster id or the cluster name accepted, lowercased and whitespace-collapsed, via the canonical id->name mapping from the frozen snapshot)",
+      "partial_credit": "dice overlap, order-free"
+    },
+    "response_envelope": "single top-level key answer for all families: {\"answer\": [...]} | {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}} | {\"answer\": null}",
+    "abstention_instruction": "present in every prompt (respond with {\"answer\": null} when the payload does not determine the answer)"
+  },
+  "statistics": {
+    "primary_endpoint": "overall exact match per arm; pairwise McNemar exact test (binomial two-sided on discordant pairs, paired items) with Holm-Bonferroni adjustment across the 3 arm pairs, alpha 0.05",
+    "secondary": "paired permutation test on partial credit, 10000 permutations, seed 20261123",
+    "exploratory": "per-family breakdowns, labeled exploratory",
+    "mdd_note": "minimum detectable difference ~21-23pp aggregate at n=74, 80% power, alpha 0.05 (pairwise two-proportion); finite-corpus framing retained: item sampling draws from a fixed 24-post corpus, so the MDD bounds item-sampling variance only"
+  },
+  "pilot_gate": {
+    "blocking": true,
+    "n_pilot": 20,
+    "held_out": true,
+    "floor": "BLOCKING: best arm >= 3/20",
+    "saturation": "BLOCKING: okf-bundle <= 18/20 ONLY (llms-txt is EXEMPT from the saturation cap; kg-json is exempt; discrimination is read from the F3/F4 extraction spread)",
+    "f3_competitiveness": "BLOCKING: >= 2 arms with >= 2/5 on F3 items",
+    "llms_txt_f4_guard": "BLOCKING: llms-txt >= 2/5 on F4 items (extraction, not abstention)",
+    "on_failure": "STOP, redesign, re-register"
+  },
+  "power": {
+    "n": 74,
+    "mdd_aggregate_pp": "~21-23pp at 80% power, alpha 0.05"
+  },
+  "frozen_payloads": [
+    {
+      "path": "freeze/knowledge-graph.json",
+      "sha256": "73dfafca11e15a45b62664d4740f7d16cd394f881b264fb2470355bebb4c91d9"
+    },
+    {
+      "path": "freeze/llms.txt",
+      "sha256": "255945f8215b2f514da27d38e41edcd4170ae24ef9d93a0df3294536be56edee"
+    },
+    {
+      "path": "freeze/okf/clusters/agent-infrastructure/agent-payments-x402.md",
+      "sha256": "2f105efbd5d8df7abfc4b3ec2e76da642ba3d53188139b3afc96b2c15b36e93c"
+    },
+    {
+      "path": "freeze/okf/clusters/agent-infrastructure/agent-ready-website.md",
+      "sha256": "47a32dc62267a50a89e0e0501b7555a650803f8e96b77bbe2faaf265034e6b83"
+    },
+    {
+      "path": "freeze/okf/clusters/agent-infrastructure/index.md",
+      "sha256": "5ecbff63e5fb13a3a5092bd345d83e58a7e6e7e38218f1b2e4ace08a18fbaf6b"
+    },
+    {
+      "path": "freeze/okf/clusters/agent-infrastructure/pay-per-call-margins-treasury.md",
+      "sha256": "1836d32e53ec19fc79955d9a0af0f082d788f578cad2e8986e24d827faa10818"
+    },
+    {
+      "path": "freeze/okf/clusters/agent-infrastructure/verify-x402-endpoints.md",
+      "sha256": "db2e88fefa2ceaddc0ed81282e3fd815242bcc2ca20ea56313d7f72b3f737e74"
+    },
+    {
+      "path": "freeze/okf/clusters/agent-infrastructure/webmcp-beyond-checkout.md",
+      "sha256": "62a916c50043eea765e1d631bf7550a7becc04c50d7bf619b0f4381586960759"
+    },
+    {
+      "path": "freeze/okf/clusters/cost-roi/ai-agents-legacy-roi.md",
+      "sha256": "8ddae13429d2233d8558051e17b7e0a144d11b4dcdc4f5ac2fee673ea0664a9d"
+    },
+    {
+      "path": "freeze/okf/clusters/cost-roi/index.md",
+      "sha256": "1327814bc3606fe8e31b3dcf705c9bffa3bc8492c270405e4061d8000d99b2fc"
+    },
+    {
+      "path": "freeze/okf/clusters/cost-roi/open-weights-structured-output-cost.md",
+      "sha256": "869251e0680d31027fbe520b40e28d98dea28adfbef335706de264dabb7384f5"
+    },
+    {
+      "path": "freeze/okf/clusters/cost-roi/rag-legacy-systems.md",
+      "sha256": "7be82feec6c96f78e0acb9a83f12670c82972abf62c781e1c998fcd0d654b7ef"
+    },
+    {
+      "path": "freeze/okf/clusters/devops-implementation/ai-assisted-development.md",
+      "sha256": "afc428d02778cb190edf58bf02b631488f56d91851b64634b3d23442025155b7"
+    },
+    {
+      "path": "freeze/okf/clusters/devops-implementation/index.md",
+      "sha256": "cdc8a59e85256319233953dd50f465909786c2786d6d88c0d3d7ce504ca24668"
+    },
+    {
+      "path": "freeze/okf/clusters/evaluation-reliability/accuracy-cost-matrix-threshold.md",
+      "sha256": "190740577eb9351ea701fbea53da99e3079825afbbaa8681d7dc727ee0385da8"
+    },
+    {
+      "path": "freeze/okf/clusters/evaluation-reliability/index.md",
+      "sha256": "df7075d492efd0e5571f29a8c77c2ea13be1dd0d8c411b346c663730592e1c47"
+    },
+    {
+      "path": "freeze/okf/clusters/evaluation-reliability/prompt-repetition-agent-evaluation.md",
+      "sha256": "57ebb2e421bba2b026975fcb991954a53317315103a55d2ce1707deb676e6501"
+    },
+    {
+      "path": "freeze/okf/clusters/governance-oversight/ai-adoption-engineering.md",
+      "sha256": "48bd6e27d22dea55758f79040f55aa2b1e1b5e98bccc7f40b5cc593df191366a"
+    },
+    {
+      "path": "freeze/okf/clusters/governance-oversight/ai-approval-gates.md",
+      "sha256": "73f41a8ae653dc0c13973fe49871b657048bcb01737a770f00433b8c81df21e6"
+    },
+    {
+      "path": "freeze/okf/clusters/governance-oversight/ai-observability-gaps.md",
+      "sha256": "82fa4b61fa25e39a6a74d3d46ec407c4e2f3fd70246654cd9f8730ad1208d3f8"
+    },
+    {
+      "path": "freeze/okf/clusters/governance-oversight/ai-sdlc-governance-stack.md",
+      "sha256": "9f3f85a42b8fdc604cab067492b90d94dc411baf756f6f303d2cf67fa593bfd5"
+    },
+    {
+      "path": "freeze/okf/clusters/governance-oversight/decision-frameworks-ai-delivery.md",
+      "sha256": "32e394721ae002fa05ba522bdb49bdf4d6277c8ab4797436f1b66a9d2ac31e9b"
+    },
+    {
+      "path": "freeze/okf/clusters/governance-oversight/index.md",
+      "sha256": "3760b053abcf69e1710914cfade5a23ad6847ef47b18127ee65be8adf1aff87a"
+    },
+    {
+      "path": "freeze/okf/clusters/governance-oversight/sre-ai-agents-production.md",
+      "sha256": "c4b32265842f2f924aa8a2e16894fd89766e655a68bb55a070b22251ab69a56a"
+    },
+    {
+      "path": "freeze/okf/clusters/governance-oversight/zero-downtime-dns-migration.md",
+      "sha256": "368fb924fba9416f59f6dd845241e71c158978154ce098f4d6d2e5478ded7fae"
+    },
+    {
+      "path": "freeze/okf/clusters/multi-agent-architecture/ai-agent-enumerate-or-delegate.md",
+      "sha256": "03251076f3c53c445c065acb553c418e14ad2c7f803523b6b2692de6833af234"
+    },
+    {
+      "path": "freeze/okf/clusters/multi-agent-architecture/ai-augmented-cicd.md",
+      "sha256": "6eb5c9a08b9c3729d9c025165529b2fb8659a5233f29716ebfcd5d968c90139a"
+    },
+    {
+      "path": "freeze/okf/clusters/multi-agent-architecture/context-engineering-multi-agent-reliability.md",
+      "sha256": "6f335ea9eb0baa96deac2e1d11740aeea58198f8a31ac99ffcfec87f9f112e4e"
+    },
+    {
+      "path": "freeze/okf/clusters/multi-agent-architecture/index.md",
+      "sha256": "5ec8a8d150246785665291046fc6e17801e4ed7e5ff7e3d33e75062747d1acf0"
+    },
+    {
+      "path": "freeze/okf/clusters/multi-agent-architecture/mcp-tool-docs.md",
+      "sha256": "84da04016e3446ce421fb1a5c5ec1f316bc171e523fce4a506bf13e43326f72f"
+    },
+    {
+      "path": "freeze/okf/clusters/multi-agent-architecture/orchestrating-ai-agents-subagent-architecture.md",
+      "sha256": "22196913dbf5299f05fb64bf7a767bd2a3ef3ab0aad8b0902f2772e1b910796f"
+    },
+    {
+      "path": "freeze/okf/clusters/security-supply-chain/ai-supply-chain-attack-vectors.md",
+      "sha256": "98aa832e80ad4c83d970c2005044edcbaff64f1adf1bf4d816bd3d89befafbd3"
+    },
+    {
+      "path": "freeze/okf/clusters/security-supply-chain/index.md",
+      "sha256": "291a27728163bce5eabb6d7994339fa9dbdb77ada01fd44267ba46efc99659d8"
+    },
+    {
+      "path": "freeze/okf/index.md",
+      "sha256": "42ac3f41d424afe23846b5ce4df681cf33e24fab6e61e5b2f2c2e2e1fbdc2c85"
+    }
+  ]
+}
