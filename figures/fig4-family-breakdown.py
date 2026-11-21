@@ -56,19 +56,25 @@ def draw_panel(ax, title, groups, width=0.24):
         arms = groups[family]
         offsets = {arm: (j - (len(arms) - 1) / 2) * width
                    for j, arm in enumerate(arms)}
+        last_y = None
         for j, arm in enumerate(arms):
             k, n = groups[family][arm]
             ax.bar(gi + offsets[arm], k / n, width=width - 0.02,
                    color=COLORS[arm], zorder=2)
+            # Bump the label up only when it would collide with the
+            # neighbor's label at the same bar height.
+            bump = 14 if last_y is not None and k / n == last_y else 4
             ax.annotate(f"{k}/{n}", (gi + offsets[arm], k / n),
                         textcoords="offset points",
-                        xytext=(0, 3 + 9 * j), ha="center", fontsize=7)
+                        xytext=(0, bump), ha="center", fontsize=7.5,
+                        color="#000000")
+            last_y = k / n
     ax.set_xticks(range(len(labels)))
     ax.set_xticklabels([FAMILY_LABELS[f] for f in labels], fontsize=7.5)
     ax.set_ylim(0, 1.16)
     ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
     ax.tick_params(axis="y", labelsize=7.5)
-    ax.set_title(title, fontsize=9, pad=26)
+    ax.set_title(title, fontsize=9, pad=14)
 
 
 def main():
@@ -89,11 +95,11 @@ def main():
     draw_panel(axes[1], "Abstention (unanswerable arms only)", abstention)
     handles = [plt.Rectangle((0, 0), 1, 1, color=COLORS[a]) for a in ARMS]
     fig.legend(handles, ARMS, fontsize=8, loc="upper center", ncol=3,
-               frameon=False, bbox_to_anchor=(0.5, 0.92))
+               frameon=False, bbox_to_anchor=(0.5, 0.94))
     fig.suptitle("okf-bundle collapses on the only family all arms can "
                  "answer (F4: 6/16)\nand on abstention, where llms-txt "
                  "misses only F1", fontsize=10, y=1.02)
-    fig.tight_layout(rect=(0, 0, 1, 0.85))
+    fig.tight_layout(rect=(0, 0, 1, 0.87))
     out = pathlib.Path(__file__).resolve().parent / "fig4-family-breakdown.png"
     fig.savefig(out, bbox_inches="tight")
     print(f"wrote {out}")
