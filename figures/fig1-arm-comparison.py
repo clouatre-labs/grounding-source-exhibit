@@ -82,7 +82,8 @@ def main():
         ax.text((x0 + x1) / 2, y + 0.008, label, ha="center", fontsize=8)
 
     ax.set_title("llms.txt matched the knowledge graph; the okf bundle\n"
-                 "scored 0.49 on preregistered item score", fontsize=10)
+                 "scored 0.49 on preregistered item score",
+                 fontsize=10, pad=12)
     fig.tight_layout()
     out = pathlib.Path(__file__).resolve().parent / "fig1-arm-comparison.png"
     fig.savefig(out, bbox_inches="tight")

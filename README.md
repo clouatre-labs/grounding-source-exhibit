@@ -114,7 +114,7 @@ Figure scripts live in `figures/` and render from committed `results/raw-v2/` re
 
 ## Citing This Work
 
-See [CITATION.cff](CITATION.cff). Concept DOI: 10.5281/zenodo.24410380; current version DOI: 10.5281/zenodo.24424679 (v2.1.3; superseded snapshots: 24424627 v2.1.2, 24424532 v2.1.1, 24422535 v2.1.0); v1 seal: 10.5281/zenodo.24410381.
+See [CITATION.cff](CITATION.cff). Concept DOI: 10.5281/zenodo.24410380; current version: 10.5281/zenodo.24424679. The archived v1 seal is DOI 10.5281/zenodo.24410381; superseded v2.1.x snapshots are listed on the Zenodo record.
 
 ## Repository Setup
 
