@@ -24,4 +24,7 @@ keywords:
   - pre-registered-experiment
   - reproducibility
   - llm-evaluation
-# TODO: add identifiers (concept DOI and version DOI) after Zenodo deposit.
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.24410381
+    description: Concept DOI (all versions)
