@@ -46,7 +46,8 @@ The discriminative signal sits in F4 and F3: on items every arm can answer in pr
 - **v1 abort** (pre-scoring): llms.txt listed reading chains verbatim, giving it a coverage ceiling; run halted by orchestrator decision, archived in `results/raw-v1-aborted/`, v1 seal deposited as DOI 10.5281/zenodo.24410381.
 - **v2.0 pilot-gate STOP** (blocking gate, honored): F3 was mis-preregistered as post-to-concepts (answerable by no okf payload); both non-kg arms failed the F3 competitiveness gate by answering confidently wrong. Full run was NOT started.
 - **v2.1 re-registration** (pre-run): F3 redesigned as forward cluster membership with the answerability map verified per-item by `scripts/verify-f3-payloads.py`; 2 okf-full-listing clusters excluded from sampling so okf-bundle stays deterministically unanswerable; pilot passed all four blocking gates before the full run.
-- No post-hoc deviations from the v2.1 seal. Per-family breakdowns are labeled exploratory in the seal and reported as such here.
+- **2026-11-21 reporting repair** (post-run, #20): a jq type error in `run-bench.sh` stored `abstained: false` for all 73 true abstentions in `raw-v2` and `raw-v2-pilot-pass`. All 249 records were regenerated deterministically via `score-v2.py`; `item_score`, `exact_match`, and `partial_credit` re-verified unchanged, so no published number moved. The findings causal sentence on truncation attribution was rewritten; the Zenodo v2.1.3 snapshot predates this repair; v2.1.4 (DOI 10.5281/zenodo.24427220) supersedes it on the same concept record.
+- No post-hoc scoring deviations from the v2.1 seal; the only post-run change is the reporting repair above. Per-family breakdowns are labeled exploratory in the seal and reported as such here.
 
 ## Threats to Validity
 

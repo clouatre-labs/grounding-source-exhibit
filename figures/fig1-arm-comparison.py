@@ -17,13 +17,23 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 RAW = pathlib.Path(__file__).resolve().parents[1] / "results" / "raw-v2"
+ANALYSIS = pathlib.Path(__file__).resolve().parents[1] / "results" / "analysis-v2.json"
 ARMS = ["llms-txt", "kg-json", "okf-bundle"]
 COLORS = {"llms-txt": "#7f7f7f", "kg-json": "#0072B2", "okf-bundle": "#D55E00"}
-# Holm-adjusted McNemar exact p-values from results/analysis-v2.json.
+# Bracket positions; labels are loaded from results/analysis-v2.json.
 BRACKETS = [
-    ("llms-txt", "kg-json", "Holm p=0.070 (ns)", 1.11),
-    ("kg-json", "okf-bundle", "Holm p<1e-7", 1.20),
+    ("llms-txt", "kg-json", 1.11),
+    ("kg-json", "okf-bundle", 1.20),
 ]
+
+
+def holm_label(pair, data):
+    comp = data["comparisons"][pair]["mcnemar_exact"]
+    p = comp["p_value_holm"]
+    label = "p<1e-7" if p < 1e-7 else f"p={p:.3f}"
+    if not comp["significant_at_0.05"]:
+        label += " (ns)"
+    return f"Holm {label}"
 
 
 def load_counts():
@@ -75,14 +85,16 @@ def main():
     ax.set_ylim(0, 1.26)
     ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
 
-    for left, right, label, y in BRACKETS:
+    for left, right, y in BRACKETS:
         x0, x1 = xs[left], xs[right]
         ax.plot([x0, x0, x1, x1], [y - 0.012, y, y, y - 0.012],
                 linewidth=0.8, color="#000000", clip_on=False)
-        ax.text((x0 + x1) / 2, y + 0.008, label, ha="center", fontsize=8)
+        ax.text((x0 + x1) / 2, y + 0.008, holm_label(f"{left}_vs_{right}",
+                json.loads(ANALYSIS.read_text())), ha="center", fontsize=8)
 
+    okf_rate = json.loads(ANALYSIS.read_text())["arms"]["okf-bundle"]["item_score_rate"]
     ax.set_title("llms.txt matched the knowledge graph; the okf bundle\n"
-                 "scored 0.49 on preregistered item score",
+                 f"scored {okf_rate:.2f} on preregistered item score",
                  fontsize=10, pad=12)
     fig.tight_layout()
     out = pathlib.Path(__file__).resolve().parent / "fig1-arm-comparison.png"
