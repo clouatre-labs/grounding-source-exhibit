@@ -1,0 +1,14 @@
+{
+  "group": "kg-json",
+  "session_id": "kg-json-run-085",
+  "messages": 1,
+  "input_tokens": 21585,
+  "output_tokens": 394,
+  "total_tokens": 21979,
+  "wall_clock_seconds": 10,
+  "bytes": 112,
+  "raw_response": "```json\n{\n  \"sequence\": [\n    \"agent-ready-website\",\n    \"mcp-tool-docs\",\n    \"webmcp-beyond-checkout\"\n  ]\n}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "note": null
+}

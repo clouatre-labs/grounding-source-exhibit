@@ -1,0 +1,14 @@
+{
+  "group": "okf-bundle",
+  "session_id": "okf-bundle-run-062",
+  "messages": 1,
+  "input_tokens": 768,
+  "output_tokens": 2048,
+  "total_tokens": 2816,
+  "wall_clock_seconds": 1096,
+  "bytes": 0,
+  "raw_response": "",
+  "exact_match": false,
+  "partial_credit": null,
+  "note": "empty response after retries"
+}

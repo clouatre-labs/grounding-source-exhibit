@@ -1,0 +1,14 @@
+{
+  "group": "kg-json",
+  "session_id": "kg-json-run-023",
+  "messages": 1,
+  "input_tokens": 22896,
+  "output_tokens": 460,
+  "total_tokens": 23356,
+  "wall_clock_seconds": 243,
+  "bytes": 234,
+  "raw_response": "```json\n{\n  \"sequence\": [\n    \"decision-frameworks-ai-delivery\",\n    \"prompt-repetition-agent-evaluation\",\n    \"open-weights-structured-output-cost\",\n    \"accuracy-cost-matrix-threshold\",\n    \"ai-agent-enumerate-or-delegate\"\n  ]\n}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "note": null
+}
