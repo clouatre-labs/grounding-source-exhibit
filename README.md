@@ -86,7 +86,7 @@ graph TD
    ```bash
    uv run --with matplotlib python figures/fig1-arm-comparison.py
    uv run --with matplotlib python figures/fig2-partial-credit.py
-   uv run --with matplotlib python figures/fig3-per-question-deltas.py
+   uv run --with matplotlib python figures/fig3-conditional-accuracy.py
    uv run --with matplotlib python figures/fig4-family-breakdown.py
    ```
 
@@ -104,13 +104,13 @@ Figure scripts live in `figures/` and render from committed `results/raw-v2/` re
 
 *Figure 3: Secondary endpoint. Per-arm partial-credit distributions (jittered strip over box plot; dice overlap on set-valued families, integer fraction on F2) with the sealed paired permutation results. kg-json separates from both arms on partial credit; llms.txt and okf-bundle do not separate (p = 0.44) despite a 38-point item-score gap.*
 
-![Paired per-item item-score deltas](figures/fig3-per-question-deltas.png)
+![Conditional extraction and abstention accuracy per arm](figures/fig3-conditional-accuracy.png)
 
-*Figure 4: Paired per-item item-score deltas against llms-txt. kg-json gains 7 items and drops 1; okf-bundle drops 25 items llms-txt answers and gains 1.*
+*Figure 4: Conditional accuracies, the two components of the composite item score. Extraction: llms.txt is perfect on its 23 answerable items, kg-json 61/63 overall, okf-bundle 6/16. Abstention: llms.txt 32/40, okf-bundle 25/47; the okf bundle fails at both components, llms.txt only mis-abstains on unanswerable F1.*
 
-![Per-family item-score counts per arm](figures/fig4-family-breakdown.png)
+![Per-family breakdown with extraction and abstention in separate panels](figures/fig4-family-breakdown.png)
 
-*Figure 5: Exploratory per-family breakdown (labeled exploratory in seal-v2.json). The okf bundle loses on every answerable family; llms-txt trails kg-json only on unanswerable F1, where correct abstention is scored. For llms-txt and okf-bundle, counts on unanswerable families reflect correct abstentions, not extractions.*
+*Figure 5: Exploratory per-family breakdown (labeled exploratory in seal-v2.json), split so each bar means exactly one thing: the extraction panel shows only arms for which the family is answerable, the abstention panel only unanswerable ones. okf-bundle collapses on F4, the only family all arms can answer (6/16), and on abstention; llms-txt trails kg-json only on unanswerable F1.*
 
 ## Pre-Registration
 

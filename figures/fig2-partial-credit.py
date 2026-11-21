@@ -59,13 +59,11 @@ def main():
                   for j in range(len(vals))]
         ax.scatter([i + dj for dj in jitter], vals, s=6, alpha=0.5,
                    color=COLORS[arm], edgecolors="none", zorder=3)
-        mean = sum(vals) / len(vals)
-        ax.scatter([i], [mean], marker="D", s=22, color="#000000", zorder=4)
-        ax.annotate(f"mean {mean:.2f}", (i, mean), textcoords="offset points",
-                    xytext=(12, 4), fontsize=8)
 
+    means = {arm: sum(v) / len(v) for arm, v in scores.items()}
     ax.set_xticks(range(len(arms)))
-    ax.set_xticklabels(arms, fontsize=9)
+    ax.set_xticklabels([f"{a}\nmean {means[a]:.2f}" for a in arms],
+                       fontsize=9)
     ax.set_ylabel("Partial credit\n(dice overlap / integer fraction)",
                   fontsize=9)
     ax.tick_params(axis="y", labelsize=8)
