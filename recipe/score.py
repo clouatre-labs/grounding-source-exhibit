@@ -5,6 +5,12 @@ Exact port of resolveChainSequence from clouatre-labs/clouatre.ca
 experiments/src/bench-do.ts (pinned commit 74105922), plus a partial-credit
 prefix metric.
 
+Post-hoc tolerant parsing (exhibit-side addition, applied identically to all
+arms): the strict upstream bare JSON.parse remains the primary path, with
+added fallbacks for a ```json fenced code block and the first balanced
+JSON object containing a "sequence" key, because the pinned model may embed
+the JSON anywhere in the captured text.
+
 Usage:
     score.py <kg-file> <chain-id> <raw-response-text>
 
@@ -18,6 +24,7 @@ Standard library only; uv-run compatible.
 """
 
 import json
+import re
 import sys
 
 
@@ -57,7 +64,7 @@ def extract_sequence(raw_response: str) -> list[str] | None:
     text = raw_response.strip()
     if not text:
         return None
-    # Direct parse first.
+    # Direct parse first (the strict upstream path).
     try:
         parsed = json.loads(text)
         seq = parsed.get("sequence") if isinstance(parsed, dict) else None
@@ -65,7 +72,17 @@ def extract_sequence(raw_response: str) -> list[str] | None:
             return seq
     except ValueError:
         pass
-    # Scan for embedded JSON objects starting at each '{'.
+    # Fenced ```json block.
+    match = re.search(r"```json\s*(\{.*?\})\s*```", text, re.DOTALL)
+    if match:
+        try:
+            parsed = json.loads(match.group(1))
+            seq = parsed.get("sequence") if isinstance(parsed, dict) else None
+            if isinstance(seq, list) and all(isinstance(s, str) for s in seq):
+                return seq
+        except ValueError:
+            pass
+    # First balanced JSON object containing a "sequence" key.
     for start in range(len(text)):
         if text[start] != "{":
             continue

@@ -64,6 +64,7 @@ echo "Arm: $ARM"
 echo "Base URL: $BASE_URL"
 echo "Runs: $N"
 echo "Output: $OUT_DIR"
+EMPTY_COUNT=0
 
 for i in $(seq 1 "$N"); do
   RUN_ID="$(printf 'run-%03d' "$i")"
@@ -109,15 +110,35 @@ Read the readingChains entry \"${CHAIN}\" in the provided payload. List its sequ
   START=$(date +%s)
   ATTEMPTS=0
   RESPONSE=""
+  RAW_RESPONSE=""
+  EMPTY_AFTER_RETRIES=0
+  # A reasoning model can spend the whole completion budget on
+  # reasoning_content and return empty content (same fallback as the upstream
+  # experiments/src/llm.ts caller: content first, then reasoning_content).
+  # A successful HTTP response yielding BOTH empty is treated as a failed
+  # attempt and retried within the same 3-attempt budget.
   while :; do
     ATTEMPTS=$((ATTEMPTS + 1))
     BODY=$(jq -n --arg prompt "$PROMPT" \
-      '{messages: [{role: "user", content: $prompt}], max_completion_tokens: 512, temperature: 0}')
+      '{messages: [{role: "user", content: $prompt}], max_completion_tokens: 2048, temperature: 0}')
     if RESPONSE=$(curl -s -X POST "$AI_URL" \
       -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
       -H 'Content-Type: application/json' -d "$BODY"); then
       if jq -e '.success == true' >/dev/null 2>&1 <<<"$RESPONSE"; then
-        break
+        RAW_RESPONSE=$(jq -j '.result.choices[0].message.content // ""' <<<"$RESPONSE")
+        if [ -z "$RAW_RESPONSE" ]; then
+          RAW_RESPONSE=$(jq -j '.result.choices[0].message.reasoning_content // ""' <<<"$RESPONSE")
+        fi
+        if [ -n "$RAW_RESPONSE" ]; then
+          break
+        fi
+        echo "WARN: attempt $ATTEMPTS returned empty content and reasoning_content (chain $CHAIN)" >&2
+        if [ "$ATTEMPTS" -ge 3 ]; then
+          EMPTY_AFTER_RETRIES=1
+          break
+        fi
+        sleep $((2 ** ATTEMPTS))
+        continue
       fi
     fi
     if [ "$ATTEMPTS" -ge 3 ]; then
@@ -128,18 +149,26 @@ Read the readingChains entry \"${CHAIN}\" in the provided payload. List its sequ
   done
   END=$(date +%s)
 
-  RAW_RESPONSE=$(jq -j '.result.choices[0].message.content' <<<"$RESPONSE")
   INPUT_TOKENS=$(jq -r '.result.usage.prompt_tokens' <<<"$RESPONSE")
   OUTPUT_TOKENS=$(jq -r '.result.usage.completion_tokens' <<<"$RESPONSE")
 
   RAW_FILE="$(mktemp)"
   printf '%s' "$RAW_RESPONSE" > "$RAW_FILE"
-  SCORE=$(uv run python "${SCRIPT_DIR}/score.py" \
-    <(printf '%s' "$KG_JSON") "$CHAIN" "$RAW_FILE")
+  if [ "$EMPTY_AFTER_RETRIES" -eq 1 ]; then
+    # Nothing to score; persist usage metadata with a loud note.
+    EXACT_MATCH=false
+    PARTIAL_CREDIT=null
+    NOTE="empty response after retries"
+    EMPTY_COUNT=$((EMPTY_COUNT + 1))
+    echo "EMPTY AFTER RETRIES: $RUN_ID (chain $CHAIN)"
+  else
+    SCORE=$(uv run python "${SCRIPT_DIR}/score.py" \
+      <(printf '%s' "$KG_JSON") "$CHAIN" "$RAW_FILE")
+    EXACT_MATCH=$(jq -r '.exact_match' <<<"$SCORE")
+    PARTIAL_CREDIT=$(jq -r '.partial_credit' <<<"$SCORE")
+    NOTE=null
+  fi
   rm -f "$RAW_FILE"
-
-  EXACT_MATCH=$(jq -r '.exact_match' <<<"$SCORE")
-  PARTIAL_CREDIT=$(jq -r '.partial_credit' <<<"$SCORE")
 
   jq -n \
     --arg group "$ARM" \
@@ -150,14 +179,23 @@ Read the readingChains entry \"${CHAIN}\" in the provided payload. List its sequ
     --arg raw "$RAW_RESPONSE" \
     --argjson exact "$EXACT_MATCH" \
     --argjson partial "$PARTIAL_CREDIT" \
+    --arg note "$NOTE" \
     '{group: $group, session_id: $session_id, messages: 1,
       input_tokens: $input, output_tokens: $output,
       total_tokens: ($input + $output),
       wall_clock_seconds: $wall, bytes: ($raw | length),
       raw_response: $raw, exact_match: ($exact == 1),
       partial_credit: (if $partial == null then null else $partial end),
-      note: null}' > "$OUT"
+      note: ($note | if . == "null" then null else . end)}' > "$OUT"
   echo "captured $RUN_ID (chain $CHAIN, cluster $CLUSTER, exact=$EXACT_MATCH, partial=$PARTIAL_CREDIT)"
 done
+
+if [ "$EMPTY_COUNT" -gt 0 ]; then
+  echo "============================================================" >&2
+  echo "WARNING: $EMPTY_COUNT run(s) in arm '$ARM' returned empty" >&2
+  echo "content and reasoning_content after 3 attempts (note:" >&2
+  echo "'empty response after retries'). Inspect before scoring." >&2
+  echo "============================================================" >&2
+fi
 
 echo "Done. Full raw responses in $OUT_DIR."
