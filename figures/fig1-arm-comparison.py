@@ -21,8 +21,8 @@ ARMS = ["llms-txt", "kg-json", "okf-bundle"]
 COLORS = {"llms-txt": "#7f7f7f", "kg-json": "#0072B2", "okf-bundle": "#D55E00"}
 # Holm-adjusted McNemar exact p-values from results/analysis-v2.json.
 BRACKETS = [
-    ("llms-txt", "kg-json", "Holm p=0.070 (ns)", 1.055),
-    ("kg-json", "okf-bundle", "Holm p<1e-7", 1.155),
+    ("llms-txt", "kg-json", "Holm p=0.070 (ns)", 1.11),
+    ("kg-json", "okf-bundle", "Holm p<1e-7", 1.20),
 ]
 
 
@@ -72,7 +72,7 @@ def main():
     ax.set_xticklabels([f"{a}\n(n={counts[a][1]})" for a in arms], fontsize=9)
     ax.set_ylabel("Item score rate", fontsize=9)
     ax.tick_params(axis="y", labelsize=8)
-    ax.set_ylim(0, 1.2)
+    ax.set_ylim(0, 1.26)
     ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
 
     for left, right, label, y in BRACKETS:
