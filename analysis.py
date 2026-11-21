@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """Sealed analysis for the grounding-source exhibit.
 
+SUPERSEDED: this is the archived v1 pipeline (kept for the aborted v1 run
+in results/raw-v1-aborted/); use analysis-v2.py for the operative v2.1
+sealed analysis.
+
 Reads results/raw/<arm>/run-*.json for the three arms, computes per-arm
 exact-match rates with Wilson 95% CIs, pairwise two-proportion score tests
 on exact match (pooled SE), and pairwise Welch t tests on partial credit

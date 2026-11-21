@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Scorer for the grounding-source exhibit.
 
+SUPERSEDED: this is the archived v1 scorer; use recipe/score-v2.py for the
+operative v2.1 sealed scoring.
+
 Exact port of resolveChainSequence from clouatre-labs/clouatre.ca
 experiments/src/bench-do.ts (pinned commit 74105922), plus a partial-credit
 prefix metric.
