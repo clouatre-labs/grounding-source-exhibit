@@ -60,4 +60,4 @@ The discriminative signal sits in F4 and F3: on items every arm can answer in pr
 - Raw records: `results/raw-v2/{llms-txt,kg-json,okf-bundle}/run-001..063.json` (full raw responses, usage, finish reason, sealed scores).
 - Statistics: `results/analysis-v2.json` (schema in [DATA_DICTIONARY.md](../DATA_DICTIONARY.md)).
 - Questions: `ground-truth/blinded-*-v2.1.json` (pre-run, blinded) and `ground-truth/full-v2.1.json` (plaintext, committed with raw outputs per the seal blinding note).
-- Deposit: Zenodo DOI 10.5281/zenodo.24422535 (v2.1.0) under concept DOI 10.5281/zenodo.24410380.
+- Deposit: Zenodo DOI 10.5281/zenodo.24424532 (v2.1.1, corrected figures and findings) under concept DOI 10.5281/zenodo.24410380; v2.1.0 snapshot 10.5281/zenodo.24422535.

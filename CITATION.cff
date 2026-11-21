@@ -10,7 +10,7 @@ authors:
 repository-code: https://github.com/clouatre-labs/grounding-source-exhibit
 license: Apache-2.0
 date-released: "2026-11-21"
-version: "2.1.0"
+version: "2.1.1"
 abstract: >
   Pre-registered, three-arm comparison of grounding-source payloads
   (frozen llms.txt, full frozen knowledge-graph.json, and the frozen OKF
@@ -31,5 +31,5 @@ identifiers:
     value: 10.5281/zenodo.24410380
     description: Concept DOI (all versions)
   - type: doi
-    value: 10.5281/zenodo.24422535
-    description: Version DOI (v2.1.0, three-arm run)
+    value: 10.5281/zenodo.24424532
+    description: Version DOI (v2.1.1, three-arm run with corrected figures and findings)
