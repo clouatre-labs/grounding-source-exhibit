@@ -18,12 +18,27 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 RAW = pathlib.Path(__file__).resolve().parents[1] / "results" / "raw-v2"
+ANALYSIS = pathlib.Path(__file__).resolve().parents[1] / "results" / "analysis-v2.json"
 ARMS = ["llms-txt", "kg-json", "okf-bundle"]
 COLORS = {"llms-txt": "#7f7f7f", "kg-json": "#0072B2", "okf-bundle": "#D55E00"}
-# Sealed paired permutation results (results/analysis-v2.json).
-ANNOTATION = ("paired permutation (preregistered): kg-json vs llms-txt "
-              "p<1e-4; kg-json vs okf-bundle p<1e-4;\nllms-txt vs "
-              "okf-bundle p=0.44 (no separation)")
+# Annotation positions; p-values are loaded from results/analysis-v2.json.
+ANNOTATION_TEMPLATE = ("paired permutation (preregistered): kg-json vs "
+                       "llms-txt {kg_llms}; kg-json vs okf-bundle {kg_okf};\n"
+                       "llms-txt vs okf-bundle {llms_okf} (no separation)")
+
+
+def perm_label(p):
+    return "p<1e-4" if p < 1e-4 else f"p={p:.2f}"
+
+
+def load_annotation():
+    data = json.loads(ANALYSIS.read_text())
+    comps = data["comparisons"]
+    return ANNOTATION_TEMPLATE.format(
+        kg_llms=perm_label(comps["llms-txt_vs_kg-json"]["paired_permutation_partial_credit"]["p_value"]),
+        kg_okf=perm_label(comps["kg-json_vs_okf-bundle"]["paired_permutation_partial_credit"]["p_value"]),
+        llms_okf=perm_label(comps["llms-txt_vs_okf-bundle"]["paired_permutation_partial_credit"]["p_value"]),
+    )
 
 
 def load_scores():
@@ -71,7 +86,7 @@ def main():
     ax.set_title("kg-json's answers carry the most credit; llms.txt earns\n"
                  "its item score through abstention, not richer answers",
                  fontsize=10, pad=8)
-    ax.text(0.5, -0.24, ANNOTATION, transform=ax.transAxes, ha="center",
+    ax.text(0.5, -0.24, load_annotation(), transform=ax.transAxes, ha="center",
             fontsize=7.5)
     fig.subplots_adjust(bottom=0.3)
     fig.tight_layout(rect=(0, 0.04, 1, 1))
