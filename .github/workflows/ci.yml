@@ -12,6 +12,7 @@ on:
       - "docs/**"
       - "experiments/**"
       - "recipe/**"
+      - "test_*.py"
       - "validate_schema.py"
       - "**.md"
 
@@ -48,13 +49,26 @@ jobs:
           uv run python validate_schema.py --self-test
           uv run python validate_schema.py
 
-  # Aggregate status check: add language-specific jobs (lint, test, build)
-  # to the needs array as the repo grows; the ruleset keeps requiring only
-  # this one check.
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-26.04-arm
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up uv
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+      - name: Run statistics and scoring unit tests
+        run: |
+          uv run python test_analysis_v2.py
+          uv run python test_score_v2.py
+
   ci-result:
     name: CI Result
     runs-on: ubuntu-26.04-arm
-    needs: [lint-commits, schema-check]
+    needs: [lint-commits, schema-check, unit-tests]
     if: always()
     permissions: {}
     steps:
