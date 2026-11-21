@@ -98,7 +98,7 @@ Figure scripts live in `figures/` and render from committed `results/raw-v2/` re
 
 ![Per-arm partial-credit distributions with the preregistered paired permutation annotation](figures/fig2-partial-credit.png)
 
-*Figure 2: Secondary endpoint. Per-arm partial-credit distributions (jittered strip over box plot; dice overlap on set-valued families, integer fraction on F2) with the sealed paired permutation results. kg-json separates from both arms on partial credit; llms.txt and okf-bundle do not separate (p = 0.44) despite a 38-point item-score gap.*
+*Figure 2: Secondary endpoint, and why it exists: the primary endpoint cannot separate llms.txt from kg-json, so this asks whether kg-json's answers are actually richer. Paired permutation on partial credit (jittered strip over box plot; dice overlap on set-valued families, integer fraction on F2): kg-json separates from both arms (p < 1e-4); llms.txt and okf-bundle do not (p = 0.44) despite a 38-point item-score gap. The distributions show the mechanism: llms.txt piles up at 0 (correct abstentions) and 1, okf-bundle smears across the middle on partial extraction, so the composite item score mixes the two and must be read with Figure 3's conditional accuracies.*
 
 ![Conditional extraction and abstention accuracy per arm](figures/fig3-conditional-accuracy.png)
 

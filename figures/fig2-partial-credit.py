@@ -68,8 +68,9 @@ def main():
                   fontsize=9)
     ax.tick_params(axis="y", labelsize=8)
     ax.set_ylim(-0.05, 1.07)
-    ax.set_title("Partial credit separates kg-json from both other arms",
-                 fontsize=10)
+    ax.set_title("kg-json's answers carry the most credit; llms.txt earns\n"
+                 "its item score through abstention, not richer answers",
+                 fontsize=10, pad=8)
     ax.text(0.5, -0.24, ANNOTATION, transform=ax.transAxes, ha="center",
             fontsize=7.5)
     fig.subplots_adjust(bottom=0.3)
