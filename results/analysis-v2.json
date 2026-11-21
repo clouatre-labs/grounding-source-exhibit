@@ -1,0 +1,110 @@
+{
+  "schema_version": "2.0.0",
+  "experiment": "grounding-source-exhibit-v2",
+  "analyzed_at": "2026-11-21T15:17:05.605753+00:00",
+  "statistics": {
+    "primary": "overall exact match; pairwise McNemar exact test with Holm-Bonferroni across 3 arm pairs, alpha 0.05",
+    "secondary": "paired permutation test on partial credit (10000 permutations, seed 20261123)",
+    "exploratory": "per-family breakdowns"
+  },
+  "arms": {
+    "llms-txt": {
+      "n": 63,
+      "item_score_count": 55,
+      "item_score_rate": 0.873015873015873,
+      "conditional_extraction": {
+        "n": 23,
+        "accuracy": 1.0
+      },
+      "conditional_abstention": {
+        "n": 40,
+        "accuracy": 0.8
+      },
+      "truncations": 2,
+      "truncation_rate": 0.031746031746031744
+    },
+    "kg-json": {
+      "n": 63,
+      "item_score_count": 61,
+      "item_score_rate": 0.9682539682539683,
+      "conditional_extraction": {
+        "n": 63,
+        "accuracy": 0.9682539682539683
+      },
+      "conditional_abstention": {
+        "n": 0,
+        "accuracy": null
+      },
+      "truncations": 2,
+      "truncation_rate": 0.031746031746031744
+    },
+    "okf-bundle": {
+      "n": 63,
+      "item_score_count": 31,
+      "item_score_rate": 0.49206349206349204,
+      "conditional_extraction": {
+        "n": 16,
+        "accuracy": 0.375
+      },
+      "conditional_abstention": {
+        "n": 47,
+        "accuracy": 0.5319148936170213
+      },
+      "truncations": 23,
+      "truncation_rate": 0.36507936507936506
+    }
+  },
+  "comparisons": {
+    "llms-txt_vs_kg-json": {
+      "mcnemar_exact": {
+        "discordant": [
+          1,
+          7
+        ],
+        "p_value": 0.0703125,
+        "p_value_holm": 0.0703125,
+        "significant_at_0.05": false
+      },
+      "paired_permutation_partial_credit": {
+        "permutations": 10000,
+        "seed": 20261123,
+        "mean_difference": -0.5735449735449736,
+        "p_value": 0.0
+      }
+    },
+    "llms-txt_vs_okf-bundle": {
+      "mcnemar_exact": {
+        "discordant": [
+          25,
+          1
+        ],
+        "p_value": 8.046627044677734e-07,
+        "p_value_holm": 1.6093254089355469e-06,
+        "significant_at_0.05": true
+      },
+      "paired_permutation_partial_credit": {
+        "permutations": 10000,
+        "seed": 20261123,
+        "mean_difference": -0.05728715728715728,
+        "p_value": 0.4439
+      }
+    },
+    "kg-json_vs_okf-bundle": {
+      "mcnemar_exact": {
+        "discordant": [
+          31,
+          1
+        ],
+        "p_value": 1.5366822481155396e-08,
+        "p_value_holm": 4.6100467443466187e-08,
+        "significant_at_0.05": true
+      },
+      "paired_permutation_partial_credit": {
+        "permutations": 10000,
+        "seed": 20261123,
+        "mean_difference": 0.5162578162578162,
+        "p_value": 0.0
+      }
+    }
+  }
+}

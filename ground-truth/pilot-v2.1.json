@@ -1,0 +1,203 @@
+{
+  "seed": 20261124,
+  "snapshot_sha256": "73dfafca11e15a45b62664d4740f7d16cd394f881b264fb2470355bebb4c91d9",
+  "items": [
+    {
+      "id": "q-20261124-001",
+      "family": "F1",
+      "prompt": "Which posts does the post \"AI Agents in Legacy Systems: ROI Without Modernization\" (slug ai-agents-legacy-roi) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}.",
+      "ground_truth": [
+        "orchestrating-ai-agents-subagent-architecture",
+        "rag-legacy-systems",
+        "ai-observability-gaps",
+        "ai-adoption-engineering",
+        "ai-supply-chain-attack-vectors"
+      ]
+    },
+    {
+      "id": "q-20261124-002",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug ai-agent-enumerate-or-delegate have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}.",
+      "ground_truth": {
+        "inbound": 5,
+        "outbound": 3
+      }
+    },
+    {
+      "id": "q-20261124-003",
+      "family": "F3",
+      "prompt": "Which posts belong to the cluster with id subagent-orchestration-tooling according to the payload? Respond with JSON {\"answer\": [<post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}.",
+      "ground_truth": [
+        "orchestrating-ai-agents-subagent-architecture",
+        "ai-assisted-development",
+        "ai-sdlc-governance-stack",
+        "context-engineering-multi-agent-reliability"
+      ]
+    },
+    {
+      "id": "q-20261124-004",
+      "family": "F4",
+      "prompt": "Which cluster(s) does the post with slug zero-downtime-dns-migration belong to, according to the payload? Respond with JSON {\"answer\": [<cluster id or name>]}. If the payload does not determine the answer, respond with {\"answer\": null}.",
+      "ground_truth": [
+        "governance-oversight",
+        "devops-implementation"
+      ]
+    },
+    {
+      "id": "q-20261124-005",
+      "family": "F1",
+      "prompt": "Which posts does the post \"Verifying x402 Endpoints: The 5-Check Buyer Recipe\" (slug verify-x402-endpoints) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}.",
+      "ground_truth": [
+        "agent-payments-x402",
+        "pay-per-call-margins-treasury"
+      ]
+    },
+    {
+      "id": "q-20261124-006",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug rag-legacy-systems have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}.",
+      "ground_truth": {
+        "inbound": 2,
+        "outbound": 1
+      }
+    },
+    {
+      "id": "q-20261124-007",
+      "family": "F3",
+      "prompt": "Which posts belong to the cluster with id evaluation-reliability according to the payload? Respond with JSON {\"answer\": [<post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}.",
+      "ground_truth": [
+        "prompt-repetition-agent-evaluation",
+        "accuracy-cost-matrix-threshold",
+        "ai-agent-enumerate-or-delegate",
+        "ai-observability-gaps",
+        "decision-frameworks-ai-delivery",
+        "open-weights-structured-output-cost",
+        "sre-ai-agents-production"
+      ]
+    },
+    {
+      "id": "q-20261124-008",
+      "family": "F4",
+      "prompt": "Which cluster(s) does the post with slug accuracy-cost-matrix-threshold belong to, according to the payload? Respond with JSON {\"answer\": [<cluster id or name>]}. If the payload does not determine the answer, respond with {\"answer\": null}.",
+      "ground_truth": [
+        "evaluation-reliability"
+      ]
+    },
+    {
+      "id": "q-20261124-009",
+      "family": "F1",
+      "prompt": "Which posts does the post \"When Accuracy Misleads: Cost Matrix Metrics and Thresholds\" (slug accuracy-cost-matrix-threshold) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}.",
+      "ground_truth": [
+        "ai-agent-enumerate-or-delegate"
+      ]
+    },
+    {
+      "id": "q-20261124-010",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug mcp-tool-docs have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}.",
+      "ground_truth": {
+        "inbound": 4,
+        "outbound": 4
+      }
+    },
+    {
+      "id": "q-20261124-011",
+      "family": "F3",
+      "prompt": "Which posts belong to the cluster with id legacy-modernization according to the payload? Respond with JSON {\"answer\": [<post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}.",
+      "ground_truth": [
+        "ai-agents-legacy-roi",
+        "rag-legacy-systems"
+      ]
+    },
+    {
+      "id": "q-20261124-012",
+      "family": "F4",
+      "prompt": "Which cluster(s) does the post with slug prompt-repetition-agent-evaluation belong to, according to the payload? Respond with JSON {\"answer\": [<cluster id or name>]}. If the payload does not determine the answer, respond with {\"answer\": null}.",
+      "ground_truth": [
+        "multi-agent-architecture",
+        "evaluation-reliability"
+      ]
+    },
+    {
+      "id": "q-20261124-013",
+      "family": "F1",
+      "prompt": "Which posts does the post \"x402 on Cloudflare Workers: AI Agents Pay Per Call in USDC\" (slug agent-payments-x402) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}.",
+      "ground_truth": [
+        "agent-ready-website",
+        "webmcp-beyond-checkout",
+        "pay-per-call-margins-treasury",
+        "verify-x402-endpoints"
+      ]
+    },
+    {
+      "id": "q-20261124-014",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug open-weights-structured-output-cost have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}.",
+      "ground_truth": {
+        "inbound": 3,
+        "outbound": 3
+      }
+    },
+    {
+      "id": "q-20261124-015",
+      "family": "F3",
+      "prompt": "Which posts belong to the cluster with id security-supply-chain according to the payload? Respond with JSON {\"answer\": [<post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}.",
+      "ground_truth": [
+        "ai-supply-chain-attack-vectors",
+        "ai-approval-gates",
+        "ai-augmented-cicd",
+        "ai-sdlc-governance-stack"
+      ]
+    },
+    {
+      "id": "q-20261124-016",
+      "family": "F4",
+      "prompt": "Which cluster(s) does the post with slug pay-per-call-margins-treasury belong to, according to the payload? Respond with JSON {\"answer\": [<cluster id or name>]}. If the payload does not determine the answer, respond with {\"answer\": null}.",
+      "ground_truth": [
+        "agent-infrastructure"
+      ]
+    },
+    {
+      "id": "q-20261124-017",
+      "family": "F1",
+      "prompt": "Which posts does the post \"Does WebMCP Pay Off for Content Sites?\" (slug webmcp-beyond-checkout) link to, according to the payload? Respond with JSON {\"answer\": [<linked post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}.",
+      "ground_truth": [
+        "agent-ready-website",
+        "prompt-repetition-agent-evaluation",
+        "mcp-tool-docs"
+      ]
+    },
+    {
+      "id": "q-20261124-018",
+      "family": "F2",
+      "prompt": "How many inbound and outbound links does the post with slug ai-agents-legacy-roi have according to the payload? Respond with JSON {\"answer\": {\"inbound\": <int>, \"outbound\": <int>}}. If the payload does not determine the answer, respond with {\"answer\": null}.",
+      "ground_truth": {
+        "inbound": 4,
+        "outbound": 5
+      }
+    },
+    {
+      "id": "q-20261124-019",
+      "family": "F3",
+      "prompt": "Which posts belong to the cluster with id multi-agent-architecture according to the payload? Respond with JSON {\"answer\": [<post slugs>]}. If the payload does not determine the answer, respond with {\"answer\": null}.",
+      "ground_truth": [
+        "orchestrating-ai-agents-subagent-architecture",
+        "ai-agent-enumerate-or-delegate",
+        "ai-agents-legacy-roi",
+        "ai-augmented-cicd",
+        "ai-sdlc-governance-stack",
+        "context-engineering-multi-agent-reliability",
+        "mcp-tool-docs",
+        "prompt-repetition-agent-evaluation"
+      ]
+    },
+    {
+      "id": "q-20261124-020",
+      "family": "F4",
+      "prompt": "Which cluster(s) does the post with slug agent-payments-x402 belong to, according to the payload? Respond with JSON {\"answer\": [<cluster id or name>]}. If the payload does not determine the answer, respond with {\"answer\": null}.",
+      "ground_truth": [
+        "agent-infrastructure"
+      ]
+    }
+  ]
+}

@@ -1,10 +1,10 @@
 """Figure 2: partial-credit distributions per arm (strip over box plot).
 
 Regenerate: uv run --with matplotlib python figures/fig2-partial-credit.py
-Reads only committed results/raw/<arm>/run-*.json records (partial_credit
+Reads only committed results/raw-v2/<arm>/run-*.json records (partial_credit
 float in [0, 1]; nulls excluded). Annotates Welch t and a p-value computed
 from an lgamma-based incomplete beta t-distribution survival function
-(self-contained, no scipy). Exits gracefully if results/raw/ has no records.
+(self-contained, no scipy). Exits gracefully if results/raw-v2/ has no records.
 """
 
 import json
@@ -16,7 +16,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-RAW = pathlib.Path(__file__).resolve().parents[1] / "results" / "raw"
+RAW = pathlib.Path(__file__).resolve().parents[1] / "results" / "raw-v2"
 ARMS = ["llms-txt", "kg-json", "okf-bundle"]
 COLORS = {"llms-txt": "#7f7f7f", "kg-json": "#0072B2", "okf-bundle": "#D55E00"}
 
@@ -102,7 +102,7 @@ def welch_t(xs, ys):
 def main():
     scores = load_scores()
     if not scores:
-        print("no records under results/raw/ yet; run the bench first "
+        print("no records under results/raw-v2/ yet; run the bench first "
               "(recipe/run-bench.sh)")
         return
     arms = [a for a in ARMS if a in scores]

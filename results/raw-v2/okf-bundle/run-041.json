@@ -1,0 +1,18 @@
+{
+  "group": "okf-bundle",
+  "session_id": "v2-okf-bundle-run-041",
+  "item_id": "q-20261125-041",
+  "family": "F1",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "finish_reason": "stop",
+  "prompt_tokens": 10092,
+  "completion_tokens": 851,
+  "reasoning_tokens": null,
+  "wall_clock_seconds": 22,
+  "raw_response": "```json\n{\"answer\": [\"ai-augmented-cicd\", \"ai-observability-gaps\", \"zero-downtime-dns-migration\"]}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "abstained": false,
+  "item_score": false,
+  "note": null
+}
