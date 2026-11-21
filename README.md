@@ -4,9 +4,8 @@
   <a href="seal.json"><img alt="Result" src="https://img.shields.io/badge/result-pending_pilot_gate-3%2F20-orange.svg?style=for-the-badge" height="28"></a>
   <a href="seal.json"><img alt="Arms" src="https://img.shields.io/badge/arms-3_llms.txt_%7C_kg.json_%7C_okf-blue.svg?style=for-the-badge" height="28"></a>
   <a href="results/raw/"><img alt="Runs" src="https://img.shields.io/badge/runs-0%2F309_(103x3)_seeded-lightgrey.svg?style=for-the-badge" height="28"></a>
+<a href="https://doi.org/10.5281/zenodo.24410381"><img alt="DOI" src="https://img.shields.io/badge/DOI-10.5281%2Fzenodo.24410381-blue.svg?style=for-the-badge" height="28"></a>
 </p>
-
-<!-- DOI badge: add here after Zenodo deposit, e.g. [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXXX) -->
 
 <h1 align="center">grounding-source-exhibit</h1>
 
@@ -93,7 +92,7 @@ The upstream bench (clouatre-labs/clouatre.ca experiments/) persists captured bo
 
 ## Citing This Work
 
-See [CITATION.cff](CITATION.cff). Authors, version, and release date are filled; DOI identifiers will be added after Zenodo deposit.
+See [CITATION.cff](CITATION.cff). DOI: 10.5281/zenodo.24410381.
 
 ## Repository Setup
 

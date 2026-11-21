@@ -30,5 +30,6 @@
   ],
   "custom": {
     "code:codeRepository": "https://github.com/clouatre-labs/grounding-source-exhibit"
-  }
+  },
+  "doi": "10.5281/zenodo.24410381"
 }
