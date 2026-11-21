@@ -1,15 +1,15 @@
 {
-  "schema_version": "2.0.0",
+  "schema_version": "2.1.0",
   "experiment": "grounding-source-exhibit-v2",
-  "title": "Grounding-Source Comparison Exhibit v2: blinded re-registration after the v1 coverage-ceiling abort",
+  "title": "Grounding-Source Comparison Exhibit v2.1: re-registration after the v2.0 pilot-gate abort (F3 redesigned as forward cluster membership)",
   "sealed_before_run": true,
   "status": "sealed-pending-pilot",
   "sealed_date": "2026-11-21",
   "issue": "clouatre-labs/clouatre.ca#2388",
   "supersedes": {
-    "experiment": "grounding-source-exhibit (seal.json, v1, sealed 2026-11-20)",
-    "reason": "v1 run aborted 2026-11-21 for a coverage ceiling (llms.txt lists reading-chain sequences verbatim; okf-bundle lacks readingChains entirely); per the v1 seal.json pilot_gate rule the only sanctioned responses were proceed or STOP-and-re-register, and this is the latter",
-    "evidence": "results/raw-v1-aborted/RUN-ABORTED.md"
+    "experiment": "grounding-source-exhibit-v2 (seal-v2.json schema 2.0.0, sealed 2026-11-21, tag prereg-v2)",
+    "reason": "v2.0 pilot gate FAILED on f3_competitiveness 2026-11-21: F3 (post->concepts) was mis-preregistered as kg+okf answerable, but the okf bundle carries no post->concepts association; both non-kg arms answered confidently wrong (hallucinated) rather than abstaining. F3 redesigned as forward cluster membership (cluster -> post slugs), answerable by kg-json and llms-txt, NOT by okf-bundle.",
+    "evidence": "results/raw-v2-pilot-aborted/ABORT-PILOT.md"
   },
   "model": {
     "id": "@cf/google/gemma-4-26b-a4b-it",
@@ -34,20 +34,20 @@
   "dataset": {
     "name": "discriminative question families derived from the frozen knowledge-graph.json snapshot",
     "corpus": "finite-corpus evaluation of clouatre.ca (27 nodes: 24 posts + 3 pages, 91 citation edges)",
-    "n_per_arm": 74,
+    "n_per_arm": 63,
     "variance_frame": "item-sampling variance, not decoding variance (temperature 0); the only randomness is the deterministic question-sampling seed",
     "families": {
       "F1": "citation edges: for a post with >=1 outbound citation edge, list the linked post slugs (edge list in snapshot document order)",
       "F2": "edgeStats: inbound and outbound link counts for a post",
-      "F3": "node.concepts: the concept slugs associated with a post (3-4 slugs)",
+      "F3": "forward cluster membership: which posts belong to a given cluster (ground truth: clusters[].posts in snapshot document order; sampling unit is the cluster; the 2 clusters whose okf index lists full kg membership are excluded so okf-bundle stays deterministically unanswerable; 7 clusters eligible)",
       "F4": "cluster membership: which cluster(s) a post belongs to (ground truth: the set of cluster identifiers whose clusters[].posts array contains the slug, in snapshot cluster document order; all 24 posts are eligible)"
     },
-    "composite_ceiling_note": "Under the 74-item composite with correct abstention = 1, llms-txt has 58 abstention items (F1+F2+F3) and 16 extraction items (F4); kg-json has 74 extraction items (F1-F4). Both arms face the same 74/74 theoretical ceiling. The composite must NOT be read as pure extraction performance. Conditional extraction accuracy denominators: llms-txt = F4 only (16); okf-bundle = F3+F4 (34); kg-json = F1-F4 (74). Conditional abstention accuracy denominators: llms-txt = F1+F2+F3 (58); okf-bundle = F1+F2 (40); kg-json = none (0)."
+    "composite_ceiling_note": "Under the 63-item composite with correct abstention = 1, llms-txt has 32 abstention items (F1+F2+F3) and 31 extraction items (F3+F4); kg-json has 63 extraction items (F1-F4); okf-bundle has 40 abstention items (F1+F2) and 23 extraction items (F4 only: F3+F4 minus F3). All arms face the same 63/63 theoretical ceiling. The composite must NOT be read as pure extraction performance. Conditional extraction accuracy denominators: llms-txt = F3+F4 (31); okf-bundle = F4 (16); kg-json = F1-F4 (63). Conditional abstention accuracy denominators: llms-txt = F1+F2 (40); okf-bundle = F1+F2+F3 (47); kg-json = none (0)."
   },
   "ground_truth": {
     "snapshot": "freeze/knowledge-graph.json",
     "snapshot_sha256": "73dfafca11e15a45b62664d4740f7d16cd394f881b264fb2470355bebb4c91d9",
-    "blinding": "ground-truth.json is committed BLINDED: only the sha256 of the full questions file appears in this seal; plaintext ground truth lands with the raw outputs post-run",
+    "blinding": "ground-truth blinded files are committed BLINDED (ground-truth/blinded-pilot-v2.1.json, ground-truth/blinded-full-v2.1.json: id, family, prompt, sha256 of the plaintext questions file only); plaintext ground truth lands with the raw outputs post-run",
     "generator": "scripts/generate-questions-v2.py"
   },
   "question_sampling": {
@@ -55,21 +55,21 @@
     "families_interleaved": true,
     "sampling": "all items sampled without replacement per family",
     "pilot": {
-      "seed": 20261121,
+      "seed": 20261124,
       "n_items": 20,
       "composition": "4 families x 5 items (5/5/5/5), family-interleaved",
       "held_out_from_full_run": true,
       "held_out_semantics": "the pilot is a separate held-out question set (its own seed and file, scored separately); it is never merged into the full-run file or the full-run scoring. Note: with a 24-post finite corpus, slug-level disjointness between pilot and full-run sets is impossible; the full run uses a fresh seed so the sampled question sets differ"
     },
     "full_run": {
-      "seed": 20261122,
-      "n_items": 74,
-      "composition": "F1: 20 items from posts with >=1 outbound edge; F2: 20 items from edgeStats; F3: 18 items from node.concepts arrays (3-5 concept slugs; only 18 posts in the frozen snapshot have >=3 concepts, so 20 without replacement is impossible); F4: 16 items sampled from all 24 posts without replacement (snapshot document order as tiebreak); FRESH seed"
+      "seed": 20261125,
+      "n_items": 63,
+      "composition": "F1: 20 items from posts with >=1 outbound edge; F2: 20 items from edgeStats; F3: 7 items, one per eligible cluster (7 of 9; okf-full-listing clusters excluded); F4: 16 items sampled from all 24 posts without replacement (snapshot document order as tiebreak); FRESH seed"
     }
   },
   "primary_item_score": {
     "rule": "answerable item + correct answer = 1; answerable item + false abstention (null) = 0; unanswerable item + correct abstention (null) = 1; any non-null attempt on an unanswerable item = 0",
-    "answerability_map": "F1 and F2 are answerable only by kg-json; F3 is answerable by kg-json and okf-bundle and NOT by llms-txt; F4 is answerable by ALL THREE arms (extraction, not abstention; kg-json has no abstention-credit items). Applied to all 74 items per arm",
+    "answerability_map": "F1 and F2 are answerable only by kg-json; F3 (forward cluster membership) is answerable by kg-json and llms-txt and NOT by okf-bundle (verified: llms.txt Concept Index equals kg clusters[].posts exactly for all 9 clusters; okf cluster indexes list only subsets of kg membership and 2 of 9 kg clusters have no okf directory); F4 is answerable by ALL THREE arms. Applied to all 63 items per arm. Verified per-item by scripts/verify-f3-payloads.py",
     "cluster_label_rule": "F4 ground truth is stored as cluster ids from snapshot clusters[]; the scorer accepts EITHER the cluster id or the cluster name, normalized (lowercased, whitespace-collapsed), using the canonical id->name mapping from the frozen snapshot (cluster id and name per clusters[] entry). Label usage per payload: freeze/llms.txt Concept Index lists clusters by id only ('- governance-oversight: ai-sdlc-governance-stack, ...'); freeze/okf/ uses both the human-readable name and the id (okf/index.md: '* [Agent Infrastructure](/clusters/agent-infrastructure/index.md)'; cluster index headings '# Agent Infrastructure' and 'Concepts in the agent-infrastructure cluster.'); freeze/knowledge-graph.json carries both the id and name fields per clusters[] entry. Hence the F4 prompt says 'cluster id or name'.",
     "secondary_diagnostics": {
       "conditional_extraction_accuracy": "accuracy on answerable items only",
@@ -86,8 +86,8 @@
       "partial_credit": "fraction of the two integers correct"
     },
     "F3": {
-      "primary_exact": "set equality on deduplicated normalized concept slugs",
-      "partial_credit": "dice overlap, order-free"
+      "primary_exact": "set equality on deduplicated, normalized post slugs",
+      "partial_credit": "dice overlap 2|A and B| / (|A| + |B|), order-free"
     },
     "F4": {
       "primary_exact": "set equality on normalized cluster labels (EITHER the cluster id or the cluster name accepted, lowercased and whitespace-collapsed, via the canonical id->name mapping from the frozen snapshot)",
@@ -100,7 +100,7 @@
     "primary_endpoint": "overall exact match per arm; pairwise McNemar exact test (binomial two-sided on discordant pairs, paired items) with Holm-Bonferroni adjustment across the 3 arm pairs, alpha 0.05",
     "secondary": "paired permutation test on partial credit, 10000 permutations, seed 20261123",
     "exploratory": "per-family breakdowns, labeled exploratory",
-    "mdd_note": "minimum detectable difference ~21-23pp aggregate at n=74, 80% power, alpha 0.05 (pairwise two-proportion); finite-corpus framing retained: item sampling draws from a fixed 24-post corpus, so the MDD bounds item-sampling variance only"
+    "mdd_note": "minimum detectable difference ~22-24pp aggregate at n=63, 80% power, alpha 0.05 (pairwise two-proportion); finite-corpus framing retained: item sampling draws from a fixed 24-post corpus, so the MDD bounds item-sampling variance only"
   },
   "pilot_gate": {
     "blocking": true,
@@ -113,8 +113,8 @@
     "on_failure": "STOP, redesign, re-register"
   },
   "power": {
-    "n": 74,
-    "mdd_aggregate_pp": "~21-23pp at 80% power, alpha 0.05"
+    "n": 63,
+    "mdd_aggregate_pp": "~22-24pp at 80% power, alpha 0.05 (pairwise two-proportion at n=63); finite-corpus framing retained"
   },
   "frozen_payloads": [
     {
@@ -253,5 +253,22 @@
       "path": "freeze/okf/index.md",
       "sha256": "42ac3f41d424afe23846b5ce4df681cf33e24fab6e61e5b2f2c2e2e1fbdc2c85"
     }
-  ]
+  ],
+  "question_hashes": {
+    "pilot": {
+      "seed": 20261124,
+      "sha256": "1be8cbcd7f80b28a4ce7a44801782010551460e7d3e1eb934a54dc3f343d65a4",
+      "blinded": "ground-truth/blinded-pilot-v2.1.json"
+    },
+    "full": {
+      "seed": 20261125,
+      "sha256": "10638a1a8dfec0a87f3efa851e18d6c63dd87fd7173c31966c89711a0abeea12",
+      "blinded": "ground-truth/blinded-full-v2.1.json"
+    }
+  },
+  "preconditions": [
+    "scripts/verify-f3-payloads.py <questions-file> exits 0 for BOTH the pilot and full questions files before any run (every F3 gold present in each answerable arm's frozen payload; okf-bundle non-answerable for every sampled cluster)",
+    "recipe/run-bench.sh aborts loudly on any frozen_payloads sha256 mismatch at run start"
+  ],
+  "reporting_fix_v2_1": "analysis-v2.py pilot table now prints per-family columns using the SAME primary item_score rule as the composite (v2.0 reported exact_match for some family columns, which did not reconcile with item_score; see ABORT-PILOT.md)"
 }

@@ -1,0 +1,18 @@
+{
+  "group": "kg-json",
+  "session_id": "v2-kg-json-run-006",
+  "item_id": "q-20261121-006",
+  "family": "F2",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "finish_reason": "stop",
+  "prompt_tokens": 18771,
+  "completion_tokens": 203,
+  "reasoning_tokens": null,
+  "wall_clock_seconds": 7,
+  "raw_response": "```json\n{\"answer\": {\"inbound\": 5, \"outbound\": 7}}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "abstained": false,
+  "item_score": true,
+  "note": null
+}

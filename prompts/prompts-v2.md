@@ -36,16 +36,21 @@ according to the payload? Respond with JSON {"answer": {"inbound": <int>,
 with {"answer": null}.
 ```
 
-## F3: node.concepts
+## F3: forward cluster membership (v2.1)
+
+Replaces the aborted v2.0 post->concepts family (see
+`results/raw-v2-pilot-aborted/ABORT-PILOT.md`). Sampling unit is the
+cluster; clusters whose okf index lists the full kg membership are
+excluded (see `scripts/verify-f3-payloads.py`).
 
 ```
 <shared header>
 
 <payload>
 
-Which concepts are associated with the post with slug <slug> according
-to the payload? Respond with JSON {"answer": [<concept slugs>]}. If the
-payload does not determine the answer, respond with {"answer": null}.
+Which posts belong to the cluster with id <cluster-id> according to the
+payload? Respond with JSON {"answer": [<post slugs>]}. If the payload
+does not determine the answer, respond with {"answer": null}.
 ```
 
 ## F4: cluster membership

@@ -47,9 +47,9 @@ PROMPTS = {
         '{{"answer": null}}.'
     ),
     "F3": (
-        "Which concepts are associated with the post with slug {slug} "
-        'according to the payload? Respond with JSON '
-        '{{"answer": [<concept slugs>]}}. If the payload does not '
+        "Which posts belong to the cluster with id {slug} according to "
+        'the payload? Respond with JSON '
+        '{{"answer": [<post slugs>]}}. If the payload does not '
         'determine the answer, respond with {{"answer": null}}.'
     ),
     "F4": (
@@ -60,10 +60,17 @@ PROMPTS = {
     ),
 }
 
-# F3 is capped at 18: only 18 posts in the frozen snapshot have a
-# concepts array with >=3 slugs, so 20 without replacement is impossible.
+# F3 is capped at 7: the sampling unit is the cluster; 2 of the 9 frozen
+# clusters (governance-oversight, agent-infrastructure) are excluded
+# because their okf cluster indexes list the FULL kg membership, which
+# would make okf-bundle deterministically answerable on those items and
+# contradict the seal answerability map. Enforced per-item by
+# scripts/verify-f3-payloads.py. F3 v2.1: forward cluster membership
+# (replaces the aborted v2.0 post->concepts family; see
+# results/raw-v2-pilot-aborted/ABORT-PILOT.md).
+F3_EXCLUDED_CLUSTERS = {"governance-oversight", "agent-infrastructure"}
 PER_FAMILY = {"pilot": {"F1": 5, "F2": 5, "F3": 5, "F4": 5},
-              "full": {"F1": 20, "F2": 20, "F3": 18, "F4": 16}}
+              "full": {"F1": 20, "F2": 20, "F3": 7, "F4": 16}}
 
 
 def clusters_for_post(snapshot: dict, slug: str) -> list[str]:
@@ -112,27 +119,34 @@ def sample_family(snapshot: dict, family: str, rng: random.Random,
         eligible = [p for p in posts_all
                     if clusters_for_post(snapshot, p["slug"])]
     else:  # F3
-        eligible = [p for p in posts_all
-                    if isinstance(p.get("concepts"), list)
-                    and len(p["concepts"]) >= 3]
+        # Sampling unit is the cluster; eligible = clusters with >=2 posts
+        # not excluded by F3_EXCLUDED_CLUSTERS (okf-full-listing clusters).
+        eligible = [c for c in snapshot["clusters"]
+                    if len(c.get("posts", [])) >= 2
+                    and c["id"] not in F3_EXCLUDED_CLUSTERS]
     if len(eligible) < n:
         raise SystemExit(
             f"ERROR: family {family} has {len(eligible)} eligible posts, "
             f"need {n}")
     chosen = rng.sample(eligible, n)
     items = []
-    for p in chosen:
-        slug = p["slug"]
-        title = p.get("title", slug)
+    for target in chosen:
+        if family == "F3":
+            slug = target["id"]
+            title = slug  # cluster id stands in; the prompt uses the id
+        else:
+            slug = target["slug"]
+            title = target.get("title", slug)
         if family == "F1":
             truth = [normalize(s) for s in out_edges[slug]]
         elif family == "F2":
-            truth = {"inbound": p["edgeStats"]["inbound"],
-                     "outbound": p["edgeStats"]["outbound"]}
+            truth = {"inbound": target["edgeStats"]["inbound"],
+                     "outbound": target["edgeStats"]["outbound"]}
         elif family == "F4":
             truth = clusters_for_post(snapshot, slug)
         else:
-            truth = [normalize(s) for s in p["concepts"]]
+            # F3: cluster post membership, in snapshot document order.
+            truth = list(target["posts"])
         if family == "F2":
             ok = isinstance(truth["inbound"], int) and \
                 isinstance(truth["outbound"], int)
@@ -181,9 +195,23 @@ def generate(snapshot: dict, seed: int, n_per_family: dict) -> dict:
 def validate_questions(questions: dict, snapshot: dict) -> None:
     out_edges = outbound_edges(snapshot)
     by_slug = {p["slug"]: p for p in posts(snapshot)}
+    clusters_by_id = {c["id"]: c for c in snapshot["clusters"]}
     for item in questions["items"]:
-        slug = None
         prompt = item["prompt"]
+        truth = item["ground_truth"]
+        if item["family"] == "F3":
+            cid = next((c for c in clusters_by_id if c in prompt), None)
+            if cid is None:
+                raise SystemExit(f"ERROR: no cluster id in prompt "
+                                 f"{item['id']}")
+            if cid in F3_EXCLUDED_CLUSTERS:
+                raise SystemExit(f"ERROR: F3 sampled excluded cluster "
+                                 f"{cid}")
+            want = list(clusters_by_id[cid]["posts"])
+            if truth != want or len(want) < 2:
+                raise SystemExit(f"ERROR: F3 mismatch for cluster {cid}")
+            continue
+        slug = None
         for s in by_slug:
             if s in prompt:
                 slug = s
@@ -206,9 +234,9 @@ def validate_questions(questions: dict, snapshot: dict) -> None:
             if truth != want or not want:
                 raise SystemExit(f"ERROR: F4 mismatch for {slug}")
         else:
-            want = [normalize(s) for s in p.get("concepts", [])]
-            if truth != want or not (3 <= len(want) <= 5):
-                raise SystemExit(f"ERROR: F3 mismatch for {slug}")
+            want = [normalize(s) for s in out_edges.get(slug, [])]
+            if truth != want:
+                raise SystemExit(f"ERROR: F1 mismatch for {slug}")
 
 
 SNAPSHOT_PATH = ""
