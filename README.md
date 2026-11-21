@@ -1,98 +1,124 @@
 <p align="center">
   <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/License-Apache--2.0-blue.svg?style=for-the-badge" height="28"></a>
   <a href="https://conventionalcommits.org"><img alt="Conventional Commits" src="https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=for-the-badge" height="28"></a>
-  <a href="seal.json"><img alt="Result" src="https://img.shields.io/badge/result-pending_pilot_gate-3%2F20-orange.svg?style=for-the-badge" height="28"></a>
-  <a href="seal.json"><img alt="Arms" src="https://img.shields.io/badge/arms-3_llms.txt_%7C_kg.json_%7C_okf-blue.svg?style=for-the-badge" height="28"></a>
-  <a href="results/raw/"><img alt="Runs" src="https://img.shields.io/badge/runs-0%2F309_(103x3)_seeded-lightgrey.svg?style=for-the-badge" height="28"></a>
-<a href="https://doi.org/10.5281/zenodo.24410381"><img alt="DOI" src="https://img.shields.io/badge/DOI-10.5281%2Fzenodo.24410381-blue.svg?style=for-the-badge" height="28"></a>
+  <a href="results/analysis-v2.json"><img alt="Result" src="https://img.shields.io/badge/okf--bundle_31%2F63-llms_55%2F63__kg_61%2F63-red.svg?style=for-the-badge" height="28"></a>
+  <a href="seal-v2.json"><img alt="Arms" src="https://img.shields.io/badge/arms-3_llms.txt_%7C_kg.json_%7C_okf-blue.svg?style=for-the-badge" height="28"></a>
+  <a href="results/raw-v2/"><img alt="Runs" src="https://img.shields.io/badge/runs-189_(63x3)_temperature_0-green.svg?style=for-the-badge" height="28"></a>
+<a href="https://doi.org/10.5281/zenodo.24422535"><img alt="DOI" src="https://img.shields.io/badge/DOI-10.5281%2Fzenodo.24422535-blue.svg?style=for-the-badge" height="28"></a>
 </p>
 
 <h1 align="center">grounding-source-exhibit</h1>
 
-grounding-source-exhibit is a pre-registered grounding-source comparison on reading-chain questions derived from clouatre.ca `readingChains`. [seal.json](seal.json) was committed before any run: it fixes 103 reading-chain questions across three grounding arms (`llms-txt`, `kg-json`, `okf-bundle`), a primary exact-match metric (scorer `resolveChainSequence` pinned to clouatre-labs/clouatre.ca at commit 74105922), a secondary partial-credit metric computed post-hoc from full raw responses, and a blocking 3/20 pilot gate. Every reported number re-derives from [results/raw/](results/raw/) by the committed [analysis.py](analysis.py) against the schema in [DATA_DICTIONARY.md](DATA_DICTIONARY.md). No runs have completed yet; the experiment is sealed and awaiting execution.
+grounding-source-exhibit is a pre-registered comparison of three grounding-source payloads for AI agents on clouatre.ca content: the frozen `llms.txt`, the full frozen `knowledge-graph.json`, and the frozen OKF v0.3 bundle. [seal-v2.json](seal-v2.json) was sealed before any v2 run: 63 questions across four preregistered families (citation edges, edgeStats link counts, forward cluster membership, cluster membership) with a per-family answerability map — a run that correctly abstains on an unanswerable item scores 1 — a primary item-score endpoint scored by pairwise McNemar exact test with Holm-Bonferroni, a secondary paired permutation test on partial credit (10000 permutations, seed 20261123), and a blocking pilot gate. Every reported number re-derives from [results/raw-v2/](results/raw-v2/) by the committed [analysis-v2.py](analysis-v2.py). **Outcome: kg-json scored 61/63 and llms.txt 55/63 (Holm p = 0.070, not separable); the okf bundle scored 31/63 and lost to both arms (Holm p < 1e-5) with 23/63 context truncations and confident wrong answers on most unanswerable items.**
 
-## Pipeline
+## Status
 
-```mermaid
-graph TD
-    frozen["Frozen question set\n103 reading-chain questions"] --> arm1["Arm 1\nllms.txt"]
-    frozen --> arm2["Arm 2\nKG + cluster"]
-    frozen --> arm3["Arm 3\nokf index"]
-    arm1 --> bench["Bench runs\nresults/raw/"]
-    arm2 --> bench
-    arm3 --> bench
-    bench --> score["Scoring\nexact + partial credit"]
-    score --> analysis["analysis.py\nsealed statistics"]
-    analysis --> figures["Figures\nmatplotlib"]
-```
-
-*Figure 1: The experiment pipeline. The frozen question set feeds all three arms, each grounded by a distinct payload (llms.txt alone; knowledge-graph.json plus its cluster slice; the /okf/ index plus concept files); the bench stores full raw responses per arm, scoring computes exact match plus post-hoc partial credit from those logs, analysis.py derives the sealed statistics, and the figures render from the same raw records.*
+**Complete.** The v2.1 full run executed 63 items x 3 arms at temperature 0 with zero empty-after-retries responses; findings are in [results/findings.md](results/findings.md) and statistics in [results/analysis-v2.json](results/analysis-v2.json). The run history matters and is reported as such: the v1 run aborted before scoring (coverage ceiling; archived in [results/raw-v1-aborted/](results/raw-v1-aborted/)); the v2.0 pilot gate STOPPED the full run on a mis-preregistered F3 family and both non-kg arms answered confidently wrong (archived in [results/raw-v2-pilot-aborted/](results/raw-v2-pilot-aborted/)); v2.1 re-registered F3 as forward cluster membership before any v2.1 item ran, its pilot passed all four blocking gates ([results/raw-v2-pilot-pass/](results/raw-v2-pilot-pass/)), and only then did the full run execute. The v1 seal is archived at Zenodo DOI 10.5281/zenodo.24410381; the v2.1 run is deposited at DOI 10.5281/zenodo.24422535 under the same concept record.
 
 ## Experiment Index
 
 | Slug | Question | Status | Key Result |
 |------|----------|--------|------------|
-| `grounding-source-exhibit` | Does grounding-source payload (llms.txt vs knowledge-graph.json + cluster slice vs OKF v0.3) affect agent retrieval on reading-chain questions? | pre-registered | pending (sealed in [seal.json](seal.json)) |
+| `grounding-source-v2.1` | Which grounding surface can an agent actually use: llms.txt, knowledge-graph.json, or the OKF v0.3 bundle? | complete | kg-json 61/63, llms.txt 55/63 (Holm p = 0.070, ns); okf-bundle 31/63 (Holm p < 1e-5 vs both), 23/63 truncations ([results/findings.md](results/findings.md)) |
+
+## Pipeline
+
+```mermaid
+graph TD
+    frozen["Sealed question set\n63 items, 4 families"] --> arm1["Arm 1\nfrozen llms.txt"]
+    frozen --> arm2["Arm 2\nfrozen knowledge-graph.json"]
+    frozen --> arm3["Arm 3\nfrozen okf bundle"]
+    arm1 --> bench["Bench runs\nresults/raw-v2/, temp 0"]
+    arm2 --> bench
+    arm3 --> bench
+    bench --> score["Scoring\nrecipe/score-v2.py"]
+    score --> analysis["analysis-v2.py\nMcNemar + Holm, permutation"]
+    analysis --> figures["Figures\nmatplotlib"]
+    analysis --> findings["Findings\nresults/findings.md"]
+    figures --> findings
+```
+
+*Figure 1: The experiment pipeline. The sealed v2.1 question set feeds all three arms, each grounded by a distinct frozen payload verified by sha256 at run start; the bench stores full raw responses per arm, score-v2.py applies the sealed per-family metric definitions with the answerability map, analysis-v2.py derives the preregistered statistics, and the figures and findings render from the same raw records.*
+
+## Endpoints
+
+*Table 1: Primary endpoint per arm over the same 63 sealed questions (`results/raw-v2/`; re-derive with `uv run python analysis-v2.py --questions ground-truth/full-v2.1.json`).*
+
+| Arm | n | Item score | Rate | Wilson 95% | Extraction acc. | Abstention acc. | Truncations |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| kg-json | 63 | 61 | 0.968 | [0.891, 0.991] | 0.968 (n=63) | n/a | 2 |
+| llms-txt | 63 | 55 | 0.873 | [0.769, 0.934] | 1.000 (n=23) | 0.800 (n=40) | 2 |
+| okf-bundle | 63 | 31 | 0.492 | [0.373, 0.612] | 0.375 (n=16) | 0.532 (n=47) | 23 |
+
+*Table 2: Pairwise comparisons (sealed tests, `results/analysis-v2.json`).*
+
+| Pair | McNemar discordant [b, c] | Holm p | Significant at 0.05 | Permutation p (partial credit) |
+| --- | --- | --- | --- | --- |
+| llms-txt vs kg-json | [1, 7] | 0.070 | no | < 1e-4 |
+| llms-txt vs okf-bundle | [25, 1] | 1.6e-6 | yes | 0.44 (no separation) |
+| kg-json vs okf-bundle | [31, 1] | 4.6e-8 | yes | < 1e-4 |
 
 ## Repository Layout
 
-- `experiments/` - one directory per pre-registered experiment (see [experiments/README.md](experiments/README.md))
-- `recipe/` - analysis notebooks and scripts that regenerate figures
-- `figures/` - generated figures
+- `recipe/run-bench.sh` - bench runner; verifies every frozen payload sha256 against seal-v2.json at run start, then drives the model per arm at temperature 0 and stores the FULL raw response per run
+- `recipe/score-v2.py` - sealed per-family scorer (set equality / dice for F1, F3, F4; integer match for F2; abstention scoring via the answerability map)
+- `analysis-v2.py` - sealed statistics: McNemar exact + Holm, paired permutation on partial credit, conditional accuracies, truncation counts
+- `results/` - raw records, findings, analysis output, and the archived v1 and v2.0 artifacts
+- `ground-truth/` - blinded question files (committed pre-run) and plaintext question files (committed with raw outputs per the seal blinding note)
+- `figures/` - one Python script plus one PNG per figure, deriving only from raw records
+- [seal-v2.json](seal-v2.json) - frozen v2.1 pre-registration; [seal.json](seal.json) - archived v1 seal
 - [METHODOLOGY.md](METHODOLOGY.md) - shared experimental design contract
 - [DATA_DICTIONARY.md](DATA_DICTIONARY.md) - schema for `analysis.json` and `scores.json`
 - [CITATION.cff](CITATION.cff) and `.zenodo.json` - citation metadata
-- [seal.json](seal.json) - frozen pre-registration (arms, metrics, pilot gate, statistics)
 
 ## Reproduction
 
-1. Clone the repository and check out the tag matching the release.
+1. Clone the repository and check out the commit matching the release.
 2. Install [uv](https://docs.astral.sh/uv/).
-3. Validate the dataset schema:
+3. Re-derive every reported number:
 
    ```bash
-   uv run python validate_schema.py
+   uv run python analysis-v2.py --questions ground-truth/full-v2.1.json
    ```
 
-4. Regenerate figures from the recipes in `recipe/`.
+4. Regenerate figures from committed raw records:
 
-Each experiment directory under `experiments/` contains its protocol, runner and scorer prompts, raw sessions, and analysis records, so any result can be traced back to its pre-registered design.
+   ```bash
+   uv run --with matplotlib python figures/fig1-arm-comparison.py
+   uv run --with matplotlib python figures/fig2-partial-credit.py
+   uv run --with matplotlib python figures/fig3-per-question-deltas.py
+   uv run --with matplotlib python figures/fig4-family-breakdown.py
+   ```
+
+The plaintext questions committed in `ground-truth/full-v2.1.json` regenerate the blinded files' sha256 hashes recorded in seal-v2.json, so the question set is verifiable against the pre-run seal.
 
 ## Figures
 
-Figure scripts live in `figures/` and render from committed `results/raw/` records only; each exits with a message until the run produces data. The PNGs below render once `results/raw/` records exist.
+Figure scripts live in `figures/` and render from committed `results/raw-v2/` records only.
 
-![Exact-match proportion per grounding arm with 95% Wilson score intervals](figures/fig1-arm-comparison.png)
+![Item score per arm with 95% Wilson intervals and Holm-adjusted McNemar brackets](figures/fig1-arm-comparison.png)
 
-*Figure 2: Exact-match proportion per arm with 95% Wilson score intervals on the 103 reading-chain questions, the primary metric endpoint per arm.*
+*Figure 2: Preregistered item-score rate per arm (correct answer or correct abstention) over the same 63 sealed questions, with 95% Wilson intervals and Holm-adjusted McNemar exact brackets. kg-json 0.97 and llms.txt 0.87 are not separated (p = 0.070); the okf bundle 0.49 loses to both (p < 1e-7 and p = 1.6e-6).*
 
-![Per-arm partial-credit distributions as a jittered strip over box plots with Welch t annotation](figures/fig2-partial-credit.png)
+![Per-arm partial-credit distributions with the preregistered paired permutation annotation](figures/fig2-partial-credit.png)
 
-*Figure 3: Per-arm partial-credit distributions (jittered strip over box plot) with the Welch t annotation for the secondary metric.*
+*Figure 3: Secondary endpoint. Per-arm partial-credit distributions (jittered strip over box plot; dice overlap on set-valued families, integer fraction on F2) with the sealed paired permutation results. kg-json separates from both arms on partial credit; llms.txt and okf-bundle do not separate (p = 0.44) despite a 38-point item-score gap.*
 
-![Paired per-question exact-match deltas shown as improved, tied, or worsened counts for the two pairwise arm comparisons](figures/fig3-per-question-deltas.png)
+![Paired per-item item-score deltas](figures/fig3-per-question-deltas.png)
 
-*Figure 4: Paired per-question exact-match deltas (improved/tied/worsened) for the two pairwise arm comparisons.*
+*Figure 4: Paired per-item item-score deltas against llms-txt. kg-json gains 7 items and drops 1; okf-bundle drops 25 items llms-txt answers and gains 1.*
 
-Regenerate with:
+![Per-family item-score counts per arm](figures/fig4-family-breakdown.png)
 
-```bash
-uv run --with matplotlib python figures/fig1-arm-comparison.py
-uv run --with matplotlib python figures/fig2-partial-credit.py
-uv run --with matplotlib python figures/fig3-per-question-deltas.py
-```
-
-## Raw-Response Logging
-
-The upstream bench (clouatre-labs/clouatre.ca experiments/) persists captured bodies truncated to 512 bytes (`body_512b` in its D1 samples table). The pre-registered secondary metric (per-step prefix credit) is computed post-hoc from raw logs and requires untruncated responses, so this repository commits its own runner, `recipe/run-bench.sh`, which drives the bench per arm and stores the FULL raw response for every run under `results/raw/<arm>/run-<id>.json` before any scoring. This satisfies the pre-run verification requirement that raw responses are captured without truncation for all three arms (`llms-txt`, `kg-json`, `okf-bundle`), and `analysis.py` re-derives every reported number, including partial credit, from these artifacts.
+*Figure 5: Exploratory per-family breakdown (labeled exploratory in seal-v2.json). The okf bundle loses on every answerable family; llms-txt trails kg-json only on unanswerable F1, where correct abstention is scored. For llms-txt and okf-bundle, counts on unanswerable families reflect correct abstentions, not extractions.*
 
 ## Pre-Registration
 
-[seal.json](seal.json) was committed before the first run. It fixes the three arms and their exact payloads, n=103 per arm, the primary exact-sequence-match metric (scorer `resolveChainSequence`, pinned to clouatre-labs/clouatre.ca experiments/src/bench-do.ts at commit 74105922c993a06d06a2291d5b73c48dc445aa1a), the secondary partial-credit metric, a blocking pilot gate (best arm must reach at least 3/20 exact matches, otherwise STOP and re-register), and the statistical tests (two-proportion score test on exact-match deltas, Welch t on partial credit, raw p-values only).
+[seal-v2.json](seal-v2.json) was sealed before the first v2 run and superseded the archived [seal.json](seal.json) v1 seal after the v1 abort. It fixes the three arms and their exact frozen payloads (sha256-pinned), 63 items per arm (F1: 20, F2: 20, F3: 7, F4: 16, seeds 20261124 pilot / 20261125 full), the per-family answerability map, the primary item-score metric with McNemar exact + Holm across the 3 pairs, the secondary paired permutation test on partial credit, per-family breakdowns labeled exploratory, the blocking pilot gate (floor, saturation, F3 competitiveness, llms-txt F4 extraction guard), and the model and sampling configuration (temperature 0, single attempt, retries on empty responses only). The v2.0 pilot-gate abort and the v2.1 re-registration of F3 are recorded in the seal header; nothing in the seal changed after the first v2.1 run.
 
 ## Citing This Work
 
-See [CITATION.cff](CITATION.cff). DOI: 10.5281/zenodo.24410381.
+See [CITATION.cff](CITATION.cff). Concept DOI: 10.5281/zenodo.24410380; v2.1.0 version DOI: 10.5281/zenodo.24422535; v1 seal: 10.5281/zenodo.24410381.
 
 ## Repository Setup
 
