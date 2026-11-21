@@ -84,18 +84,18 @@ def main():
     abstention = {f: {arm: tally[arm][f] for arm in ARMS
                       if f not in ANSWERABLE[arm]} for f in families}
 
-    fig, axes = plt.subplots(1, 2, figsize=(8.6, 4.0), dpi=200)
+    fig, axes = plt.subplots(1, 2, figsize=(11.0, 4.4), dpi=200)
     draw_panel(axes[0], "Extraction (answerable arms only)", extraction)
     draw_panel(axes[1], "Abstention (unanswerable arms only)", abstention)
     handles = [plt.Rectangle((0, 0), 1, 1, color=COLORS[a]) for a in ARMS]
     fig.legend(handles, ARMS, fontsize=8, loc="upper center", ncol=3,
-               frameon=False, bbox_to_anchor=(0.5, 0.9))
+               frameon=False, bbox_to_anchor=(0.5, 0.92))
     fig.suptitle("okf-bundle collapses on the only family all arms can "
                  "answer (F4: 6/16)\nand on abstention, where llms-txt "
-                 "misses only F1", fontsize=10, y=1.0)
-    fig.tight_layout(rect=(0, 0, 1, 0.84))
+                 "misses only F1", fontsize=10, y=1.02)
+    fig.tight_layout(rect=(0, 0, 1, 0.85))
     out = pathlib.Path(__file__).resolve().parent / "fig4-family-breakdown.png"
-    fig.savefig(out)
+    fig.savefig(out, bbox_inches="tight")
     print(f"wrote {out}")
 
 

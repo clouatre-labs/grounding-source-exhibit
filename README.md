@@ -13,13 +13,15 @@ grounding-source-exhibit is a pre-registered comparison of three grounding-sourc
 
 ## Status
 
-**Complete.** The v2.1 full run executed 63 items x 3 arms at temperature 0 with zero empty-after-retries responses; findings are in [results/findings.md](results/findings.md) and statistics in [results/analysis-v2.json](results/analysis-v2.json). The run history matters and is reported as such: the v1 run aborted before scoring (coverage ceiling; archived in [results/raw-v1-aborted/](results/raw-v1-aborted/)); the v2.0 pilot gate STOPPED the full run on a mis-preregistered F3 family and both non-kg arms answered confidently wrong (archived in [results/raw-v2-pilot-aborted/](results/raw-v2-pilot-aborted/)); v2.1 re-registered F3 as forward cluster membership before any v2.1 item ran, its pilot passed all four blocking gates ([results/raw-v2-pilot-pass/](results/raw-v2-pilot-pass/)), and only then did the full run execute. The v1 seal is archived at Zenodo DOI 10.5281/zenodo.24410381; the v2.1 run is deposited at DOI 10.5281/zenodo.24424679 under the same concept record.
+**Status: complete. Outcome: kg-json scored 61/63 and llms.txt 55/63 (Holm p = 0.070, not separable); the okf bundle scored 31/63 and lost to both arms (Holm p < 1e-5) with 23/63 context truncations and confident wrong answers on most unanswerable items.** Full statistics in [results/analysis-v2.json](results/analysis-v2.json); findings in [results/findings.md](results/findings.md).
+
+The run history matters and is reported as such: the v1 run aborted before scoring (coverage ceiling; archived in [results/raw-v1-aborted/](results/raw-v1-aborted/)); the v2.0 pilot gate STOPPED the full run on a mis-preregistered F3 family and both non-kg arms answered confidently wrong (archived in [results/raw-v2-pilot-aborted/](results/raw-v2-pilot-aborted/)); v2.1 re-registered F3 as forward cluster membership before any v2.1 item ran, its pilot passed all four blocking gates ([results/raw-v2-pilot-pass/](results/raw-v2-pilot-pass/)), and only then did the full run execute. The v1 seal is archived at Zenodo DOI 10.5281/zenodo.24410381; the v2.1 run is deposited at DOI 10.5281/zenodo.24424679 under the same concept record.
 
 ## Experiment Index
 
 | Slug | Question | Status | Key Result |
 |------|----------|--------|------------|
-| `grounding-source-v2.1` | Which grounding surface can an agent actually use: llms.txt, knowledge-graph.json, or the OKF v0.3 bundle? | complete | kg-json 61/63, llms.txt 55/63 (Holm p = 0.070, ns); okf-bundle 31/63 (Holm p < 1e-5 vs both), 23/63 truncations ([results/findings.md](results/findings.md)) |
+| `grounding-source-v2.1` | Which grounding surface can an agent actually use: llms.txt, knowledge-graph.json, or the OKF v0.3 bundle? | complete | kg-json and llms.txt not separated; okf-bundle loses to both — see [results/findings.md](results/findings.md) |
 
 ## Pipeline
 
@@ -38,7 +40,7 @@ graph TD
     figures --> findings
 ```
 
-*Figure 1: The experiment pipeline. The sealed v2.1 question set feeds all three arms, each grounded by a distinct frozen payload verified by sha256 at run start; the bench stores full raw responses per arm, score-v2.py applies the sealed per-family metric definitions with the answerability map, analysis-v2.py derives the preregistered statistics, and the figures and findings render from the same raw records.*
+*Diagram: The experiment pipeline. The sealed v2.1 question set feeds all three arms, each grounded by a distinct frozen payload verified by sha256 at run start; the bench stores full raw responses per arm, score-v2.py applies the sealed per-family metric definitions with the answerability map, analysis-v2.py derives the preregistered statistics, and the figures and findings render from the same raw records.*
 
 ## Endpoints
 
@@ -50,13 +52,7 @@ graph TD
 | llms-txt | 63 | 55 | 0.873 | [0.769, 0.934] | 1.000 (n=23) | 0.800 (n=40) | 2 |
 | okf-bundle | 63 | 31 | 0.492 | [0.373, 0.612] | 0.375 (n=16) | 0.532 (n=47) | 23 |
 
-*Table 2: Pairwise comparisons (sealed tests, `results/analysis-v2.json`).*
-
-| Pair | McNemar discordant [b, c] | Holm p | Significant at 0.05 | Permutation p (partial credit) |
-| --- | --- | --- | --- | --- |
-| llms-txt vs kg-json | [1, 7] | 0.070 | no | < 1e-4 |
-| llms-txt vs okf-bundle | [25, 1] | 1.6e-6 | yes | 0.44 (no separation) |
-| kg-json vs okf-bundle | [31, 1] | 4.6e-8 | yes | < 1e-4 |
+Pairwise McNemar exact tests with Holm-Bonferroni, and the secondary paired permutation test on partial credit, are in [results/findings.md](results/findings.md) (Primary and Secondary Endpoint sections) and re-derive from [results/analysis-v2.json](results/analysis-v2.json): llms.txt vs kg-json is not separated (Holm p = 0.070); okf-bundle loses to both (Holm p = 1.6e-6 and 4.6e-8).
 
 ## Repository Layout
 
@@ -98,19 +94,19 @@ Figure scripts live in `figures/` and render from committed `results/raw-v2/` re
 
 ![Item score per arm with 95% Wilson intervals and Holm-adjusted McNemar brackets](figures/fig1-arm-comparison.png)
 
-*Figure 2: Preregistered item-score rate per arm (correct answer or correct abstention) over the same 63 sealed questions, with 95% Wilson intervals and Holm-adjusted McNemar exact brackets. kg-json 0.97 and llms.txt 0.87 are not separated (p = 0.070); the okf bundle 0.49 loses to both (p < 1e-7 and p = 1.6e-6).*
+*Figure 1: Preregistered item-score rate per arm (correct answer or correct abstention) over the same 63 sealed questions, with 95% Wilson intervals and Holm-adjusted McNemar exact brackets. kg-json and llms.txt are not separated (p = 0.070); the okf bundle loses to both (Holm p < 1e-5).*
 
 ![Per-arm partial-credit distributions with the preregistered paired permutation annotation](figures/fig2-partial-credit.png)
 
-*Figure 3: Secondary endpoint. Per-arm partial-credit distributions (jittered strip over box plot; dice overlap on set-valued families, integer fraction on F2) with the sealed paired permutation results. kg-json separates from both arms on partial credit; llms.txt and okf-bundle do not separate (p = 0.44) despite a 38-point item-score gap.*
+*Figure 2: Secondary endpoint. Per-arm partial-credit distributions (jittered strip over box plot; dice overlap on set-valued families, integer fraction on F2) with the sealed paired permutation results. kg-json separates from both arms on partial credit; llms.txt and okf-bundle do not separate (p = 0.44) despite a 38-point item-score gap.*
 
 ![Conditional extraction and abstention accuracy per arm](figures/fig3-conditional-accuracy.png)
 
-*Figure 4: Conditional accuracies, the two components of the composite item score. Extraction: llms.txt is perfect on its 23 answerable items, kg-json 61/63 overall, okf-bundle 6/16. Abstention: llms.txt 32/40, okf-bundle 25/47; the okf bundle fails at both components, llms.txt only mis-abstains on unanswerable F1.*
+*Figure 3: Conditional accuracies, the two components of the composite item score. Extraction: llms.txt is perfect on its 23 answerable items, kg-json 61/63 overall, okf-bundle 6/16. Abstention: llms.txt 32/40, okf-bundle 25/47; the okf bundle fails at both components, llms.txt only mis-abstains on unanswerable F1.*
 
 ![Per-family breakdown with extraction and abstention in separate panels](figures/fig4-family-breakdown.png)
 
-*Figure 5: Exploratory per-family breakdown (labeled exploratory in seal-v2.json), split so each bar means exactly one thing: the extraction panel shows only arms for which the family is answerable, the abstention panel only unanswerable ones. okf-bundle collapses on F4, the only family all arms can answer (6/16), and on abstention; llms-txt trails kg-json only on unanswerable F1.*
+*Figure 4: Exploratory per-family breakdown (labeled exploratory in seal-v2.json), split so each bar means exactly one thing: the extraction panel shows only arms for which the family is answerable, the abstention panel only unanswerable ones. okf-bundle collapses on F4, the only family all arms can answer (6/16), and on abstention; llms-txt trails kg-json only on unanswerable F1.*
 
 ## Pre-Registration
 

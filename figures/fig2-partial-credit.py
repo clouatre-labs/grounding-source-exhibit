@@ -67,7 +67,7 @@ def main():
     ax.set_ylabel("Partial credit\n(dice overlap / integer fraction)",
                   fontsize=9)
     ax.tick_params(axis="y", labelsize=8)
-    ax.set_ylim(-0.03, 1.03)
+    ax.set_ylim(-0.05, 1.07)
     ax.set_title("Partial credit separates kg-json from both other arms",
                  fontsize=10)
     ax.text(0.5, -0.24, ANNOTATION, transform=ax.transAxes, ha="center",
@@ -75,7 +75,7 @@ def main():
     fig.subplots_adjust(bottom=0.3)
     fig.tight_layout(rect=(0, 0.04, 1, 1))
     out = pathlib.Path(__file__).resolve().parent / "fig2-partial-credit.png"
-    fig.savefig(out)
+    fig.savefig(out, bbox_inches="tight")
     print(f"wrote {out}")
 
 
