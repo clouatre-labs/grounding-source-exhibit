@@ -39,7 +39,7 @@ Paired permutation test on partial credit (10000 permutations, seed 20261123), a
 | F3 cluster membership (7) | 7/7 | 7/7 | 3/7 | extraction for kg-json and llms-txt; abstention-graded for okf-bundle |
 | F4 post clusters (16) | 16/16 | 16/16 | 6/16 | extraction for all three arms |
 
-The discriminative signal sits in F4 and F3: on items every arm can answer in principle, the okf bundle scores 6/16 and 3/7, and its raw responses show the completion budget consumed by reasoning over the oversized payload (23/63 truncations) before any answer is emitted. On unanswerable families it answered confidently wrong (abstention accuracy 0.532; in the v2.0 pilot, 100% of its F3 failures were confident hallucinations, not abstentions), which is the failure mode a publisher should weight most heavily.
+The discriminative signal sits in F4 and F3: on items every arm can answer in principle, the okf bundle scores 6/16 and 3/7. All 23 truncated runs (23/63) occurred on F1/F2/F3, which are unanswerable for this arm; their empty output was scored as correct abstention (item_score = 1), so truncation inflated the abstention side of the composite rather than causing the F4 misses. Every F4 miss (10/16) is a complete, confident wrong answer (`finish_reason: stop`), consistent with delivery mismatch rather than budget exhaustion. The 23/63 truncation rate still evidences payload-size interaction with the 4096-token completion budget, but on the unanswerable families it accidentally rescued the score. On unanswerable families it answered confidently wrong (abstention accuracy 0.532; in the v2.0 pilot, 100% of its F3 failures were confident hallucinations, not abstentions), which is the failure mode a publisher should weight most heavily.
 
 ## Run History and Deviations
 

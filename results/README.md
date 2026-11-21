@@ -16,7 +16,8 @@ Analysis outputs and raw run records. Reported numbers re-derive from these dire
 ## Regeneration
 
 ```
-uv run python analysis-v2.py
+uv run python analysis-v2.py --questions ground-truth/full-v2.1.json \
+  --pilot-questions ground-truth/pilot-v2.1.json
 ```
 
 Rewrites `analysis-v2.json` from `raw-v2/` and prints the markdown summary. Only the statistics and figures are locally re-derivable; re-executing the bench itself requires Cloudflare model access plus sha256 re-verification of the frozen payloads per the seal.

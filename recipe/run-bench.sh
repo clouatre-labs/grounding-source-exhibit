@@ -9,13 +9,14 @@
 #   questions-file  questions.json (blinded for pilot, plaintext for full;
 #                   the runner only reads items[i].prompt, so both work)
 #   start           1-based index of the first item to run (pilot: 1)
-#   count           number of items to run (pilot: 18, full: 58; F1=20, F2=20, F3=18)
+#   count           number of items to run (pilot: 20, full: 63; F1=20, F2=20, F3=7, F4=16)
 #
 # Writes results/raw-v2/<arm>/run-NNN.json with the full raw response,
 # finish_reason, usage, and v2 scores. Scoring via recipe/score-v2.py per
 # the seal-v2 metric definitions (set equality + dice for F1/F3, integer
 # match for F2, abstention scoring with the arm answerability map: F1 and
-# F2 answerable only by kg-json, F3 answerable by kg-json and okf-bundle).
+# F2 answerable only by kg-json, F3 answerable by kg-json and llms-txt (not
+# okf-bundle), F4 answerable by all three arms.
 #
 # Payload per arm:
 #   llms-txt    the frozen snapshot text from freeze/llms.txt
@@ -226,7 +227,7 @@ ${QUESTION_PROMPT}"
       raw_response: $raw,
       exact_match: ($exact == 1),
       partial_credit: (if $partial == null then null else $partial end),
-      abstained: (if $abstained == null then null else ($abstained == 1) end),
+      abstained: (if $abstained == null then null else $abstained end),
       item_score: (if $item_score == null then null else ($item_score == 1) end),
       note: ($note | if . == "null" then null else . end)}' > "$OUT"
   echo "captured $RUN_ID (item $ITEM_ID, family $FAMILY, exact=$EXACT_MATCH, partial=$PARTIAL_CREDIT, abstained=$ABSTAINED)"

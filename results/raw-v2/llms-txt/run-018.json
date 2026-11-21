@@ -12,7 +12,7 @@
   "raw_response": "```json\n{\"answer\": null}\n```",
   "exact_match": false,
   "partial_credit": 0.0,
-  "abstained": false,
+  "abstained": true,
   "item_score": true,
   "note": null
 }
