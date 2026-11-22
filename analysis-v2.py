@@ -89,9 +89,8 @@ def paired_permutation(xs, ys, seed: int = PERM_SEED, perms: int = PERMS):
 def load_arm(arm: str, questions: dict, records_dir: pathlib.Path = RAW):
     """Load run-NNN.json in numeric order, aligned by ordinal: run-NNN
     corresponds to questions.items[NNN-1]. NO id remapping. A record's
-    item_id must equal the expected id OR (documented v2.2 incident,
-    slots 001-020 only) the stale pilot id q-20261124-NNN; anything
-    else FAILS loudly."""
+    item_id must equal the expected id exactly; anything else FAILS
+    loudly."""
     items = questions["items"]
     records = []
     paths = sorted((records_dir / arm).glob("run-*.json"))
@@ -101,9 +100,7 @@ def load_arm(arm: str, questions: dict, records_dir: pathlib.Path = RAW):
         expected = items[idx - 1]
         rec = json.loads(path.read_text())
         got = rec.get("item_id")
-        stale_pilot = (idx <= 20 and got == "q-20261124-"
-                       + path.stem.split("-")[1])
-        if got != expected["id"] and not stale_pilot:
+        if got != expected["id"]:
             raise SystemExit(
                 f"ERROR: id mismatch in {path}: got {got}, expected "
                 f"{expected['id']}")
@@ -349,7 +346,8 @@ def main() -> int:
                            "truncation comparison okf-index-relevant "
                            f"{trunc_counts['okf-index-relevant']} vs "
                            f"okf-bundle {trunc_counts['okf-bundle']} "
-                           "(halved at 41% of bundle tokens)",
+                           f"(cut to "
+                           f"{round(100 * trunc_counts['okf-index-relevant'] / trunc_counts['okf-bundle'])}% of bundle tokens)",
         },
         "notes": {
             "holm_family_check": holm_check,

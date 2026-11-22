@@ -78,8 +78,8 @@ One JSON record per run; full raw response plus sealed scorer output:
 |-------|------|----------|-------------|
 | `schema_version` | string | no | `2.2.0` (2.1.0 plus Wilson CIs, `statistics.descriptive`, and `notes`) |
 | `arms.<arm>.wilson_ci_95` | object | no | Descriptive Wilson 95% score interval on `item_score_count/n`: `{lo, hi, label: "descriptive"}`; bounds clamped to [0, 1]; not a hypothesis test |
-| `statistics.descriptive` | string | no | Describes the Wilson intervals and the truncation comparison (okf-index-relevant 12 vs okf-bundle 23) |
-| `notes` | object | no | `holm_family_check`: explicit statement whether any v2.1 pairwise `significant_at_0.05` conclusion flips under the 6-pair Holm family; `direction_flag`: okf-index-relevant (23/63) vs okf-bundle (31/63) composite direction with McNemar raw and Holm p-values and the F2 abstention-collapse driver |
+| `statistics.descriptive` | string | no | Describes the Wilson intervals and the truncation comparison (okf-index-relevant 14 vs okf-bundle 23) |
+| `notes` | object | no | `holm_family_check`: explicit statement whether any v2.1 pairwise `significant_at_0.05` conclusion flips under the 6-pair Holm family; `direction_flag`: okf-index-relevant (22/63) vs okf-bundle (31/63) composite direction with McNemar raw and Holm p-values and the F2 abstention-collapse driver |
 
 ## scores.json
 

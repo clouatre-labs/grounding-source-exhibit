@@ -1,16 +1,16 @@
 {
   "schema_version": "2.2.0",
   "experiment": "grounding-source-exhibit-v2",
-  "analyzed_at": "2026-11-22T12:52:41.038016+00:00",
+  "analyzed_at": "2026-11-22T12:58:41.926182+00:00",
   "statistics": {
     "primary": "overall exact match; pairwise McNemar exact test with Holm-Bonferroni across 6 arm pairs, alpha 0.05",
     "secondary": "paired permutation test on partial credit (10000 permutations, seed 20261123)",
     "exploratory": "per-family breakdowns",
-    "descriptive": "Wilson 95% score intervals per arm (descriptive only, not hypothesis tests); truncation comparison okf-index-relevant 12 vs okf-bundle 23 (halved at 41% of bundle tokens)"
+    "descriptive": "Wilson 95% score intervals per arm (descriptive only, not hypothesis tests); truncation comparison okf-index-relevant 14 vs okf-bundle 23 (cut to 61% of bundle tokens)"
   },
   "notes": {
     "holm_family_check": "Computed: no v2.1 pairwise significant_at_0.05 conclusion flips when the Holm family grows from 3 to 6 pairs.",
-    "direction_flag": "okf-index-relevant scored 23/63 vs okf-bundle 31/63: wrong direction (composite dropped). McNemar raw p=0.076812744140625, Holm p=0.140625. Driven by F2 abstention collapse: okf-index-relevant 12/20 vs okf-bundle 20/20 \u2014 the model attempted instead of abstaining on families OKF content cannot determine."
+    "direction_flag": "okf-index-relevant scored 22/63 vs okf-bundle 31/63: wrong direction (composite dropped). McNemar raw p=0.01171875, Holm p=0.0234375. Driven by F2 abstention collapse: okf-index-relevant 13/20 vs okf-bundle 20/20 \u2014 the model attempted instead of abstaining on families OKF content cannot determine."
   },
   "arms": {
     "llms-txt": {
@@ -75,21 +75,21 @@
     },
     "okf-index-relevant": {
       "n": 63,
-      "item_score_count": 23,
-      "item_score_rate": 0.36507936507936506,
+      "item_score_count": 22,
+      "item_score_rate": 0.3492063492063492,
       "conditional_extraction": {
         "n": 16,
-        "accuracy": 0.4375
+        "accuracy": 0.375
       },
       "conditional_abstention": {
         "n": 47,
         "accuracy": 0.3404255319148936
       },
-      "truncations": 12,
-      "truncation_rate": 0.19047619047619047,
+      "truncations": 14,
+      "truncation_rate": 0.2222222222222222,
       "wilson_ci_95": {
-        "lo": 0.25715218473434465,
-        "hi": 0.4885151840898606,
+        "lo": 0.24325819396354187,
+        "hi": 0.4724876888399816,
         "label": "descriptive"
       }
     }
@@ -102,7 +102,7 @@
           7
         ],
         "p_value": 0.0703125,
-        "p_value_holm": 0.140625,
+        "p_value_holm": 0.0703125,
         "significant_at_0.05": false
       },
       "paired_permutation_partial_credit": {
@@ -132,18 +132,18 @@
     "llms-txt_vs_okf-index-relevant": {
       "mcnemar_exact": {
         "discordant": [
-          32,
-          0
+          34,
+          1
         ],
-        "p_value": 4.656612873077393e-10,
-        "p_value_holm": 2.3283064365386963e-09,
+        "p_value": 2.0954757928848267e-09,
+        "p_value_holm": 1.0477378964424133e-08,
         "significant_at_0.05": true
       },
       "paired_permutation_partial_credit": {
         "permutations": 10000,
         "seed": 20261123,
-        "mean_difference": -0.12236652236652236,
-        "p_value": 0.1245
+        "mean_difference": -0.07474747474747474,
+        "p_value": 0.3679
       }
     },
     "kg-json_vs_okf-bundle": {
@@ -166,35 +166,35 @@
     "kg-json_vs_okf-index-relevant": {
       "mcnemar_exact": {
         "discordant": [
-          38,
+          39,
           0
         ],
-        "p_value": 7.275957614183426e-12,
-        "p_value_holm": 4.3655745685100555e-11,
+        "p_value": 3.637978807091713e-12,
+        "p_value_holm": 2.1827872842550278e-11,
         "significant_at_0.05": true
       },
       "paired_permutation_partial_credit": {
         "permutations": 10000,
         "seed": 20261123,
-        "mean_difference": 0.4511784511784512,
+        "mean_difference": 0.4987974987974988,
         "p_value": 0.0
       }
     },
     "okf-bundle_vs_okf-index-relevant": {
       "mcnemar_exact": {
         "discordant": [
-          12,
-          4
+          10,
+          1
         ],
-        "p_value": 0.076812744140625,
-        "p_value_holm": 0.140625,
-        "significant_at_0.05": false
+        "p_value": 0.01171875,
+        "p_value_holm": 0.0234375,
+        "significant_at_0.05": true
       },
       "paired_permutation_partial_credit": {
         "permutations": 10000,
         "seed": 20261123,
-        "mean_difference": -0.06507936507936507,
-        "p_value": 0.1497
+        "mean_difference": -0.01746031746031746,
+        "p_value": 0.7444
       }
     }
   }
