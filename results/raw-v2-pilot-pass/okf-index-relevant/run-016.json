@@ -1,0 +1,18 @@
+{
+  "group": "okf-index-relevant",
+  "session_id": "v2-okf-index-relevant-run-016",
+  "item_id": "q-20261124-016",
+  "family": "F4",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "finish_reason": "stop",
+  "prompt_tokens": 2484,
+  "completion_tokens": 727,
+  "reasoning_tokens": null,
+  "wall_clock_seconds": 18,
+  "raw_response": "```json\n{\"answer\": [\"Agent Infrastructure\"]}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "abstained": false,
+  "item_score": true,
+  "note": null
+}

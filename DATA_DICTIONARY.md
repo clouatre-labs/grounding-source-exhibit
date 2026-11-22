@@ -14,7 +14,7 @@ Experiment directories hold pre-registration artifacts and v1-format analysis re
 The v2.1 run data lives elsewhere:
 
 - `results/raw-v2/<arm>/run-*.json`: per-run records (schema below)
-- `results/analysis-v2.json`: sealed statistics (`statistics.primary` McNemar + Holm, `statistics.secondary` permutation, `comparisons` per pair)
+- `results/analysis-v2.json`: sealed statistics (`statistics.primary` McNemar + Holm, `statistics.secondary` permutation, `comparisons` per pair; schema_version `2.2.0` adds `wilson_ci_95` per arm, `statistics.descriptive`, and `notes`)
 - `results/findings.md`: reported findings
 
 ## analysis.json (`experiments/<slug>/analysis.json`)
@@ -71,6 +71,15 @@ One JSON record per run; full raw response plus sealed scorer output:
 | `reasoning_tokens` | integer \| null | yes | Reasoning tokens reported by the provider, if any |
 | `finish_reason` | string | no | Provider finish reason (`stop`, `length`, ...); `length` flags a context truncation |
 | `note` | string \| null | yes | Optional note (e.g. failure reason) |
+
+## analysis-v2.json (`results/analysis-v2.json`, schema 2.2.0)
+
+| Field | Type | Nullable | Description |
+|-------|------|----------|-------------|
+| `schema_version` | string | no | `2.2.0` (2.1.0 plus Wilson CIs, `statistics.descriptive`, and `notes`) |
+| `arms.<arm>.wilson_ci_95` | object | no | Descriptive Wilson 95% score interval on `item_score_count/n`: `{lo, hi, label: "descriptive"}`; bounds clamped to [0, 1]; not a hypothesis test |
+| `statistics.descriptive` | string | no | Describes the Wilson intervals and the truncation comparison (okf-index-relevant 14 vs okf-bundle 23) |
+| `notes` | object | no | `holm_family_check`: explicit statement whether any v2.1 pairwise `significant_at_0.05` conclusion flips under the 6-pair Holm family; `direction_flag`: okf-index-relevant (22/63) vs okf-bundle (31/63) composite direction with McNemar raw and Holm p-values and the F2 abstention-collapse driver |
 
 ## scores.json
 
