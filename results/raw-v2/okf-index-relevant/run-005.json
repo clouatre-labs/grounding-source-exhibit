@@ -1,0 +1,18 @@
+{
+  "group": "okf-index-relevant",
+  "session_id": "v2-okf-index-relevant-run-005",
+  "item_id": "q-20261125-005",
+  "family": "F1",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "finish_reason": "stop",
+  "prompt_tokens": 6041,
+  "completion_tokens": 2350,
+  "reasoning_tokens": null,
+  "wall_clock_seconds": 52,
+  "raw_response": "```json\n{\"answer\": [\"ai-adoption-engineering\", \"ai-approval-gates\", \"ai-assisted-development\", \"ai-augmented-cicd\", \"ai-observability-gaps\", \"ai-supply-chain-attack-vectors\", \"orchestrating-ai-agents-subagent-architecture\"]}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "abstained": false,
+  "item_score": false,
+  "note": null
+}
