@@ -63,6 +63,17 @@ SNAPSHOT="freeze/knowledge-graph.json"
 MODEL="@cf/google/gemma-4-26b-a4b-it"
 AI_URL="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/ai/run/${MODEL}"
 
+# Portable sha256 helper: prefer coreutils sha256sum (Linux), fall back
+# to shasum -a 256 (macOS). Both print the hex digest as the first field,
+# so output is identical on either platform.
+sha256_of() {
+  if command -v sha256sum >/dev/null 2>&1; then
+    sha256sum "$1" | awk '{print $1}'
+  else
+    shasum -a 256 "$1" | awk '{print $1}'
+  fi
+}
+
 # Verify every frozen payload listed in the arm's seal frozen_payloads
 # before running: missing file or sha256 mismatch aborts loudly.
 while IFS=$'\t' read -r EXPECTED_SHA FREEZE_PATH; do
@@ -70,8 +81,7 @@ while IFS=$'\t' read -r EXPECTED_SHA FREEZE_PATH; do
     echo "ERROR: frozen payload missing: $FREEZE_PATH" >&2
     exit 1
   fi
-  # shasum -a 256 is the v2 pipeline checksum convention (pre-existing).
-  ACTUAL_SHA=$(shasum -a 256 "$FREEZE_PATH" | awk '{print $1}')
+  ACTUAL_SHA=$(sha256_of "$FREEZE_PATH")
   if [ "$ACTUAL_SHA" != "$EXPECTED_SHA" ]; then
     echo "ERROR: frozen payload sha256 mismatch: $FREEZE_PATH: $ACTUAL_SHA (expected $EXPECTED_SHA)" >&2
     exit 1
