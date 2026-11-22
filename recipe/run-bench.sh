@@ -113,6 +113,9 @@ $(cat "freeze/okf/clusters/${CLUSTER}/${CONCEPT}")"
       done
     done
     ;;
+  # okf-index-relevant composes its payload per question inside the
+  # item loop (PER_QUESTION_PAYLOAD=1); no fixed payload here.
+  okf-index-relevant) : ;;
   *) echo "ERROR: unknown arm '$ARM' (expected llms-txt|kg-json|okf-bundle|okf-index-relevant)" >&2; exit 1 ;;
 esac
 
