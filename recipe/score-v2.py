@@ -21,7 +21,13 @@ as abstained. With --arm, the seal-v2.1 primary item score rule is applied
 using the answerability map: F1 and F2 answerable only by kg-json; F3
 (forward cluster membership) answerable by kg-json and llms-txt, NOT by
 okf-bundle (okf cluster indexes list only subsets of kg membership and 2
-of 9 kg clusters have no okf directory); F4 answerable by ALL THREE arms.
+of 9 kg clusters have no okf directory); F4 answerable by ALL v2.1 arms.
+Under seal-v3.json (schema 2.2.0, preregistration-v2.2.md) the additional
+arm okf-index-relevant (per-question payload: okf index + the cluster
+indexes and concept pages named by the item's derived gold-cluster set)
+is F4-answerable, per the same coarse per-family convention; its F1/F2/F3
+entries are unchanged (F3 non-answerability derived from actual payload
+composition and gate-verified by scripts/verify-f3-payloads.py).
 
 Usage:
     score-v2.py <questions-file> <item-id> <raw-response> [--arm A]
@@ -45,7 +51,7 @@ ANSWERABLE = {
     "F1": {"kg-json"},
     "F2": {"kg-json"},
     "F3": {"kg-json", "llms-txt"},
-    "F4": {"llms-txt", "kg-json", "okf-bundle"},
+    "F4": {"llms-txt", "kg-json", "okf-bundle", "okf-index-relevant"},
 }
 
 DEFAULT_SNAPSHOT = pathlib.Path(__file__).resolve().parent.parent / \
@@ -162,7 +168,8 @@ def main() -> int:
     ap.add_argument("questions_file")
     ap.add_argument("item_id")
     ap.add_argument("raw_response")
-    ap.add_argument("--arm", choices=["llms-txt", "kg-json", "okf-bundle"])
+    ap.add_argument("--arm", choices=["llms-txt", "kg-json", "okf-bundle",
+                                      "okf-index-relevant"])
     ap.add_argument("--reasoning-fallback", action="store_true")
     ap.add_argument("--snapshot", default=str(DEFAULT_SNAPSHOT),
                     help="frozen knowledge-graph.json (cluster id->name "

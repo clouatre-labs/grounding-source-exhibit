@@ -1,0 +1,825 @@
+{
+  "schema_version": "2.2.0",
+  "experiment": "grounding-source-exhibit-v2.2",
+  "title": "Grounding-Source Comparison Exhibit v2.2: OKF index-plus-relevant-pages arm (additive extension of the sealed v2.1 run)",
+  "sealed_before_run": true,
+  "status": "sealed-pending-pilot",
+  "sealed_date": "2026-11-25",
+  "issue": "clouatre-labs/clouatre.ca#2388",
+  "extends": {
+    "experiment": "grounding-source-exhibit-v2 (seal-v2.json schema 2.1.0, sealed 2026-11-21)",
+    "reason": "v2.1 findings: the whole-bundle okf-bundle arm scored 31/63 with 23/63 truncations, losing to both other arms (Holm p < 1e-5). This seal adds ONE medium-tier OKF delivery-mode arm (index.md + question-named cluster indexes + their concept pages, single completion, 4096 tokens); the three v2.1 arms, question sets, seeds, prompts, scoring rule, and budget are unchanged and stay governed by seal-v2.json.",
+    "human_readable": "preregistration-v2.2.md"
+  },
+  "model": {
+    "id": "@cf/google/gemma-4-26b-a4b-it",
+    "temperature": 0,
+    "max_completion_tokens": 4096,
+    "log_finish_reason": true
+  },
+  "arms": {
+    "llms-txt": {
+      "payload": "unchanged from seal-v2.json (freeze/llms.txt alone)",
+      "seal": "seal-v2.json"
+    },
+    "kg-json": {
+      "payload": "unchanged from seal-v2.json (full frozen snapshot)",
+      "seal": "seal-v2.json"
+    },
+    "okf-bundle": {
+      "payload": "unchanged from seal-v2.json (full frozen OKF bundle, 33 markdown files)",
+      "seal": "seal-v2.json"
+    },
+    "okf-index-relevant": {
+      "payload": "PER-QUESTION: freeze/okf/index.md plus, for every cluster in the item's derived gold-cluster set G, that cluster's freeze/okf/clusters/<c>/index.md plus the concept pages that index links; enumerations sorted and deduplicated (sort -u)",
+      "payload_rule": "G = sorted unique nodes[].category values over seed slugs routed via clusters[] -> post-slug filenames (concept pages are post slugs, NOT nodes[].concepts slugs). Seeds: F1 = prompt source slug + ground truth; F2 = prompt source slug; F3 = ground truth (cross-cluster gold routes through node categories); F4 = union of clusters[c].posts over ground-truth cluster ids. Pinned in preregistration-v2.2.md BEFORE sealing.",
+      "source": "frozen snapshot: freeze/okf/ tree + freeze/knowledge-graph.json (sha256 pinned per file below); no live fetch",
+      "per_question_composition": "byte-deterministic; per-item sha256 of the composed payload pinned in per_question_payloads (full run, 63 items)",
+      "seal": "seal-v3.json"
+    }
+  },
+  "okf_cluster_directories": [
+    "agent-infrastructure",
+    "cost-roi",
+    "devops-implementation",
+    "evaluation-reliability",
+    "governance-oversight",
+    "multi-agent-architecture",
+    "security-supply-chain"
+  ],
+  "dataset": {
+    "name": "the sealed v2.1 question sets, reused unchanged",
+    "pilot": {
+      "file": "ground-truth/pilot-v2.1.json",
+      "seed": 20261124,
+      "n": 20,
+      "sha256": "1be8cbcd7f80b28a4ce7a44801782010551460e7d3e1eb934a54dc3f343d65a4"
+    },
+    "full": {
+      "file": "ground-truth/full-v2.1.json",
+      "seed": 20261125,
+      "n": 63,
+      "sha256": "10638a1a8dfec0a87f3efa851e18d6c63dd87fd7173c31966c89711a0abeea12"
+    },
+    "blinding_note": "the per-question payload composition derives from ground truth, so the new arm consumes the plaintext question files; both were unblinded with the completed v2.1 run"
+  },
+  "ground_truth": {
+    "snapshot": "freeze/knowledge-graph.json",
+    "snapshot_sha256": "73dfafca11e15a45b62664d4740f7d16cd394f881b264fb2470355bebb4c91d9"
+  },
+  "answerability_map": {
+    "F1": {
+      "kg-json": true
+    },
+    "F2": {
+      "kg-json": true
+    },
+    "F3": {
+      "kg-json": true,
+      "llms-txt": true,
+      "okf-bundle": false,
+      "okf-index-relevant": false
+    },
+    "F4": {
+      "llms-txt": true,
+      "kg-json": true,
+      "okf-bundle": true,
+      "okf-index-relevant": true
+    },
+    "note": "v2.2 delta: okf-index-relevant added to F4 only. F3 non-answerability derived from actual payload composition via scripts/verify-f3-payloads.py: every sampled F3 gold set is a strict superset of its composed cluster-index listing (gate-verified per item). F1 non-answerable: Related links are symmetric. F2: no edge counts in okf pages. F4 answerable per the coarse per-family convention of seal-v2.json."
+  },
+  "metrics": "unchanged from seal-v2.json (set equality + dice F1/F3, integer fraction F2, normalized-label set equality F4, single answer envelope, abstention instruction in every prompt)",
+  "statistics": "unchanged from seal-v2.json, evaluated over the four arm pairs including okf-index-relevant (Holm-Bonferroni across 6 pairs, alpha 0.05; permutation seed 20261123)",
+  "pilot_gate": {
+    "blocking": true,
+    "n_pilot": 20,
+    "floor": "BLOCKING: best arm >= 3/20",
+    "saturation": "BLOCKING: okf-bundle <= 18/20 and okf-index-relevant <= 18/20 ONLY (llms-txt and kg-json exempt)",
+    "f3_competitiveness": "BLOCKING: >= 2 arms with >= 2/5 on F3 items",
+    "llms_txt_f4_guard": "BLOCKING: llms-txt >= 2/5 on F4 items",
+    "on_failure": "STOP, redesign, re-register"
+  },
+  "frozen_payloads": [
+    {
+      "path": "freeze/okf/clusters/agent-infrastructure/agent-payments-x402.md",
+      "sha256": "2f105efbd5d8df7abfc4b3ec2e76da642ba3d53188139b3afc96b2c15b36e93c"
+    },
+    {
+      "path": "freeze/okf/clusters/agent-infrastructure/agent-ready-website.md",
+      "sha256": "47a32dc62267a50a89e0e0501b7555a650803f8e96b77bbe2faaf265034e6b83"
+    },
+    {
+      "path": "freeze/okf/clusters/agent-infrastructure/index.md",
+      "sha256": "5ecbff63e5fb13a3a5092bd345d83e58a7e6e7e38218f1b2e4ace08a18fbaf6b"
+    },
+    {
+      "path": "freeze/okf/clusters/agent-infrastructure/pay-per-call-margins-treasury.md",
+      "sha256": "1836d32e53ec19fc79955d9a0af0f082d788f578cad2e8986e24d827faa10818"
+    },
+    {
+      "path": "freeze/okf/clusters/agent-infrastructure/verify-x402-endpoints.md",
+      "sha256": "db2e88fefa2ceaddc0ed81282e3fd815242bcc2ca20ea56313d7f72b3f737e74"
+    },
+    {
+      "path": "freeze/okf/clusters/agent-infrastructure/webmcp-beyond-checkout.md",
+      "sha256": "62a916c50043eea765e1d631bf7550a7becc04c50d7bf619b0f4381586960759"
+    },
+    {
+      "path": "freeze/okf/clusters/cost-roi/ai-agents-legacy-roi.md",
+      "sha256": "8ddae13429d2233d8558051e17b7e0a144d11b4dcdc4f5ac2fee673ea0664a9d"
+    },
+    {
+      "path": "freeze/okf/clusters/cost-roi/index.md",
+      "sha256": "1327814bc3606fe8e31b3dcf705c9bffa3bc8492c270405e4061d8000d99b2fc"
+    },
+    {
+      "path": "freeze/okf/clusters/cost-roi/open-weights-structured-output-cost.md",
+      "sha256": "869251e0680d31027fbe520b40e28d98dea28adfbef335706de264dabb7384f5"
+    },
+    {
+      "path": "freeze/okf/clusters/cost-roi/rag-legacy-systems.md",
+      "sha256": "7be82feec6c96f78e0acb9a83f12670c82972abf62c781e1c998fcd0d654b7ef"
+    },
+    {
+      "path": "freeze/okf/clusters/devops-implementation/ai-assisted-development.md",
+      "sha256": "afc428d02778cb190edf58bf02b631488f56d91851b64634b3d23442025155b7"
+    },
+    {
+      "path": "freeze/okf/clusters/devops-implementation/index.md",
+      "sha256": "cdc8a59e85256319233953dd50f465909786c2786d6d88c0d3d7ce504ca24668"
+    },
+    {
+      "path": "freeze/okf/clusters/evaluation-reliability/accuracy-cost-matrix-threshold.md",
+      "sha256": "190740577eb9351ea701fbea53da99e3079825afbbaa8681d7dc727ee0385da8"
+    },
+    {
+      "path": "freeze/okf/clusters/evaluation-reliability/index.md",
+      "sha256": "df7075d492efd0e5571f29a8c77c2ea13be1dd0d8c411b346c663730592e1c47"
+    },
+    {
+      "path": "freeze/okf/clusters/evaluation-reliability/prompt-repetition-agent-evaluation.md",
+      "sha256": "57ebb2e421bba2b026975fcb991954a53317315103a55d2ce1707deb676e6501"
+    },
+    {
+      "path": "freeze/okf/clusters/governance-oversight/ai-adoption-engineering.md",
+      "sha256": "48bd6e27d22dea55758f79040f55aa2b1e1b5e98bccc7f40b5cc593df191366a"
+    },
+    {
+      "path": "freeze/okf/clusters/governance-oversight/ai-approval-gates.md",
+      "sha256": "73f41a8ae653dc0c13973fe49871b657048bcb01737a770f00433b8c81df21e6"
+    },
+    {
+      "path": "freeze/okf/clusters/governance-oversight/ai-observability-gaps.md",
+      "sha256": "82fa4b61fa25e39a6a74d3d46ec407c4e2f3fd70246654cd9f8730ad1208d3f8"
+    },
+    {
+      "path": "freeze/okf/clusters/governance-oversight/ai-sdlc-governance-stack.md",
+      "sha256": "9f3f85a42b8fdc604cab067492b90d94dc411baf756f6f303d2cf67fa593bfd5"
+    },
+    {
+      "path": "freeze/okf/clusters/governance-oversight/decision-frameworks-ai-delivery.md",
+      "sha256": "32e394721ae002fa05ba522bdb49bdf4d6277c8ab4797436f1b66a9d2ac31e9b"
+    },
+    {
+      "path": "freeze/okf/clusters/governance-oversight/index.md",
+      "sha256": "3760b053abcf69e1710914cfade5a23ad6847ef47b18127ee65be8adf1aff87a"
+    },
+    {
+      "path": "freeze/okf/clusters/governance-oversight/sre-ai-agents-production.md",
+      "sha256": "c4b32265842f2f924aa8a2e16894fd89766e655a68bb55a070b22251ab69a56a"
+    },
+    {
+      "path": "freeze/okf/clusters/governance-oversight/zero-downtime-dns-migration.md",
+      "sha256": "368fb924fba9416f59f6dd845241e71c158978154ce098f4d6d2e5478ded7fae"
+    },
+    {
+      "path": "freeze/okf/clusters/multi-agent-architecture/ai-agent-enumerate-or-delegate.md",
+      "sha256": "03251076f3c53c445c065acb553c418e14ad2c7f803523b6b2692de6833af234"
+    },
+    {
+      "path": "freeze/okf/clusters/multi-agent-architecture/ai-augmented-cicd.md",
+      "sha256": "6eb5c9a08b9c3729d9c025165529b2fb8659a5233f29716ebfcd5d968c90139a"
+    },
+    {
+      "path": "freeze/okf/clusters/multi-agent-architecture/context-engineering-multi-agent-reliability.md",
+      "sha256": "6f335ea9eb0baa96deac2e1d11740aeea58198f8a31ac99ffcfec87f9f112e4e"
+    },
+    {
+      "path": "freeze/okf/clusters/multi-agent-architecture/index.md",
+      "sha256": "5ec8a8d150246785665291046fc6e17801e4ed7e5ff7e3d33e75062747d1acf0"
+    },
+    {
+      "path": "freeze/okf/clusters/multi-agent-architecture/mcp-tool-docs.md",
+      "sha256": "84da04016e3446ce421fb1a5c5ec1f316bc171e523fce4a506bf13e43326f72f"
+    },
+    {
+      "path": "freeze/okf/clusters/multi-agent-architecture/orchestrating-ai-agents-subagent-architecture.md",
+      "sha256": "22196913dbf5299f05fb64bf7a767bd2a3ef3ab0aad8b0902f2772e1b910796f"
+    },
+    {
+      "path": "freeze/okf/clusters/security-supply-chain/ai-supply-chain-attack-vectors.md",
+      "sha256": "98aa832e80ad4c83d970c2005044edcbaff64f1adf1bf4d816bd3d89befafbd3"
+    },
+    {
+      "path": "freeze/okf/clusters/security-supply-chain/index.md",
+      "sha256": "291a27728163bce5eabb6d7994339fa9dbdb77ada01fd44267ba46efc99659d8"
+    },
+    {
+      "path": "freeze/okf/index.md",
+      "sha256": "42ac3f41d424afe23846b5ce4df681cf33e24fab6e61e5b2f2c2e2e1fbdc2c85"
+    },
+    {
+      "path": "freeze/knowledge-graph.json",
+      "sha256": "73dfafca11e15a45b62664d4740f7d16cd394f881b264fb2470355bebb4c91d9"
+    }
+  ],
+  "per_question_payloads": [
+    {
+      "item_id": "q-20261125-001",
+      "family": "F1",
+      "clusters": [
+        "evaluation-reliability",
+        "multi-agent-architecture"
+      ],
+      "sha256": "473187a91c6d63fe7aa63d0c37ddf8b92ee0ff30521d1f2ab5e5904efc1c1851"
+    },
+    {
+      "item_id": "q-20261125-002",
+      "family": "F2",
+      "clusters": [
+        "governance-oversight"
+      ],
+      "sha256": "f2f9a64431def184816ff99ca2a164f385b39ffb3b0ce1c0511082d08bc785df"
+    },
+    {
+      "item_id": "q-20261125-003",
+      "family": "F3",
+      "clusters": [
+        "cost-roi",
+        "evaluation-reliability",
+        "governance-oversight",
+        "multi-agent-architecture"
+      ],
+      "sha256": "64df7a35b825c9d80e5fba1de10ce13979a21a6857f5bfc5fd63ccf8aaf840b7"
+    },
+    {
+      "item_id": "q-20261125-004",
+      "family": "F4",
+      "clusters": [
+        "agent-infrastructure"
+      ],
+      "sha256": "40973651207a5c5e66807dcb891da4640f0e42efb554f566e357883f424e0dce"
+    },
+    {
+      "item_id": "q-20261125-005",
+      "family": "F1",
+      "clusters": [
+        "devops-implementation",
+        "governance-oversight",
+        "multi-agent-architecture",
+        "security-supply-chain"
+      ],
+      "sha256": "ee5e5fc15ebd71ac5e0620bfeb65624eee4cfcf3ba9ea49488219deb3a94bfae"
+    },
+    {
+      "item_id": "q-20261125-006",
+      "family": "F2",
+      "clusters": [
+        "agent-infrastructure"
+      ],
+      "sha256": "40973651207a5c5e66807dcb891da4640f0e42efb554f566e357883f424e0dce"
+    },
+    {
+      "item_id": "q-20261125-007",
+      "family": "F3",
+      "clusters": [
+        "cost-roi",
+        "governance-oversight"
+      ],
+      "sha256": "eceaffd772e0f460aef9bc685665c7f48bf4e032f62b8880f91eb3bb8abd4a92"
+    },
+    {
+      "item_id": "q-20261125-008",
+      "family": "F4",
+      "clusters": [
+        "cost-roi",
+        "evaluation-reliability",
+        "governance-oversight",
+        "multi-agent-architecture"
+      ],
+      "sha256": "64df7a35b825c9d80e5fba1de10ce13979a21a6857f5bfc5fd63ccf8aaf840b7"
+    },
+    {
+      "item_id": "q-20261125-009",
+      "family": "F1",
+      "clusters": [
+        "agent-infrastructure",
+        "cost-roi",
+        "multi-agent-architecture"
+      ],
+      "sha256": "9dc733717ae5c553104cfb49c797abdc74e231ef69e3aa4c9599a55b50752249"
+    },
+    {
+      "item_id": "q-20261125-010",
+      "family": "F2",
+      "clusters": [
+        "evaluation-reliability"
+      ],
+      "sha256": "d9cd11f238d4fd47045c2faed8528ad40f75bcdb50924c9baeb95dcd23a133bc"
+    },
+    {
+      "item_id": "q-20261125-011",
+      "family": "F3",
+      "clusters": [
+        "devops-implementation",
+        "governance-oversight",
+        "multi-agent-architecture"
+      ],
+      "sha256": "4f9a342e0de4295dfcece63a489aeeaedcc7b5cdd06c6a274ea47a00d5975251"
+    },
+    {
+      "item_id": "q-20261125-012",
+      "family": "F4",
+      "clusters": [
+        "cost-roi",
+        "evaluation-reliability",
+        "governance-oversight",
+        "multi-agent-architecture"
+      ],
+      "sha256": "64df7a35b825c9d80e5fba1de10ce13979a21a6857f5bfc5fd63ccf8aaf840b7"
+    },
+    {
+      "item_id": "q-20261125-013",
+      "family": "F1",
+      "clusters": [
+        "agent-infrastructure"
+      ],
+      "sha256": "40973651207a5c5e66807dcb891da4640f0e42efb554f566e357883f424e0dce"
+    },
+    {
+      "item_id": "q-20261125-014",
+      "family": "F2",
+      "clusters": [
+        "cost-roi"
+      ],
+      "sha256": "6f1ac094b61283a1ee9d16baa7f50a6b7d3ace63d4bd95f4828118eddb3ab014"
+    },
+    {
+      "item_id": "q-20261125-015",
+      "family": "F3",
+      "clusters": [
+        "cost-roi",
+        "evaluation-reliability",
+        "governance-oversight",
+        "multi-agent-architecture"
+      ],
+      "sha256": "64df7a35b825c9d80e5fba1de10ce13979a21a6857f5bfc5fd63ccf8aaf840b7"
+    },
+    {
+      "item_id": "q-20261125-016",
+      "family": "F4",
+      "clusters": [
+        "devops-implementation",
+        "governance-oversight",
+        "multi-agent-architecture"
+      ],
+      "sha256": "4f9a342e0de4295dfcece63a489aeeaedcc7b5cdd06c6a274ea47a00d5975251"
+    },
+    {
+      "item_id": "q-20261125-017",
+      "family": "F1",
+      "clusters": [
+        "devops-implementation",
+        "governance-oversight",
+        "multi-agent-architecture"
+      ],
+      "sha256": "4f9a342e0de4295dfcece63a489aeeaedcc7b5cdd06c6a274ea47a00d5975251"
+    },
+    {
+      "item_id": "q-20261125-018",
+      "family": "F2",
+      "clusters": [
+        "governance-oversight"
+      ],
+      "sha256": "f2f9a64431def184816ff99ca2a164f385b39ffb3b0ce1c0511082d08bc785df"
+    },
+    {
+      "item_id": "q-20261125-019",
+      "family": "F3",
+      "clusters": [
+        "governance-oversight",
+        "multi-agent-architecture",
+        "security-supply-chain"
+      ],
+      "sha256": "649861e57a67adec6bd8d4d0d6e50c1bbc62496c26ed14d8533b74d487cedde7"
+    },
+    {
+      "item_id": "q-20261125-020",
+      "family": "F4",
+      "clusters": [
+        "cost-roi",
+        "evaluation-reliability",
+        "governance-oversight",
+        "multi-agent-architecture"
+      ],
+      "sha256": "64df7a35b825c9d80e5fba1de10ce13979a21a6857f5bfc5fd63ccf8aaf840b7"
+    },
+    {
+      "item_id": "q-20261125-021",
+      "family": "F1",
+      "clusters": [
+        "agent-infrastructure"
+      ],
+      "sha256": "40973651207a5c5e66807dcb891da4640f0e42efb554f566e357883f424e0dce"
+    },
+    {
+      "item_id": "q-20261125-022",
+      "family": "F2",
+      "clusters": [
+        "evaluation-reliability"
+      ],
+      "sha256": "d9cd11f238d4fd47045c2faed8528ad40f75bcdb50924c9baeb95dcd23a133bc"
+    },
+    {
+      "item_id": "q-20261125-023",
+      "family": "F3",
+      "clusters": [
+        "cost-roi"
+      ],
+      "sha256": "6f1ac094b61283a1ee9d16baa7f50a6b7d3ace63d4bd95f4828118eddb3ab014"
+    },
+    {
+      "item_id": "q-20261125-024",
+      "family": "F4",
+      "clusters": [
+        "devops-implementation",
+        "governance-oversight",
+        "multi-agent-architecture"
+      ],
+      "sha256": "4f9a342e0de4295dfcece63a489aeeaedcc7b5cdd06c6a274ea47a00d5975251"
+    },
+    {
+      "item_id": "q-20261125-025",
+      "family": "F1",
+      "clusters": [
+        "cost-roi",
+        "devops-implementation",
+        "governance-oversight",
+        "multi-agent-architecture"
+      ],
+      "sha256": "6eeb3e3ac933651dac6927e7dbb0cdf95c58783f1097d9f1644ef2bc9c9d5d87"
+    },
+    {
+      "item_id": "q-20261125-026",
+      "family": "F2",
+      "clusters": [
+        "cost-roi"
+      ],
+      "sha256": "6f1ac094b61283a1ee9d16baa7f50a6b7d3ace63d4bd95f4828118eddb3ab014"
+    },
+    {
+      "item_id": "q-20261125-027",
+      "family": "F3",
+      "clusters": [
+        "devops-implementation",
+        "governance-oversight",
+        "multi-agent-architecture"
+      ],
+      "sha256": "4f9a342e0de4295dfcece63a489aeeaedcc7b5cdd06c6a274ea47a00d5975251"
+    },
+    {
+      "item_id": "q-20261125-028",
+      "family": "F4",
+      "clusters": [
+        "governance-oversight",
+        "multi-agent-architecture",
+        "security-supply-chain"
+      ],
+      "sha256": "649861e57a67adec6bd8d4d0d6e50c1bbc62496c26ed14d8533b74d487cedde7"
+    },
+    {
+      "item_id": "q-20261125-029",
+      "family": "F1",
+      "clusters": [
+        "multi-agent-architecture"
+      ],
+      "sha256": "074eb7d0a5c9765d24244984380d2ab028d16b9bc0ccf98f3d3c89e2d9ce808a"
+    },
+    {
+      "item_id": "q-20261125-030",
+      "family": "F2",
+      "clusters": [
+        "agent-infrastructure"
+      ],
+      "sha256": "40973651207a5c5e66807dcb891da4640f0e42efb554f566e357883f424e0dce"
+    },
+    {
+      "item_id": "q-20261125-031",
+      "family": "F4",
+      "clusters": [
+        "cost-roi",
+        "evaluation-reliability",
+        "governance-oversight",
+        "multi-agent-architecture"
+      ],
+      "sha256": "64df7a35b825c9d80e5fba1de10ce13979a21a6857f5bfc5fd63ccf8aaf840b7"
+    },
+    {
+      "item_id": "q-20261125-032",
+      "family": "F1",
+      "clusters": [
+        "cost-roi",
+        "governance-oversight",
+        "multi-agent-architecture",
+        "security-supply-chain"
+      ],
+      "sha256": "8920332454d8acf8b2e692a879862f3cadaab0c5aad581454194540cc240e257"
+    },
+    {
+      "item_id": "q-20261125-033",
+      "family": "F2",
+      "clusters": [
+        "devops-implementation"
+      ],
+      "sha256": "6a686519b405ab1b0835240694dbf4174b76192af8005817703456e1ca4096de"
+    },
+    {
+      "item_id": "q-20261125-034",
+      "family": "F4",
+      "clusters": [
+        "agent-infrastructure"
+      ],
+      "sha256": "40973651207a5c5e66807dcb891da4640f0e42efb554f566e357883f424e0dce"
+    },
+    {
+      "item_id": "q-20261125-035",
+      "family": "F1",
+      "clusters": [
+        "agent-infrastructure",
+        "evaluation-reliability",
+        "multi-agent-architecture"
+      ],
+      "sha256": "54daf8abe39686d07464d440099505a5dda265152a3d927fe8d4d7a43f591dec"
+    },
+    {
+      "item_id": "q-20261125-036",
+      "family": "F2",
+      "clusters": [
+        "multi-agent-architecture"
+      ],
+      "sha256": "074eb7d0a5c9765d24244984380d2ab028d16b9bc0ccf98f3d3c89e2d9ce808a"
+    },
+    {
+      "item_id": "q-20261125-037",
+      "family": "F4",
+      "clusters": [
+        "cost-roi",
+        "evaluation-reliability",
+        "governance-oversight",
+        "multi-agent-architecture"
+      ],
+      "sha256": "64df7a35b825c9d80e5fba1de10ce13979a21a6857f5bfc5fd63ccf8aaf840b7"
+    },
+    {
+      "item_id": "q-20261125-038",
+      "family": "F1",
+      "clusters": [
+        "cost-roi"
+      ],
+      "sha256": "6f1ac094b61283a1ee9d16baa7f50a6b7d3ace63d4bd95f4828118eddb3ab014"
+    },
+    {
+      "item_id": "q-20261125-039",
+      "family": "F2",
+      "clusters": [
+        "governance-oversight"
+      ],
+      "sha256": "f2f9a64431def184816ff99ca2a164f385b39ffb3b0ce1c0511082d08bc785df"
+    },
+    {
+      "item_id": "q-20261125-040",
+      "family": "F4",
+      "clusters": [
+        "governance-oversight",
+        "multi-agent-architecture",
+        "security-supply-chain"
+      ],
+      "sha256": "649861e57a67adec6bd8d4d0d6e50c1bbc62496c26ed14d8533b74d487cedde7"
+    },
+    {
+      "item_id": "q-20261125-041",
+      "family": "F1",
+      "clusters": [
+        "governance-oversight",
+        "multi-agent-architecture"
+      ],
+      "sha256": "4e9ed5dff5d386a89eb07b0ffce6520831b635c5446c949663b6e632000e6940"
+    },
+    {
+      "item_id": "q-20261125-042",
+      "family": "F2",
+      "clusters": [
+        "governance-oversight"
+      ],
+      "sha256": "f2f9a64431def184816ff99ca2a164f385b39ffb3b0ce1c0511082d08bc785df"
+    },
+    {
+      "item_id": "q-20261125-043",
+      "family": "F4",
+      "clusters": [
+        "cost-roi",
+        "devops-implementation",
+        "evaluation-reliability",
+        "governance-oversight",
+        "multi-agent-architecture",
+        "security-supply-chain"
+      ],
+      "sha256": "c993f4ec17991685548a060ed63e4e9975f693b4703c5d0eb92928cb60a0667b"
+    },
+    {
+      "item_id": "q-20261125-044",
+      "family": "F1",
+      "clusters": [
+        "cost-roi",
+        "evaluation-reliability",
+        "governance-oversight",
+        "multi-agent-architecture"
+      ],
+      "sha256": "64df7a35b825c9d80e5fba1de10ce13979a21a6857f5bfc5fd63ccf8aaf840b7"
+    },
+    {
+      "item_id": "q-20261125-045",
+      "family": "F2",
+      "clusters": [
+        "agent-infrastructure"
+      ],
+      "sha256": "40973651207a5c5e66807dcb891da4640f0e42efb554f566e357883f424e0dce"
+    },
+    {
+      "item_id": "q-20261125-046",
+      "family": "F4",
+      "clusters": [
+        "governance-oversight"
+      ],
+      "sha256": "f2f9a64431def184816ff99ca2a164f385b39ffb3b0ce1c0511082d08bc785df"
+    },
+    {
+      "item_id": "q-20261125-047",
+      "family": "F1",
+      "clusters": [
+        "evaluation-reliability",
+        "governance-oversight",
+        "multi-agent-architecture"
+      ],
+      "sha256": "b568995634ee780667737258793ba58809fe551b9b02ff2a6691294cce822625"
+    },
+    {
+      "item_id": "q-20261125-048",
+      "family": "F2",
+      "clusters": [
+        "governance-oversight"
+      ],
+      "sha256": "f2f9a64431def184816ff99ca2a164f385b39ffb3b0ce1c0511082d08bc785df"
+    },
+    {
+      "item_id": "q-20261125-049",
+      "family": "F4",
+      "clusters": [
+        "agent-infrastructure"
+      ],
+      "sha256": "40973651207a5c5e66807dcb891da4640f0e42efb554f566e357883f424e0dce"
+    },
+    {
+      "item_id": "q-20261125-050",
+      "family": "F1",
+      "clusters": [
+        "cost-roi",
+        "governance-oversight"
+      ],
+      "sha256": "eceaffd772e0f460aef9bc685665c7f48bf4e032f62b8880f91eb3bb8abd4a92"
+    },
+    {
+      "item_id": "q-20261125-051",
+      "family": "F2",
+      "clusters": [
+        "security-supply-chain"
+      ],
+      "sha256": "e8db8ddb4b5167daddcb996bd50c6be2cf273fce6d76a0fe10367096c0b80a6a"
+    },
+    {
+      "item_id": "q-20261125-052",
+      "family": "F4",
+      "clusters": [
+        "cost-roi",
+        "evaluation-reliability",
+        "governance-oversight",
+        "multi-agent-architecture"
+      ],
+      "sha256": "64df7a35b825c9d80e5fba1de10ce13979a21a6857f5bfc5fd63ccf8aaf840b7"
+    },
+    {
+      "item_id": "q-20261125-053",
+      "family": "F1",
+      "clusters": [
+        "devops-implementation",
+        "evaluation-reliability",
+        "governance-oversight",
+        "multi-agent-architecture"
+      ],
+      "sha256": "c7c959dc0bce13e49b8a44f6d345eda14564799ebc6f9523d15f38f790d06878"
+    },
+    {
+      "item_id": "q-20261125-054",
+      "family": "F2",
+      "clusters": [
+        "governance-oversight"
+      ],
+      "sha256": "f2f9a64431def184816ff99ca2a164f385b39ffb3b0ce1c0511082d08bc785df"
+    },
+    {
+      "item_id": "q-20261125-055",
+      "family": "F4",
+      "clusters": [
+        "cost-roi",
+        "evaluation-reliability",
+        "governance-oversight",
+        "multi-agent-architecture"
+      ],
+      "sha256": "64df7a35b825c9d80e5fba1de10ce13979a21a6857f5bfc5fd63ccf8aaf840b7"
+    },
+    {
+      "item_id": "q-20261125-056",
+      "family": "F1",
+      "clusters": [
+        "devops-implementation",
+        "governance-oversight"
+      ],
+      "sha256": "418c69558bc69f7fa796fc06db23745fceece5c21d2865ca121f419cc10bd3b7"
+    },
+    {
+      "item_id": "q-20261125-057",
+      "family": "F2",
+      "clusters": [
+        "multi-agent-architecture"
+      ],
+      "sha256": "074eb7d0a5c9765d24244984380d2ab028d16b9bc0ccf98f3d3c89e2d9ce808a"
+    },
+    {
+      "item_id": "q-20261125-058",
+      "family": "F1",
+      "clusters": [
+        "devops-implementation",
+        "governance-oversight",
+        "multi-agent-architecture"
+      ],
+      "sha256": "4f9a342e0de4295dfcece63a489aeeaedcc7b5cdd06c6a274ea47a00d5975251"
+    },
+    {
+      "item_id": "q-20261125-059",
+      "family": "F2",
+      "clusters": [
+        "governance-oversight"
+      ],
+      "sha256": "f2f9a64431def184816ff99ca2a164f385b39ffb3b0ce1c0511082d08bc785df"
+    },
+    {
+      "item_id": "q-20261125-060",
+      "family": "F1",
+      "clusters": [
+        "agent-infrastructure"
+      ],
+      "sha256": "40973651207a5c5e66807dcb891da4640f0e42efb554f566e357883f424e0dce"
+    },
+    {
+      "item_id": "q-20261125-061",
+      "family": "F2",
+      "clusters": [
+        "cost-roi"
+      ],
+      "sha256": "6f1ac094b61283a1ee9d16baa7f50a6b7d3ace63d4bd95f4828118eddb3ab014"
+    },
+    {
+      "item_id": "q-20261125-062",
+      "family": "F1",
+      "clusters": [
+        "agent-infrastructure",
+        "governance-oversight",
+        "multi-agent-architecture"
+      ],
+      "sha256": "8a132003064444f110efc9c3456d3c877047e5ebff1af7498327305cb6f7a828"
+    },
+    {
+      "item_id": "q-20261125-063",
+      "family": "F2",
+      "clusters": [
+        "multi-agent-architecture"
+      ],
+      "sha256": "074eb7d0a5c9765d24244984380d2ab028d16b9bc0ccf98f3d3c89e2d9ce808a"
+    }
+  ],
+  "preconditions": [
+    "scripts/verify-f3-payloads.py <questions-file> exits 0 for BOTH pilot and full questions files (v2.1 conditions PLUS the okf-index-relevant gate: every F3 item's derived gold-cluster set present in its composed payload, strict-subset non-answerability witness per item)",
+    "recipe/run-bench.sh aborts loudly on any frozen_payloads sha256 mismatch at run start (seal-v2.json for v2 arms, seal-v3.json for okf-index-relevant)",
+    "composed payload sha256 matches the per_question_payloads pin for every item (byte-determinism)"
+  ]
+}

@@ -19,6 +19,7 @@ def _load(name: str, path: Path):
 
 
 _score = _load("score_v2", Path(__file__).resolve().parent / "recipe" / "score-v2.py")
+ANSWERABLE = _score.ANSWERABLE
 cluster_label_map = _score.cluster_label_map
 extract_answer = _score.extract_answer
 norm_set = _score.norm_set
@@ -118,6 +119,20 @@ class TestClusterLabelMap(unittest.TestCase):
         labels = cluster_label_map(snapshot)
         self.assertEqual(labels["c1"], "c1")
         self.assertEqual(labels["agent infrastructure"], "c1")
+
+
+class TestAnswerableMapV22Delta(unittest.TestCase):
+    """Seal-v3.json (preregistration-v2.2.md) answerability delta: the new
+    okf-index-relevant arm joins F4 only; F1/F2/F3 are unchanged."""
+
+    def test_okf_index_relevant_f4_only(self):
+        self.assertEqual(
+            ANSWERABLE,
+            {"F1": {"kg-json"},
+             "F2": {"kg-json"},
+             "F3": {"kg-json", "llms-txt"},
+             "F4": {"llms-txt", "kg-json", "okf-bundle",
+                    "okf-index-relevant"}})
 
 
 if __name__ == "__main__":
