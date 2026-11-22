@@ -11,7 +11,9 @@
 #                   cluster indexes and concept pages named by the item's
 #                   derived gold-cluster set, per preregistration-v2.2.md)
 #   questions-file  questions.json (blinded for pilot, plaintext for full;
-#                   the runner only reads items[i].prompt, so both work)
+#                   the v2.1 arms only read items[i].prompt so both work; the
+#                   v2.2 arm also reads ground_truth and family for payload
+#                   composition, so only the plaintext file supports it)
 #   start           1-based index of the first item to run (pilot: 1)
 #   count           number of items to run (pilot: 20, full: 63; F1=20, F2=20, F3=7, F4=16)
 #
@@ -68,6 +70,7 @@ while IFS=$'\t' read -r EXPECTED_SHA FREEZE_PATH; do
     echo "ERROR: frozen payload missing: $FREEZE_PATH" >&2
     exit 1
   fi
+  # shasum -a 256 is the v2 pipeline checksum convention (pre-existing).
   ACTUAL_SHA=$(shasum -a 256 "$FREEZE_PATH" | awk '{print $1}')
   if [ "$ACTUAL_SHA" != "$EXPECTED_SHA" ]; then
     echo "ERROR: frozen payload sha256 mismatch: $FREEZE_PATH: $ACTUAL_SHA (expected $EXPECTED_SHA)" >&2
@@ -112,10 +115,14 @@ esac
 
 # Per-question payload composition for okf-index-relevant
 # (preregistration-v2.2.md, pinned before sealing): freeze/okf/index.md
-# plus, per derived gold cluster, its index and its linked concept pages,
-# sorted and deduplicated. Derivation: nodes[].category -> clusters[] ->
-# post-slug filenames (concept pages are post slugs, NOT nodes[].concepts
-# slugs). Prints one file path per line; deterministic.
+# plus, per derived gold cluster, its index and its linked concept pages.
+# NOTE: per-question composition is deterministic only while the freeze
+# tree and the questions file are unchanged; both are sha256-pinned in
+# seal-v3.json (frozen_payloads + dataset) and enforced at run time by
+# the per-item pin check in the item loop below. Derivation:
+# nodes[].category -> clusters[] -> post-slug filenames (concept pages
+# are post slugs, NOT nodes[].concepts slugs). All enumerations use
+# `sort -u` (deterministic); prints one file path per line.
 okf_relevant_pages() {
   python3 -c '
 import json, pathlib, re, sys
@@ -149,6 +156,19 @@ print("\n".join(str(p) for p in pages))
 ' "$1" "$2" "$SNAPSHOT" freeze/okf
 }
 
+# Composed-payload sha256 using the exact derivation that produced the
+# seal's per_question_payloads pins: python join of page texts, preserving
+# per-file trailing newlines (bash command substitution strips them, so
+# the pin check must not hash the shell-assembled PAYLOAD string).
+okf_composed_sha() {
+  okf_relevant_pages "$1" "$2" | python3 -c '
+import hashlib, pathlib, sys
+print(hashlib.sha256(
+    "\n".join(pathlib.Path(p).read_text() for p in sys.stdin.read().splitlines())
+    .encode()).hexdigest())
+'
+}
+
 OUT_DIR="results/raw-v2/${ARM}"
 mkdir -p "$OUT_DIR"
 
@@ -174,15 +194,38 @@ for i in $(seq "$START" $((START + COUNT - 1))); do
   fi
 
   if [ "$PER_QUESTION_PAYLOAD" = "1" ]; then
+    # Pages are joined with a single newline, no leading newline; this
+    # matches the sealed per_question_payloads composition exactly.
     PAYLOAD=""
     while IFS= read -r PAGE; do
       if [ ! -f "$PAGE" ]; then
         echo "ERROR: composed payload page missing: $PAGE (item $ITEM_ID)" >&2
         exit 1
       fi
-      PAYLOAD="${PAYLOAD}
-$(cat "$PAGE")"
+      PAGE_TEXT="$(cat "$PAGE")"
+      if [ -z "$PAYLOAD" ]; then
+        PAYLOAD="$PAGE_TEXT"
+      else
+        PAYLOAD="${PAYLOAD}
+${PAGE_TEXT}"
+      fi
     done < <(okf_relevant_pages "$QUESTIONS" "$i")
+
+    # Seal precondition 3: when the seal pins a composed payload for this
+    # item, recompute the composed payload sha256 and abort loudly on
+    # mismatch. Pilot items without a pin skip the check. The hash is
+    # recomputed with the same derivation that produced the seal pins
+    # (python join over the composed pages, preserving per-file trailing
+    # newlines), so a freeze-tree or questions-file change is detected.
+    EXPECTED_PIN=$(jq -r --arg id "$ITEM_ID" \
+      '.per_question_payloads[] | select(.item_id == $id) | .sha256' "$SEAL")
+    if [ -n "$EXPECTED_PIN" ] && [ "$EXPECTED_PIN" != "null" ]; then
+      ACTUAL_PIN=$(okf_composed_sha "$QUESTIONS" "$i")
+      if [ "$ACTUAL_PIN" != "$EXPECTED_PIN" ]; then
+        echo "ERROR: composed payload sha256 mismatch for item $ITEM_ID: $ACTUAL_PIN (expected $EXPECTED_PIN)" >&2
+        exit 1
+      fi
+    fi
   fi
 
   PROMPT="The payload below is the ONLY permitted knowledge source. Do not use any knowledge outside it. If the payload does not determine the answer, respond with {\"answer\": null}.
