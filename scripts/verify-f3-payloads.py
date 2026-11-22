@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""Pre-seal assertion (seal v2.1, checklist item 3): verify that every F3
-(forward cluster membership) ground-truth value is deterministically
-present in each ANSWERABLE arm's frozen payload, and that okf-bundle is
-NOT deterministically answerable on F3.
+"""Pre-seal assertion (seal v2.1 checklist item 3, extended for seal v2.2):
+verify that every F3 (forward cluster membership) ground-truth value is
+deterministically present in each ANSWERABLE arm's frozen payload, that
+okf-bundle is NOT deterministically answerable on F3, and (v2.2 gate) that
+the okf-index-relevant arm's per-question payload composition is complete
+and leaves F3 non-answerable.
 
 Checks per F3 item (cluster -> gold post slugs):
   kg-json:  freeze/knowledge-graph.json clusters[].posts contains the gold
@@ -14,6 +16,14 @@ Checks per F3 item (cluster -> gold post slugs):
             strict subset of the gold posts (verified here for EVERY F3
             item's cluster, so no sampled item could flip okf to
             answerable).
+  okf-index-relevant: per preregistration-v2.2.md, the derived gold-cluster
+            set G (sorted unique nodes[].category values over seed slugs,
+            routed via clusters[] -> post-slug filenames) must be NON-EMPTY
+            and fully present in the composed payload (every G cluster has
+            an okf directory whose index exists); the gate FAILS if any
+            derived gold cluster is absent from the composition. It also
+            re-derives F3 non-answerability: every G cluster index must
+            list a strict subset of the gold set.
 
 Usage:
     scripts/verify-f3-payloads.py <questions-file>
@@ -54,6 +64,20 @@ def okf_index_posts(cluster_id: str) -> list[str] | None:
     return re.findall(r"\(([a-z0-9-]+)\.md\)", idx.read_text())
 
 
+def relevant_arm_gold_clusters(item: dict, cat: dict, clusters: dict) -> list[str]:
+    """Derived gold-cluster set G for the okf-index-relevant arm
+    (preregistration-v2.2.md, pinned before sealing): sorted unique
+    nodes[].category values over seed slugs. F3 seeds are the ground-truth
+    post slugs, so cross-cluster gold sets route through node categories."""
+    return sorted({cat[s] for s in item["ground_truth"] if s in cat})
+
+
+def okf_relevant_composition(cid: str) -> list[str] | None:
+    """Post slugs listed by the okf cluster index for cid (the pages the
+    v2.2 arm would include for that cluster), or None when absent."""
+    return okf_index_posts(cid)
+
+
 def main() -> int:
     if len(sys.argv) != 2:
         print(__doc__)
@@ -61,6 +85,8 @@ def main() -> int:
     questions = json.loads(pathlib.Path(sys.argv[1]).read_text())
     snapshot = json.loads(SNAPSHOT.read_text())
     clusters = {c["id"]: c for c in snapshot["clusters"]}
+    cat = {n["slug"]: n["category"] for n in snapshot["nodes"]
+           if n["kind"] == "post"}
     llms_ci = parse_llms_concept_index(LLMS.read_text())
 
     f3 = [i for i in questions["items"] if i["family"] == "F3"]
@@ -92,6 +118,33 @@ def main() -> int:
             okf_not_answerable_witnesses += 1
         elif set(listed) != gold:
             okf_not_answerable_witnesses += 1
+        # okf-index-relevant (v2.2 gate): derived gold-cluster set must be
+        # non-empty and fully present in the composed payload (every G
+        # cluster has an okf directory with an index). The gate FAILS if
+        # any derived gold cluster is absent from the composition. F3
+        # non-answerability witness (mirrors the okf-bundle convention):
+        # the listing of at least one G cluster differs from the gold set,
+        # so the payload never determines the full gold membership.
+        g = relevant_arm_gold_clusters(item, cat, clusters)
+        if not g:
+            failures.append(f"{item['id']}: okf-index-relevant derived "
+                            f"gold-cluster set G is empty")
+        listings = {}
+        for c in g:
+            comp = okf_relevant_composition(c)
+            if comp is None:
+                failures.append(f"{item['id']}: okf-index-relevant gold "
+                                f"cluster {c} absent from payload "
+                                f"composition (no okf directory)")
+            elif not (OKF / "clusters" / c / "index.md").exists():
+                failures.append(f"{item['id']}: okf-index-relevant cluster "
+                                f"index missing for {c}")
+            else:
+                listings[c] = set(comp)
+        if listings and all(v == gold for v in listings.values()):
+            failures.append(f"{item['id']}: okf-index-relevant F3 "
+                            f"answerability drift: every composed cluster "
+                            f"index lists exactly the gold set")
 
     if okf_not_answerable_witnesses != len(f3):
         failures.append(
@@ -106,7 +159,8 @@ def main() -> int:
         return 1
     print(f"OK: {len(f3)} F3 items verified against frozen payloads "
           f"(kg-json exact, llms-txt exact, okf-bundle non-answerable "
-          f"for every sampled cluster)")
+          f"for every sampled cluster, okf-index-relevant composition "
+          f"complete and non-answerable on F3 for every item)")
     return 0
 
 

@@ -5,7 +5,11 @@
 #
 #   bash recipe/run-bench.sh <arm> <questions-file> <start> <count>
 #
-#   arm             one of: llms-txt | kg-json | okf-bundle
+#   arm             one of: llms-txt | kg-json | okf-bundle | okf-index-relevant
+#                   (okf-index-relevant is the v2.2 arm, seal-v3.json: a
+#                   PER-QUESTION payload of freeze/okf/index.md plus only the
+#                   cluster indexes and concept pages named by the item's
+#                   derived gold-cluster set, per preregistration-v2.2.md)
 #   questions-file  questions.json (blinded for pilot, plaintext for full;
 #                   the runner only reads items[i].prompt, so both work)
 #   start           1-based index of the first item to run (pilot: 1)
@@ -13,10 +17,15 @@
 #
 # Writes results/raw-v2/<arm>/run-NNN.json with the full raw response,
 # finish_reason, usage, and v2 scores. Scoring via recipe/score-v2.py per
-# the seal-v2 metric definitions (set equality + dice for F1/F3, integer
+# the seal metric definitions (set equality + dice for F1/F3, integer
 # match for F2, abstention scoring with the arm answerability map: F1 and
 # F2 answerable only by kg-json, F3 answerable by kg-json and llms-txt (not
-# okf-bundle), F4 answerable by all three arms.
+# okf-bundle), F4 answerable by all v2.1 arms and, under seal-v3.json
+# (schema 2.2.0), also by the new okf-index-relevant arm.
+#
+# SEAL is parameterized per arm: the v2.1 arms verify against seal-v2.json,
+# okf-index-relevant against seal-v3.json; SEAL_FILE overrides. The v2
+# payload assembly below is untouched.
 #
 # Payload per arm:
 #   llms-txt    the frozen snapshot text from freeze/llms.txt
@@ -37,7 +46,13 @@ ARM=${1:?usage: run-bench.sh <arm> <questions-file> <start> <count>}
 QUESTIONS=${2:?usage: run-bench.sh <arm> <questions-file> <start> <count>}
 START=${3:?usage: run-bench.sh <arm> <questions-file> <start> <count>}
 COUNT=${4:?usage: run-bench.sh <arm> <questions-file> <start> <count>}
-SEAL="seal-v2.json"
+# Seal file per arm (v2.1 arms -> seal-v2.json, v2.2 arm -> seal-v3.json);
+# SEAL_FILE env overrides for explicit reproduction runs.
+case "$ARM" in
+  okf-index-relevant) DEFAULT_SEAL="seal-v3.json" ;;
+  *) DEFAULT_SEAL="seal-v2.json" ;;
+esac
+SEAL="${SEAL_FILE:-$DEFAULT_SEAL}"
 SNAPSHOT="freeze/knowledge-graph.json"
 
 : "${CLOUDFLARE_API_TOKEN:?CLOUDFLARE_API_TOKEN must be set}"
@@ -46,12 +61,8 @@ SNAPSHOT="freeze/knowledge-graph.json"
 MODEL="@cf/google/gemma-4-26b-a4b-it"
 AI_URL="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/ai/run/${MODEL}"
 
-# Frozen snapshot: the sha256 pin is verified before every run.
-SEAL="seal-v2.json"
-SNAPSHOT="freeze/knowledge-graph.json"
-
-# Verify every frozen payload listed in seal-v2.json frozen_payloads before
-# running: missing file or sha256 mismatch aborts loudly.
+# Verify every frozen payload listed in the arm's seal frozen_payloads
+# before running: missing file or sha256 mismatch aborts loudly.
 while IFS=$'\t' read -r EXPECTED_SHA FREEZE_PATH; do
   if [ ! -f "$FREEZE_PATH" ]; then
     echo "ERROR: frozen payload missing: $FREEZE_PATH" >&2
@@ -89,8 +100,54 @@ $(cat "freeze/okf/clusters/${CLUSTER}/${CONCEPT}")"
       done
     done
     ;;
-  *) echo "ERROR: unknown arm '$ARM' (expected llms-txt|kg-json|okf-bundle)" >&2; exit 1 ;;
+  *) echo "ERROR: unknown arm '$ARM' (expected llms-txt|kg-json|okf-bundle|okf-index-relevant)" >&2; exit 1 ;;
 esac
+
+# The v2.2 arm composes a PER-QUESTION payload inside the item loop; the
+# v2 arms keep the fixed payloads assembled above (lines untouched).
+case "$ARM" in
+  okf-index-relevant) PER_QUESTION_PAYLOAD=1 ;;
+  *) PER_QUESTION_PAYLOAD=0 ;;
+esac
+
+# Per-question payload composition for okf-index-relevant
+# (preregistration-v2.2.md, pinned before sealing): freeze/okf/index.md
+# plus, per derived gold cluster, its index and its linked concept pages,
+# sorted and deduplicated. Derivation: nodes[].category -> clusters[] ->
+# post-slug filenames (concept pages are post slugs, NOT nodes[].concepts
+# slugs). Prints one file path per line; deterministic.
+okf_relevant_pages() {
+  python3 -c '
+import json, pathlib, re, sys
+questions, idx, snap, okf = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
+import pathlib
+questions, snap, okf = pathlib.Path(questions), pathlib.Path(snap), pathlib.Path(okf)
+item = json.loads(open(questions).read())["items"][int(idx) - 1]
+kg = json.loads(snap.read_text())
+cat = {n["slug"]: n["category"] for n in kg["nodes"] if n["kind"] == "post"}
+clusters = {c["id"]: c for c in kg["clusters"]}
+fam = item["family"]
+if fam == "F4":
+    seeds = sorted({s for c in item["ground_truth"] for s in clusters[c]["posts"]})
+elif fam == "F2":
+    seeds = [re.search(r"slug ([a-z0-9-]+)", item["prompt"]).group(1)]
+elif fam == "F1":
+    src = re.search(r"slug ([a-z0-9-]+)", item["prompt"]).group(1)
+    seeds = [src] + list(item["ground_truth"])
+else:
+    seeds = list(item["ground_truth"])
+pages = [okf / "index.md"]
+for c in sorted({cat[s] for s in seeds}):
+    d = okf / "clusters" / c
+    idxp = d / "index.md"
+    pages.append(idxp)
+    for p in sorted(set(re.findall(r"\(([a-z0-9-]+)\.md\)", idxp.read_text()))):
+        f = d / (p + ".md")
+        if f.is_file():
+            pages.append(f)
+print("\n".join(str(p) for p in pages))
+' "$1" "$2" "$SNAPSHOT" freeze/okf
+}
 
 OUT_DIR="results/raw-v2/${ARM}"
 mkdir -p "$OUT_DIR"
@@ -114,6 +171,18 @@ for i in $(seq "$START" $((START + COUNT - 1))); do
   if [ -z "$ITEM_ID" ] || [ "$ITEM_ID" = "null" ]; then
     echo "ERROR: no question item at index $i in $QUESTIONS" >&2
     exit 1
+  fi
+
+  if [ "$PER_QUESTION_PAYLOAD" = "1" ]; then
+    PAYLOAD=""
+    while IFS= read -r PAGE; do
+      if [ ! -f "$PAGE" ]; then
+        echo "ERROR: composed payload page missing: $PAGE (item $ITEM_ID)" >&2
+        exit 1
+      fi
+      PAYLOAD="${PAYLOAD}
+$(cat "$PAGE")"
+    done < <(okf_relevant_pages "$QUESTIONS" "$i")
   fi
 
   PROMPT="The payload below is the ONLY permitted knowledge source. Do not use any knowledge outside it. If the payload does not determine the answer, respond with {\"answer\": null}.
