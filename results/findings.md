@@ -61,9 +61,11 @@ The discriminative signal sits in F4 and F3: on items every arm can answer in pr
 - Raw records: `results/raw-v2/{llms-txt,kg-json,okf-bundle}/run-001..063.json` (full raw responses, usage, finish reason, sealed scores).
 - Statistics: `results/analysis-v2.json` (schema in [DATA_DICTIONARY.md](../DATA_DICTIONARY.md)).
 - Questions: `ground-truth/blinded-*-v2.1.json` (pre-run, blinded) and `ground-truth/full-v2.1.json` (plaintext, committed with raw outputs per the seal blinding note).
-- Deposit: Zenodo DOI 10.5281/zenodo.24441791 (single-zip artifact set) under concept DOI 10.5281/zenodo.24410380; superseded v2.1.x snapshots are listed on the Zenodo record.
+- Deposit: Zenodo DOI 10.5281/zenodo.24424679 (single-zip artifact set, v2.1 run) under concept DOI 10.5281/zenodo.24410380; superseded v2.1.x snapshots are listed on the Zenodo record.
 
-## v2.2 Extension: OKF Index-Plus-Relevant-Pages Arm (preregistered, not yet run)
+## v2.2 Extension: OKF Index-Plus-Relevant-Pages Arm (sealed, run complete)
+
+- Deposit: Zenodo DOI 10.5281/zenodo.24441791 (single-zip artifact set, v2.2.0 four-arm run including the relocated pilot captures and the incident manifest) under concept DOI 10.5281/zenodo.24410380; the record description documents the capture incident, the remediation, and that interim pre-repair values were never deposited.
 
 A fourth delivery-mode arm, `okf-index-relevant`, is preregistered under [seal-v3.json](../seal-v3.json) (schema 2.2.0; prose mirror in [preregistration-v2.2.md](../preregistration-v2.2.md)), sealed before any v2.2 item ran. It reuses the sealed v2.1 question sets, seeds, prompts, scoring rule, model, and 4096-token budget unchanged; the only difference is the payload: per question, the frozen OKF index plus only the cluster indexes and concept pages named by the item's derived gold-cluster set (mapping pinned BEFORE sealing: ground truth -> `nodes[].category` -> `clusters[]` -> post-slug filenames, `sort -u` enumerations), single completion. The intent is to test whether the okf surface's v2.1 failures (0.492 composite, 23/63 truncations, 0.375 F4 extraction) were caused by payload size rather than delivery mode.
 
