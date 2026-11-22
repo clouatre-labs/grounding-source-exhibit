@@ -1,0 +1,18 @@
+{
+  "group": "okf-index-relevant",
+  "session_id": "v2-okf-index-relevant-run-060",
+  "item_id": "q-20261125-060",
+  "family": "F1",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "finish_reason": "stop",
+  "prompt_tokens": 2497,
+  "completion_tokens": 2476,
+  "reasoning_tokens": null,
+  "wall_clock_seconds": 52,
+  "raw_response": "```json\n{\"answer\": [\"agent-payments-x402\", \"pay-per-call-margins-treasury\"]}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "abstained": false,
+  "item_score": false,
+  "note": null
+}
