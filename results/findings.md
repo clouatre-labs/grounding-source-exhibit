@@ -69,4 +69,21 @@ A fourth delivery-mode arm, `okf-index-relevant`, is preregistered under [seal-v
 
 Pre-run status and gates: `scripts/verify-f3-payloads.py` passes on BOTH question files with the extended gate (v2.1 conditions plus per-item okf-index-relevant composition completeness and F3 non-answerability witnesses), the composed payloads are byte-deterministic (per-question sha256 pins in the seal match repeated assemblies for sampled items across F1/F2/F3/F4), and `recipe/run-bench.sh` now parameterizes SEAL per arm (v2 arms keep seal-v2.json; `SEAL_FILE` overrides) without touching the v2 payload assembly. Sealed answerability delta: `okf-index-relevant` joins F4 only; F1 (symmetric Related links), F2 (no edge counts), and F3 (composed cluster indexes never list the full gold membership) remain non-answerable, so the arm's headline comparison against `okf-bundle` and `llms-txt` is scoped to F4 extraction accuracy, abstention accuracy on F1/F2/F3, and truncation count.
 
-Verdict and producer recommendation: DEFERRED. The comparison numbers (extraction accuracy, abstention accuracy, truncation count versus the whole-bundle arm and llms.txt) do not exist yet; the pilot gate (n=20, held out) is blocking and the full run is a single invocation (`bash recipe/run-bench.sh okf-index-relevant ground-truth/full-v2.1.json 1 63`, after the pilot). No producer recommendation is made until the sealed pilot and run complete; this section will be extended with the scoped comparison at that point.
+### Pilot result (n=20, gate PASSED) and scoped comparison
+
+All seal-v3 preconditions verified before the run: `verify-f3-payloads.py` exit 0 on both question files, frozen-payload sha256 match for all 67 entries across both seals, all 63 per-question pins reproduced byte-identically, and both questions files match their seal `dataset` pins. The runner needed a dispatch fix (the per-question arm had no branch in the fixed-payload assembly case and aborted at startup); composition, seal, and freeze tree are unchanged.
+
+Pilot gate, evaluated per `seal-v3.json` (all four blocking conditions met): floor best arm 20/20 (kg-json) >= 3/20; saturation okf-bundle 8/20 <= 18/20 and okf-index-relevant 8/20 <= 18/20; F3 competitiveness four arms >= 2/5 (llms-txt 5, kg-json 5, okf-bundle 2, okf-index-relevant 2); llms-txt F4 guard 5/5 >= 2/5.
+
+| Arm | item_score | F1 | F2 | F3 | F4 | Trunc | Mean prompt tok |
+|---|---|---|---|---|---|---|---|
+| okf-index-relevant | 8/20 | 0/5 | 3/5 | 2/5 | 3/5 | 3 | 4,124 |
+| okf-bundle | 8/20 | 0/5 | 4/5 | 2/5 | 2/5 | 4 | 10,078 |
+| llms-txt | 19/20 | 4/5 | 5/5 | 5/5 | 5/5 | 3 | 4,198 |
+| kg-json | 20/20 | 5/5 | 5/5 | 5/5 | 5/5 | 0 | n/a |
+
+Reading: at 41% of the whole-bundle payload the index-plus-relevant-pages arm matches okf-bundle's total and beats it on the sealed delta metric (F4 extraction 3/5 vs 2/5) with one fewer truncation. Two caveats: three of its items ended `finish_reason=length` with no answer emitted, which scores as correct abstention on the unanswerable families, so part of the F2/F3 credit is truncation-driven (the clean extraction signal is F4); and llms-txt scores 19/20 at comparable payload size, so the plaintext frontier still dominates any OKF surface in the pilot.
+
+Run-incident disclosure: a `count=0` smoke test triggered BSD `seq` descent and consumed single sealed attempts for pilot items 001 and 020 before the real invocation; both captures are kept as those items' only attempts (the item-020 file sits at its true slot `run-020.json`). An earlier invocation killed at a tool timeout may have discarded one unseen request for item 001; no second captured attempt exists for any item.
+
+Verdict and producer recommendation: the full 63-item run is cleared by the gate and is next (`bash recipe/run-bench.sh okf-index-relevant ground-truth/full-v2.1.json 1 63`); the final scoped comparison and producer recommendation follow it.
