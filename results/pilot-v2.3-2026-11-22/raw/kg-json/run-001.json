@@ -1,0 +1,18 @@
+{
+  "group": "kg-json",
+  "session_id": "v2-kg-json-run-001",
+  "item_id": "q-20261124-001",
+  "family": "F1",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "finish_reason": "stop",
+  "prompt_tokens": 19330,
+  "completion_tokens": 1534,
+  "reasoning_tokens": null,
+  "wall_clock_seconds": 13,
+  "raw_response": "```json\n{\"answer\": [\"orchestrating-ai-agents-subagent-architecture\", \"rag-legacy-systems\", \"ai-observability-gaps\", \"ai-adoption-engineering\", \"ai-supply-chain-attack-vectors\"]}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "abstained": false,
+  "item_score": true,
+  "note": null
+}

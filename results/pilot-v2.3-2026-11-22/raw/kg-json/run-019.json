@@ -1,0 +1,18 @@
+{
+  "group": "kg-json",
+  "session_id": "v2-kg-json-run-019",
+  "item_id": "q-20261124-019",
+  "family": "F3",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "finish_reason": "stop",
+  "prompt_tokens": 19312,
+  "completion_tokens": 712,
+  "reasoning_tokens": null,
+  "wall_clock_seconds": 19,
+  "raw_response": "```json\n{\"answer\": [\"orchestrating-ai-agents-subagent-architecture\", \"ai-agent-enumerate-or-delegate\", \"ai-agents-legacy-roi\", \"ai-augmented-cicd\", \"ai-sdlc-governance-stack\", \"context-engineering-multi-agent-reliability\", \"mcp-tool-docs\", \"prompt-repetition-agent-evaluation\"]}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "abstained": false,
+  "item_score": true,
+  "note": null
+}

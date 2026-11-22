@@ -1,0 +1,18 @@
+{
+  "group": "kg-json",
+  "session_id": "v2-kg-json-run-015",
+  "item_id": "q-20261124-015",
+  "family": "F3",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "finish_reason": "stop",
+  "prompt_tokens": 19312,
+  "completion_tokens": 351,
+  "reasoning_tokens": null,
+  "wall_clock_seconds": 11,
+  "raw_response": "```json\n{\"answer\": [\"ai-supply-chain-attack-vectors\", \"ai-approval-gates\", \"ai-augmented-cicd\", \"ai-sdlc-governance-stack\"]}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "abstained": false,
+  "item_score": true,
+  "note": null
+}
