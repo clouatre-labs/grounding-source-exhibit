@@ -86,4 +86,17 @@ Reading: at 41% of the whole-bundle payload the index-plus-relevant-pages arm ma
 
 Run-incident disclosure: a `count=0` smoke test triggered BSD `seq` descent and consumed single sealed attempts for pilot items 001 and 020 before the real invocation; both captures are kept as those items' only attempts (the item-020 file sits at its true slot `run-020.json`). An earlier invocation killed at a tool timeout may have discarded one unseen request for item 001; no second captured attempt exists for any item.
 
-Verdict and producer recommendation: the full 63-item run is cleared by the gate and is next (`bash recipe/run-bench.sh okf-index-relevant ground-truth/full-v2.1.json 1 63`); the final scoped comparison and producer recommendation follow it.
+### Full run (n=63) and final scoped comparison
+
+The full run completed after the gate pass (single sealed attempt per item; the invocation was interrupted twice by tool time limits and resumed via the runner's built-in captured-file skip, so no item ran twice).
+
+| Arm | item_score | F1 | F2 | F3 | F4 | Trunc | Mean prompt tok |
+|---|---|---|---|---|---|---|---|
+| okf-index-relevant | 23/63 | 0/20 | 12/20 | 4/7 | 7/16 | 12 | 4,147 |
+| okf-bundle | 31/63 | 2/20 | 20/20 | 3/7 | 6/16 | 23 | 10,081 |
+| llms-txt | 55/63 | 12/20 | 20/20 | 7/7 | 16/16 | 2 | 4,201 |
+| kg-json | 61/63 | 18/20 | 20/20 | 7/7 | 16/16 | 2 | 18,767 |
+
+Reading: the payload-size hypothesis is confirmed but not decisive. At 41% of the bundle payload, the index-plus-relevant arm cuts truncations from 23 to 12 and edges the bundle on F4 extraction (7/16 vs 6/16) and F3 abstention (4/7 vs 3/7), but loses overall (23/63 vs 31/63), driven by F2 abstention failures (12/20 vs 20/20: the composed payload contains the prompt-source page, so the model attempts answers the edge counts would falsify) and F1 (0/20 vs 2/20; symmetric Related links are absent from the composed pages). llms-txt remains dominant at the same payload size (55/63, 2 truncations).
+
+Producer recommendation for clouatre.ca: serve `llms.txt` as the primary grounding surface; it is the accuracy-per-token frontier (55/63 at ~4.2k tokens, no OKF competitor comes close). Do not serve the full OKF bundle to models. If OKF content must be delivered, deliver it composed-per-question (index plus only gold-routed cluster pages): never the whole bundle, and only after fixing the two confirmed content gaps the OKF surface exposes: F2 needs per-page edge/outdegree counts (8 of 20 full-run F2 abstention failures came from their absence), and F1 needs symmetric Related-link coverage in page bodies. OKF is a browsing/navigation layer for humans, not a competitive model-grounding format on this evidence; the per-arm statistics (Wilson intervals, McNemar + Holm across the four arm pairs) in `results/analysis-v2.json` carry the formal endpoints.
