@@ -4,7 +4,7 @@ This document separates two claims the main results intentionally conflate for t
 
 ## What actually failed
 
-The experiment's `okf-bundle` arm served the **entire frozen bundle** (33 markdown files, index plus every cluster index and every concept page, ~100 KB concatenated) as a single payload into one completion with a 4096-token budget. The measured failures are:
+The experiment's `okf-bundle` arm served the **entire frozen bundle** (32 markdown files, index plus every cluster index and every concept page, 35,616 bytes concatenated) as a single payload into one completion with a 4096-token budget. The measured failures are:
 
 - 23/63 runs truncated their context (`finish_reason == "length"`).
 - 37.5% extraction accuracy on the 16 items the bundle was designed to answer.
@@ -14,7 +14,7 @@ The experiment's `okf-bundle` arm served the **entire frozen bundle** (33 markdo
 
 ## Why this is a delivery mismatch, not a format verdict
 
-The OKF v0.3 spec ([okf.md](https://okf.md/spec/)) describes a bundle as a navigable markdown tree: one `index.md`, typed concept pages, cross-linked as a graph. Its stated consumption mode is progressive disclosure — an agent walks index → cluster → concept and fetches only what the question needs. Community producer guidance (specification.website) likewise instructs producers to pair a bundle with an `llms.txt` pointer for discovery, not to make the bundle a one-shot context dump. Serving all 33 pages at once contradicts both.
+The OKF v0.3 spec ([okf.md](https://okf.md/spec/)) describes a bundle as a navigable markdown tree: one `index.md`, typed concept pages, cross-linked as a graph. Its stated consumption mode is progressive disclosure — an agent walks index → cluster → concept and fetches only what the question needs. Community producer guidance (specification.website) likewise instructs producers to pair a bundle with an `llms.txt` pointer for discovery, not to make the bundle a one-shot context dump. Serving all 32 pages at once contradicts both.
 
 ## What would make OKF viable for clouatre.ca (phase 2 candidates)
 
