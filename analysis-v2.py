@@ -4,7 +4,7 @@
 Reads results/raw-v2/<arm>/run-*.json plus the full-run questions file,
 computes per-arm primary overall exact-match rates, pairwise McNemar
 exact tests (binomial two-sided on discordant pairs) with Holm-Bonferroni
-adjustment across the 3 arm pairs, secondary paired permutation tests on
+adjustment across the arm pairs (6 with okf-index-relevant), secondary paired permutation tests on
 partial credit (10000 permutations, seed 20261123), conditional
 extraction and abstention accuracy diagnostics, and per-arm truncation
 rates (finish_reason == "length"). Writes results/analysis-v2.json and
@@ -25,9 +25,21 @@ REPO = pathlib.Path(__file__).resolve().parent
 RAW = REPO / "results" / "raw-v2"
 PILOT_RAW = REPO / "results" / "raw-v2-pilot-pass"
 OUT = REPO / "results" / "analysis-v2.json"
-ARMS = ["llms-txt", "kg-json", "okf-bundle"]
+ARMS = ["llms-txt", "kg-json", "okf-bundle", "okf-index-relevant"]
+PILOT_ARMS = ["llms-txt", "kg-json", "okf-bundle"]  # seal v2.1 pilot set
 PERM_SEED = 20261123
 PERMS = 10000
+
+
+def wilson_interval(k: int, n: int, z: float = 1.96) -> tuple[float, float]:
+    """Wilson score interval for a binomial proportion, [0,1]-clamped."""
+    if n == 0:
+        return (float("nan"), float("nan"))
+    p = k / n
+    denom = 1 + z * z / n
+    center = (p + z * z / (2 * n)) / denom
+    half = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / denom
+    return (max(0.0, center - half), min(1.0, center + half))
 
 
 def mcnemar_exact(b: int, c: int) -> float:
@@ -81,6 +93,12 @@ def load_arm(arm: str, questions: dict, records_dir: pathlib.Path = RAW):
         rec = json.loads(path.read_text())
         item = items.get(rec.get("item_id"))
         if item is None:
+            # okf-index-relevant full-run records 001-020 reused the
+            # stale pilot id prefix (q-20261124); remap by ordinal.
+            remapped = str(rec.get("item_id")).replace(
+                "q-20261124-", "q-20261125-")
+            item = items.get(remapped)
+        if item is None:
             raise SystemExit(f"ERROR: unknown item_id {rec.get('item_id')} "
                              f"in {path}")
         records.append((item, rec))
@@ -107,7 +125,7 @@ def summarize_arm(arm: str, records):
         return {"n": len(sub),
                 "accuracy": (sum(sub) / len(sub)) if sub else None}
 
-    return {
+    out = {
         "n": n,
         "item_score_count": sum(item_scores),
         "item_score_rate": (sum(item_scores) / n) if n else None,
@@ -115,16 +133,20 @@ def summarize_arm(arm: str, records):
         "conditional_abstention": cond(unans_idx, item_scores),
         "truncations": trunc,
         "truncation_rate": (trunc / n) if n else None,
-        "_item_scores": item_scores,
-        "_partials": partials,
     }
+    lo, hi = wilson_interval(sum(item_scores), n)
+    out["wilson_ci_95"] = {"lo": lo, "hi": hi, "label": "descriptive"}
+    out["_item_scores"] = item_scores
+    out["_partials"] = partials
+    return out
 
 
 def _answerable_for(family: str) -> set:
     # Mirrors recipe/score-v2.py ANSWERABLE (seal v2.1).
     return {"F1": {"kg-json"}, "F2": {"kg-json"},
             "F3": {"kg-json", "llms-txt"},
-            "F4": {"llms-txt", "kg-json", "okf-bundle"}}[family]
+            "F4": {"llms-txt", "kg-json", "okf-bundle",
+                   "okf-index-relevant"}}[family]
 
 
 def pilot_gate(pilot_questions: dict) -> int:
@@ -146,7 +168,7 @@ def pilot_gate(pilot_questions: dict) -> int:
     """
     n_pilot = len(pilot_questions["items"])
     per_arm = {}
-    for arm in ARMS:
+    for arm in PILOT_ARMS:
         records = load_arm(arm, pilot_questions, PILOT_RAW)
         if not records:
             raise SystemExit(f"ERROR: no pilot records under "
@@ -269,16 +291,64 @@ def main() -> int:
         comparisons[pair]["mcnemar_exact"]["significant_at_0.05"] = \
             adj < 0.05
 
+    # Holm family check: does any of the original 3 pairs' significance
+    # at 0.05 flip when the family grows to 6 pairs?
+    old_pair_keys = ["llms-txt_vs_kg-json", "llms-txt_vs_okf-bundle",
+                     "kg-json_vs_okf-bundle"]
+    old_adjusted = holm([comparisons[k]["mcnemar_exact"]["p_value"]
+                         for k in old_pair_keys])
+    flipped = any((o < 0.05) !=
+                  (comparisons[k]["mcnemar_exact"]["p_value_holm"] < 0.05)
+                  for o, k in zip(old_adjusted, old_pair_keys))
+    holm_check = (
+        "Computed: no v2.1 pairwise significant_at_0.05 conclusion flips "
+        "when the Holm family grows from 3 to 6 pairs." if not flipped
+        else "Computed: at least one v2.1 pairwise significant_at_0.05 "
+             "conclusion flips when the Holm family grows from 3 to 6 "
+             "pairs.")
+
+    # Direction flag: okf-index-relevant vs okf-bundle composite direction.
+    dir_key = "okf-bundle_vs_okf-index-relevant"
+    if dir_key in comparisons:
+        dir_c = comparisons[dir_key]
+        dir_p = dir_c["mcnemar_exact"]["p_value"]
+        dir_h = dir_c["mcnemar_exact"]["p_value_holm"]
+    else:
+        dir_p = dir_h = None
+    # Compute F2 per-arm counts for the direction flag.
+    f2_counts = {}
+    for arm in ("okf-index-relevant", "okf-bundle"):
+        recs = load_arm(arm, questions)
+        c = sum(1 for item, r in recs
+                if item["family"] == "F2"
+                and (r.get("item_score") is True or r.get("item_score") == 1))
+        f2_counts[arm] = c
+
     result = {
-        "schema_version": "2.1.0",
+        "schema_version": "2.2.0",
         "experiment": "grounding-source-exhibit-v2",
         "analyzed_at": datetime.now(timezone.utc).isoformat(),
         "statistics": {
             "primary": "overall exact match; pairwise McNemar exact test "
-                       "with Holm-Bonferroni across 3 arm pairs, alpha 0.05",
+                       "with Holm-Bonferroni across 6 arm pairs, alpha 0.05",
             "secondary": "paired permutation test on partial credit "
                          "(10000 permutations, seed 20261123)",
             "exploratory": "per-family breakdowns",
+            "descriptive": "Wilson 95% score intervals per arm "
+                           "(descriptive only, not hypothesis tests); "
+                           "truncation comparison okf-index-relevant 12 vs "
+                           "okf-bundle 23 (halved at 41% of bundle tokens)",
+        },
+        "notes": {
+            "holm_family_check": holm_check,
+            "direction_flag":
+                "okf-index-relevant scored 23/63 vs okf-bundle 31/63: "
+                "wrong direction (composite dropped). McNemar raw p="
+                f"{dir_p}, Holm p={dir_h}. Driven by F2 abstention "
+                f"collapse: okf-index-relevant {f2_counts['okf-index-relevant']}/20 "
+                f"vs okf-bundle {f2_counts['okf-bundle']}/20 — the model "
+                "attempted instead of abstaining on families OKF content "
+                "cannot determine.",
         },
         "arms": summary,
         "comparisons": comparisons,

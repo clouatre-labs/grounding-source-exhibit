@@ -21,6 +21,24 @@ _analysis = _load("analysis_v2", "analysis-v2.py")
 holm = _analysis.holm
 mcnemar_exact = _analysis.mcnemar_exact
 paired_permutation = _analysis.paired_permutation
+wilson_interval = _analysis.wilson_interval
+
+
+class TestWilsonInterval(unittest.TestCase):
+    def test_known_value_8_of_20(self):
+        lo, hi = wilson_interval(8, 20)
+        self.assertAlmostEqual(lo, 0.2189, places=3)
+        self.assertAlmostEqual(hi, 0.6135, places=3)
+
+    def test_all_failures_clamps_lower_to_zero(self):
+        lo, hi = wilson_interval(0, 63)
+        self.assertEqual(lo, 0.0)
+        self.assertLess(hi, 0.1)
+
+    def test_all_successes_clamps_upper_to_one(self):
+        lo, hi = wilson_interval(63, 63)
+        self.assertAlmostEqual(hi, 1.0, places=12)
+        self.assertGreater(lo, 0.9)
 
 
 class TestMcnemarExact(unittest.TestCase):
@@ -69,6 +87,15 @@ class TestHolm(unittest.TestCase):
         # Holm step-down enforces non-decreasing adjusted p-values in
         # rank order; verify no adjusted value falls below its raw one.
         self.assertGreaterEqual(min(got), min(0.01, got[got.index(min(got))]))
+
+    def test_six_inputs_monotone_and_above_raw(self):
+        raw = [0.9, 0.4, 0.2, 0.05, 0.01, 1e-6]
+        got = holm(raw)
+        self.assertTrue(all(a >= b for a, b in zip(got, raw)))
+        ranked = sorted(got)
+        self.assertEqual(ranked, sorted(got))
+        self.assertTrue(all(a <= b for a, b in zip(ranked, ranked[1:])))
+        self.assertTrue(all(0 <= a <= 1 for a in got))
 
 
 class TestPairedPermutation(unittest.TestCase):

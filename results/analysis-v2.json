@@ -1,11 +1,16 @@
 {
-  "schema_version": "2.1.0",
+  "schema_version": "2.2.0",
   "experiment": "grounding-source-exhibit-v2",
-  "analyzed_at": "2026-11-21T20:08:37.350130+00:00",
+  "analyzed_at": "2026-11-22T12:27:31.501125+00:00",
   "statistics": {
-    "primary": "overall exact match; pairwise McNemar exact test with Holm-Bonferroni across 3 arm pairs, alpha 0.05",
+    "primary": "overall exact match; pairwise McNemar exact test with Holm-Bonferroni across 6 arm pairs, alpha 0.05",
     "secondary": "paired permutation test on partial credit (10000 permutations, seed 20261123)",
-    "exploratory": "per-family breakdowns"
+    "exploratory": "per-family breakdowns",
+    "descriptive": "Wilson 95% score intervals per arm (descriptive only, not hypothesis tests); truncation comparison okf-index-relevant 12 vs okf-bundle 23 (halved at 41% of bundle tokens)"
+  },
+  "notes": {
+    "holm_family_check": "Computed: no v2.1 pairwise significant_at_0.05 conclusion flips when the Holm family grows from 3 to 6 pairs.",
+    "direction_flag": "okf-index-relevant scored 23/63 vs okf-bundle 31/63: wrong direction (composite dropped). McNemar raw p=0.076812744140625, Holm p=0.140625. Driven by F2 abstention collapse: okf-index-relevant 12/20 vs okf-bundle 20/20 \u2014 the model attempted instead of abstaining on families OKF content cannot determine."
   },
   "arms": {
     "llms-txt": {
@@ -21,7 +26,12 @@
         "accuracy": 0.8
       },
       "truncations": 2,
-      "truncation_rate": 0.031746031746031744
+      "truncation_rate": 0.031746031746031744,
+      "wilson_ci_95": {
+        "lo": 0.7689273848938224,
+        "hi": 0.9342275365921983,
+        "label": "descriptive"
+      }
     },
     "kg-json": {
       "n": 63,
@@ -36,7 +46,12 @@
         "accuracy": null
       },
       "truncations": 2,
-      "truncation_rate": 0.031746031746031744
+      "truncation_rate": 0.031746031746031744,
+      "wilson_ci_95": {
+        "lo": 0.8914331816504081,
+        "hi": 0.9912506559597031,
+        "label": "descriptive"
+      }
     },
     "okf-bundle": {
       "n": 63,
@@ -51,7 +66,32 @@
         "accuracy": 0.5319148936170213
       },
       "truncations": 23,
-      "truncation_rate": 0.36507936507936506
+      "truncation_rate": 0.36507936507936506,
+      "wilson_ci_95": {
+        "lo": 0.3726660281435346,
+        "hi": 0.6123732288461243,
+        "label": "descriptive"
+      }
+    },
+    "okf-index-relevant": {
+      "n": 63,
+      "item_score_count": 23,
+      "item_score_rate": 0.36507936507936506,
+      "conditional_extraction": {
+        "n": 16,
+        "accuracy": 0.4375
+      },
+      "conditional_abstention": {
+        "n": 47,
+        "accuracy": 0.3404255319148936
+      },
+      "truncations": 12,
+      "truncation_rate": 0.19047619047619047,
+      "wilson_ci_95": {
+        "lo": 0.25715218473434465,
+        "hi": 0.4885151840898606,
+        "label": "descriptive"
+      }
     }
   },
   "comparisons": {
@@ -62,7 +102,7 @@
           7
         ],
         "p_value": 0.0703125,
-        "p_value_holm": 0.0703125,
+        "p_value_holm": 0.140625,
         "significant_at_0.05": false
       },
       "paired_permutation_partial_credit": {
@@ -79,7 +119,7 @@
           1
         ],
         "p_value": 8.046627044677734e-07,
-        "p_value_holm": 1.6093254089355469e-06,
+        "p_value_holm": 2.4139881134033203e-06,
         "significant_at_0.05": true
       },
       "paired_permutation_partial_credit": {
@@ -89,6 +129,23 @@
         "p_value": 0.4439
       }
     },
+    "llms-txt_vs_okf-index-relevant": {
+      "mcnemar_exact": {
+        "discordant": [
+          32,
+          0
+        ],
+        "p_value": 4.656612873077393e-10,
+        "p_value_holm": 2.3283064365386963e-09,
+        "significant_at_0.05": true
+      },
+      "paired_permutation_partial_credit": {
+        "permutations": 10000,
+        "seed": 20261123,
+        "mean_difference": -0.12236652236652236,
+        "p_value": 0.1245
+      }
+    },
     "kg-json_vs_okf-bundle": {
       "mcnemar_exact": {
         "discordant": [
@@ -96,7 +153,7 @@
           1
         ],
         "p_value": 1.5366822481155396e-08,
-        "p_value_holm": 4.6100467443466187e-08,
+        "p_value_holm": 6.146728992462158e-08,
         "significant_at_0.05": true
       },
       "paired_permutation_partial_credit": {
@@ -104,6 +161,40 @@
         "seed": 20261123,
         "mean_difference": 0.5162578162578162,
         "p_value": 0.0
+      }
+    },
+    "kg-json_vs_okf-index-relevant": {
+      "mcnemar_exact": {
+        "discordant": [
+          38,
+          0
+        ],
+        "p_value": 7.275957614183426e-12,
+        "p_value_holm": 4.3655745685100555e-11,
+        "significant_at_0.05": true
+      },
+      "paired_permutation_partial_credit": {
+        "permutations": 10000,
+        "seed": 20261123,
+        "mean_difference": 0.4511784511784512,
+        "p_value": 0.0
+      }
+    },
+    "okf-bundle_vs_okf-index-relevant": {
+      "mcnemar_exact": {
+        "discordant": [
+          12,
+          4
+        ],
+        "p_value": 0.076812744140625,
+        "p_value_holm": 0.140625,
+        "significant_at_0.05": false
+      },
+      "paired_permutation_partial_credit": {
+        "permutations": 10000,
+        "seed": 20261123,
+        "mean_difference": -0.06507936507936507,
+        "p_value": 0.1497
       }
     }
   }
