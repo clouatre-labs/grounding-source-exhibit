@@ -88,7 +88,9 @@ Run-incident disclosure: a `count=0` smoke test triggered BSD `seq` descent and 
 
 ### Full run (n=63) and final scoped comparison
 
-The full run completed after the gate pass (single sealed attempt per item; the invocation was interrupted twice by tool time limits and resumed via the runner's built-in captured-file skip, so no item ran twice).
+The full run completed after the gate pass (single sealed attempt per item). A capture-repair incident affected this arm and is fully remediated; the numbers below are recomputed from the verified raw captures.
+
+Incident disclosure (namespace collision, v2.2): in PR #28 the 20-capture pilot pass wrote its captures into the full-run directory `results/raw-v2/okf-index-relevant/` as `run-001..020`, so the full run in PR #29 skipped slots 1-20 as already-captured. The items are interleaved 5x per family across slots 1-20, leaving five wrong-prompt slots per family in the mixed tree. Remediation: the 20 pilot captures were relocated to `results/raw-v2-pilot-pass/okf-index-relevant/`, and 20 first true attempts for items 1-20 were captured in a single invocation with per-item prompt pins verified 20/20 at run time; capture timestamps postdate the main run (slots 21-63). The repaired tree is ordinal-verified `run-001..063`; the loader aligns strictly by ordinal and fails loudly on any id mismatch (no id remapping).
 
 | Arm | item_score | F1 | F2 | F3 | F4 | Trunc | Mean prompt tok |
 |---|---|---|---|---|---|---|---|

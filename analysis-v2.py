@@ -87,22 +87,27 @@ def paired_permutation(xs, ys, seed: int = PERM_SEED, perms: int = PERMS):
 
 
 def load_arm(arm: str, questions: dict, records_dir: pathlib.Path = RAW):
-    items = {i["id"]: i for i in questions["items"]}
+    """Load run-NNN.json in numeric order, aligned by ordinal: run-NNN
+    corresponds to questions.items[NNN-1]. NO id remapping. A record's
+    item_id must equal the expected id OR (documented v2.2 incident,
+    slots 001-020 only) the stale pilot id q-20261124-NNN; anything
+    else FAILS loudly."""
+    items = questions["items"]
     records = []
-    for path in sorted((records_dir / arm).glob("run-*.json")):
+    paths = sorted((records_dir / arm).glob("run-*.json"))
+    for path in paths:
+        stem = path.stem.split("-")[1]
+        idx = int(stem)
+        expected = items[idx - 1]
         rec = json.loads(path.read_text())
-        item = items.get(rec.get("item_id"))
-        if item is None:
-            # okf-index-relevant full-run records 001-020 reused the
-            # stale pilot id prefix (q-20261124); remap by ordinal.
-            remapped = str(rec.get("item_id")).replace(
-                "q-20261124-", "q-20261125-")
-            item = items.get(remapped)
-        if item is None:
-            raise SystemExit(f"ERROR: unknown item_id {rec.get('item_id')} "
-                             f"in {path}")
-        records.append((item, rec))
-    records.sort(key=lambda t: t[0]["id"])
+        got = rec.get("item_id")
+        stale_pilot = (idx <= 20 and got == "q-20261124-"
+                       + path.stem.split("-")[1])
+        if got != expected["id"] and not stale_pilot:
+            raise SystemExit(
+                f"ERROR: id mismatch in {path}: got {got}, expected "
+                f"{expected['id']}")
+        records.append((expected, rec))
     return records
 
 
@@ -138,6 +143,7 @@ def summarize_arm(arm: str, records):
     out["wilson_ci_95"] = {"lo": lo, "hi": hi, "label": "descriptive"}
     out["_item_scores"] = item_scores
     out["_partials"] = partials
+    out["_records"] = records
     return out
 
 
@@ -315,14 +321,18 @@ def main() -> int:
         dir_h = dir_c["mcnemar_exact"]["p_value_holm"]
     else:
         dir_p = dir_h = None
-    # Compute F2 per-arm counts for the direction flag.
+    # Compute truncation counts for the descriptive string.
+    trunc_counts = {a: arms[a]["truncations"] for a in ARMS}
+    # Compute composite and F2 counts for the direction flag.
+    comp_counts = {}
     f2_counts = {}
     for arm in ("okf-index-relevant", "okf-bundle"):
-        recs = load_arm(arm, questions)
-        c = sum(1 for item, r in recs
-                if item["family"] == "F2"
-                and (r.get("item_score") is True or r.get("item_score") == 1))
-        f2_counts[arm] = c
+        recs = arms[arm]["_records"]
+        comp_counts[arm] = arms[arm]["item_score_count"]
+        f2_counts[arm] = sum(1 for item, r in recs
+                             if item["family"] == "F2"
+                             and (r.get("item_score") is True
+                                  or r.get("item_score") == 1))
 
     result = {
         "schema_version": "2.2.0",
@@ -336,13 +346,16 @@ def main() -> int:
             "exploratory": "per-family breakdowns",
             "descriptive": "Wilson 95% score intervals per arm "
                            "(descriptive only, not hypothesis tests); "
-                           "truncation comparison okf-index-relevant 12 vs "
-                           "okf-bundle 23 (halved at 41% of bundle tokens)",
+                           "truncation comparison okf-index-relevant "
+                           f"{trunc_counts['okf-index-relevant']} vs "
+                           f"okf-bundle {trunc_counts['okf-bundle']} "
+                           "(halved at 41% of bundle tokens)",
         },
         "notes": {
             "holm_family_check": holm_check,
             "direction_flag":
-                "okf-index-relevant scored 23/63 vs okf-bundle 31/63: "
+                f"okf-index-relevant scored {comp_counts['okf-index-relevant']}/63 "
+                f"vs okf-bundle {comp_counts['okf-bundle']}/63: "
                 "wrong direction (composite dropped). McNemar raw p="
                 f"{dir_p}, Holm p={dir_h}. Driven by F2 abstention "
                 f"collapse: okf-index-relevant {f2_counts['okf-index-relevant']}/20 "
@@ -363,6 +376,16 @@ def main() -> int:
               f"truncations={s['truncations']}, "
               f"extraction_acc={s['conditional_extraction']['accuracy']}, "
               f"abstention_acc={s['conditional_abstention']['accuracy']}")
+    print()
+    for arm, s in arms.items():
+        fams = {f: [0, 0] for f in ("F1", "F2", "F3", "F4")}
+        for item, r in s["_records"]:
+            sc = 1 if r.get("item_score") is True or \
+                r.get("item_score") == 1 else 0
+            fams[item["family"]][0] += sc
+            fams[item["family"]][1] += 1
+        print(f"{arm} per-family: " + " ".join(
+            f"{f}={c[0]}/{c[1]}" for f, c in fams.items()))
     print()
     for pair, c in comparisons.items():
         m = c["mcnemar_exact"]

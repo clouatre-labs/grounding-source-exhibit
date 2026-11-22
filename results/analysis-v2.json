@@ -1,7 +1,7 @@
 {
   "schema_version": "2.2.0",
   "experiment": "grounding-source-exhibit-v2",
-  "analyzed_at": "2026-11-22T12:27:31.501125+00:00",
+  "analyzed_at": "2026-11-22T12:52:41.038016+00:00",
   "statistics": {
     "primary": "overall exact match; pairwise McNemar exact test with Holm-Bonferroni across 6 arm pairs, alpha 0.05",
     "secondary": "paired permutation test on partial credit (10000 permutations, seed 20261123)",
