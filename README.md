@@ -121,7 +121,7 @@ Figure scripts live in `figures/` and render from committed `results/raw-v2/` re
 
 ## Citing This Work
 
-See [CITATION.cff](CITATION.cff). Concept DOI: 10.5281/zenodo.24410380; current version: 10.5281/zenodo.24424679. The archived v1 seal is DOI 10.5281/zenodo.24410381; superseded v2.1.x snapshots are listed on the Zenodo record.
+See [CITATION.cff](CITATION.cff). Concept DOI: 10.5281/zenodo.24410380; current version: 10.5281/zenodo.24424679. The archived v1 seal is DOI 10.5281/zenodo.24410381; superseded v2.1.x snapshots are listed on the Zenodo record. The work is written up at [Frontmatter to OKF: 61/63 Agent Score, One Source of Truth](https://clouatre.ca/posts/frontmatter-okf-knowledge-graph/).
 
 ## Repository Setup
 
