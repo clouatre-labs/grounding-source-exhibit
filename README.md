@@ -4,7 +4,7 @@
   <a href="results/analysis-v2.json"><img alt="Result" src="https://img.shields.io/badge/okf--bundle_31%2F63-llms_55%2F63__kg_61%2F63-red.svg?style=for-the-badge" height="28"></a>
   <a href="seal-v2.json"><img alt="Arms" src="https://img.shields.io/badge/arms-4_llms.txt_%7C_kg.json_%7C_okf_%7C_okf--index--relevant-blue.svg?style=for-the-badge" height="28"></a>
   <a href="results/raw-v2/"><img alt="Runs" src="https://img.shields.io/badge/runs-252_(63x4)_temperature_0-green.svg?style=for-the-badge" height="28"></a>
-<a href="https://doi.org/10.5281/zenodo.24424679"><img alt="DOI" src="https://img.shields.io/badge/DOI-10.5281%2Fzenodo.24424679-blue.svg?style=for-the-badge" height="28"></a>
+<a href="https://doi.org/10.5281/zenodo.24441791"><img alt="DOI" src="https://img.shields.io/badge/DOI-10.5281%2Fzenodo.24441791-blue.svg?style=for-the-badge" height="28"></a>
 </p>
 
 <h1 align="center">grounding-source-exhibit</h1>
@@ -15,7 +15,7 @@
 
 **Status: complete.** The v2.1 full run executed 63 items x 4 arms with zero empty-after-retries responses. Primary endpoint: pairwise McNemar exact with Holm-Bonferroni; secondary: paired permutation on partial credit (10000 permutations, seed 20261123). Full statistics in [results/analysis-v2.json](results/analysis-v2.json); findings in [results/findings.md](results/findings.md).
 
-The run history matters and is reported as such: the v1 run aborted before scoring (coverage ceiling; archived in [results/raw-v1-aborted/](results/raw-v1-aborted/)); the v2.0 pilot gate STOPPED the full run on a mis-preregistered F3 family and both non-kg arms answered confidently wrong (archived in [results/raw-v2-pilot-aborted/](results/raw-v2-pilot-aborted/)); v2.1 re-registered F3 as forward cluster membership before any v2.1 item ran, its pilot passed all four blocking gates ([results/raw-v2-pilot-pass/](results/raw-v2-pilot-pass/)), and only then did the full run execute. The v1 seal is archived at Zenodo DOI 10.5281/zenodo.24410381; the v2.1 run is deposited at DOI 10.5281/zenodo.24424679 under the same concept record.
+The run history matters and is reported as such: the v1 run aborted before scoring (coverage ceiling; archived in [results/raw-v1-aborted/](results/raw-v1-aborted/)); the v2.0 pilot gate STOPPED the full run on a mis-preregistered F3 family and both non-kg arms answered confidently wrong (archived in [results/raw-v2-pilot-aborted/](results/raw-v2-pilot-aborted/)); v2.1 re-registered F3 as forward cluster membership before any v2.1 item ran, its pilot passed all four blocking gates ([results/raw-v2-pilot-pass/](results/raw-v2-pilot-pass/)), and only then did the full run execute. The v1 seal is archived at Zenodo DOI 10.5281/zenodo.24410381; the v2.1 run is deposited at DOI 10.5281/zenodo.24424679 and the v2.2 four-arm run (including the capture-repair audit trail) at DOI 10.5281/zenodo.24441791 under the same concept record.
 
 ## Experiment Index
 
@@ -121,7 +121,7 @@ Figure scripts live in `figures/` and render from committed `results/raw-v2/` re
 
 ## Citing This Work
 
-See [CITATION.cff](CITATION.cff). Concept DOI: 10.5281/zenodo.24410380; current version: 10.5281/zenodo.24424679. The archived v1 seal is DOI 10.5281/zenodo.24410381; superseded v2.1.x snapshots are listed on the Zenodo record. The work is written up at [Frontmatter to OKF: 61/63 Agent Score, One Source of Truth](https://clouatre.ca/posts/frontmatter-okf-knowledge-graph/).
+See [CITATION.cff](CITATION.cff). Concept DOI: 10.5281/zenodo.24410380; current version: 10.5281/zenodo.24441791. The archived v1 seal is DOI 10.5281/zenodo.24410381; superseded v2.1.x snapshots are listed on the Zenodo record. The work is written up at [Frontmatter to OKF: 61/63 Agent Score, One Source of Truth](https://clouatre.ca/posts/frontmatter-okf-knowledge-graph/).
 
 ## Repository Setup
 
