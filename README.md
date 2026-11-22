@@ -1,7 +1,7 @@
 <p align="center">
   <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/License-Apache--2.0-blue.svg?style=for-the-badge" height="28"></a>
   <a href="https://conventionalcommits.org"><img alt="Conventional Commits" src="https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg?style=for-the-badge" height="28"></a>
-  <a href="results/analysis-v2.json"><img alt="Result" src="https://img.shields.io/badge/okf--bundle_31%2F63-llms_55%2F63__kg_61%2F63-red.svg?style=for-the-badge" height="28"></a>
+  <a href="results/analysis-v2.json"><img alt="Result" src="https://img.shields.io/badge/okf--bundle_31%2F63-llms_55%2F63__kg_61%2F63__slice_22%2F63-red.svg?style=for-the-badge" height="28"></a>
   <a href="seal-v2.json"><img alt="Arms" src="https://img.shields.io/badge/arms-4_llms.txt_%7C_kg.json_%7C_okf_%7C_okf--index--relevant-blue.svg?style=for-the-badge" height="28"></a>
   <a href="results/raw-v2/"><img alt="Runs" src="https://img.shields.io/badge/runs-252_(63x4)_temperature_0-green.svg?style=for-the-badge" height="28"></a>
 <a href="https://doi.org/10.5281/zenodo.24441791"><img alt="DOI" src="https://img.shields.io/badge/DOI-10.5281%2Fzenodo.24441791-blue.svg?style=for-the-badge" height="28"></a>
