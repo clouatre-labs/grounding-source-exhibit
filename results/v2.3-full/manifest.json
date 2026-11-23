@@ -1,0 +1,166 @@
+{
+  "run": "v2.3 full (issue #36), frozen preregistration payloads",
+  "date": "2026-11-22",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "temperature": 0,
+  "attempts": "single deterministic attempt",
+  "questions_file": "ground-truth/full-v2.1.json",
+  "questions_sha256": "10638a1a8dfec0a87f3efa851e18d6c63dd87fd7173c31966c89711a0abeea12",
+  "questions_seed": 20261125,
+  "production_payloads": {
+    "llms.txt": "https://clouatre.ca/llms.txt",
+    "knowledge-graph.json": "https://clouatre.ca/knowledge-graph.json",
+    "okf-bundle": "https://clouatre.ca/okf/ (index.md plus clusters/**.md, enumerated by run-bench concatenation)"
+  },
+  "frozen_payloads": [
+    {
+      "path": "freeze/knowledge-graph.json",
+      "sha256": "bcba716e17e2916be75e89a93f683f0f8f9a8138d6a67837c0b2ad1e22f9151a"
+    },
+    {
+      "path": "freeze/llms.txt",
+      "sha256": "1a3f2c5cc51b51c433c5aa282c2ae0ad7119be0236c35557d6ff3b8527992470"
+    },
+    {
+      "path": "freeze/okf/clusters/agent-infrastructure/agent-payments-x402.md",
+      "sha256": "57da15e2535675a64b8b62cad34ef218004ef2bb86909a781c61c95e6226a496"
+    },
+    {
+      "path": "freeze/okf/clusters/agent-infrastructure/agent-ready-website.md",
+      "sha256": "03f68d541be345b9d4d614fa61a2b009a73cd7f2433d9c1d893af6125243559d"
+    },
+    {
+      "path": "freeze/okf/clusters/agent-infrastructure/frontmatter-okf-knowledge-graph.md",
+      "sha256": "3a04d35ea2140e0baad50dcd42a3735c3a5b2afe92e72bbcf5a5d8e8642d3f73"
+    },
+    {
+      "path": "freeze/okf/clusters/agent-infrastructure/index.md",
+      "sha256": "52086105d953fc187408ae6990091db5213540405feb94ea6130c01c5b005fcc"
+    },
+    {
+      "path": "freeze/okf/clusters/agent-infrastructure/pay-per-call-margins-treasury.md",
+      "sha256": "ca01d831f93049d6df56e2c09df48a9291f5160ff33b64c5e8911cec3b423643"
+    },
+    {
+      "path": "freeze/okf/clusters/agent-infrastructure/verify-x402-endpoints.md",
+      "sha256": "6386daf336041bf8eefca6a1b3a3db8e6edcf375950f4f7f7c2bfcca8be8b0d2"
+    },
+    {
+      "path": "freeze/okf/clusters/agent-infrastructure/webmcp-beyond-checkout.md",
+      "sha256": "b9bd83a3dbe49b342c7a34bf5f87fdc1467ee3f0e5062be829166dc244e34859"
+    },
+    {
+      "path": "freeze/okf/clusters/cost-roi/ai-agents-legacy-roi.md",
+      "sha256": "2e3f1b335fdaf484267a52b71c977e1e4b74ec0882395416022d78b35c80e5ff"
+    },
+    {
+      "path": "freeze/okf/clusters/cost-roi/index.md",
+      "sha256": "444f782e50f98a1bccaf16ec2bc2e36dc1b28c8eceaae15e455cbcbadbeb6b86"
+    },
+    {
+      "path": "freeze/okf/clusters/cost-roi/open-weights-structured-output-cost.md",
+      "sha256": "ff17f6add22c03d69681de6eb50fbb5e94236497d11d9c58bf0869aa57d19fe7"
+    },
+    {
+      "path": "freeze/okf/clusters/cost-roi/rag-legacy-systems.md",
+      "sha256": "a9a28a48cbb31cedcddd9f671be56effb7418cd9240b2a10236c0c5083ce0b4a"
+    },
+    {
+      "path": "freeze/okf/clusters/devops-implementation/ai-assisted-development.md",
+      "sha256": "655c8de27fe58b5e2b3740fb3025af3f79b07210e8ac3e525a024fd1dfc6fb6e"
+    },
+    {
+      "path": "freeze/okf/clusters/devops-implementation/index.md",
+      "sha256": "c4dbfc3c4f1a27d04e615ec4e8893a5f038976131ba5c4c4debf2fd423719545"
+    },
+    {
+      "path": "freeze/okf/clusters/evaluation-reliability/accuracy-cost-matrix-threshold.md",
+      "sha256": "09940601584f032af91046fa976875aba2d9476ce8e95f776945899b7563bb21"
+    },
+    {
+      "path": "freeze/okf/clusters/evaluation-reliability/index.md",
+      "sha256": "d3bfd1f3b80bd25174ab3f999bfd794c4b0d7363cc32e1c5d4a7d29cece6bdc1"
+    },
+    {
+      "path": "freeze/okf/clusters/evaluation-reliability/prompt-repetition-agent-evaluation.md",
+      "sha256": "785d70d704b074e171eba070f767757427df8866d82dc248d334261e6699abdf"
+    },
+    {
+      "path": "freeze/okf/clusters/governance-oversight/ai-adoption-engineering.md",
+      "sha256": "d555ac91149e95d2a6042ab42b783bdd44fb08995f17b08002312f9d1a7bd8bf"
+    },
+    {
+      "path": "freeze/okf/clusters/governance-oversight/ai-approval-gates.md",
+      "sha256": "f58a6016017f47ee56f42e837544a69ff8be6c6f498f50cf2564425d7e6bb552"
+    },
+    {
+      "path": "freeze/okf/clusters/governance-oversight/ai-observability-gaps.md",
+      "sha256": "cdb5d38dccec89881758cb2540dab232f12ebdd2e77f1d198c1c99a801c5bd8b"
+    },
+    {
+      "path": "freeze/okf/clusters/governance-oversight/ai-sdlc-governance-stack.md",
+      "sha256": "631fe056449f3426434dbbfacc21b6e019ebfae36929df45dd22f90b392f2726"
+    },
+    {
+      "path": "freeze/okf/clusters/governance-oversight/decision-frameworks-ai-delivery.md",
+      "sha256": "955efdee51853634a08ca2831b6a4acf11bd7cf0c10e5b6178a3f1fd4051269e"
+    },
+    {
+      "path": "freeze/okf/clusters/governance-oversight/index.md",
+      "sha256": "fb070e01ee1315799f88aa02bdaf364690a2911301794dc0cc819db4da2c1bbc"
+    },
+    {
+      "path": "freeze/okf/clusters/governance-oversight/sre-ai-agents-production.md",
+      "sha256": "069a319315b294a443eae929bbef59f2e23abf22c158daf21e91dfe8eef1b8c5"
+    },
+    {
+      "path": "freeze/okf/clusters/governance-oversight/zero-downtime-dns-migration.md",
+      "sha256": "8e00a62fa9d7f4f5c1a6401020068fac32c3c757cd8aac997b419068bf5ca17e"
+    },
+    {
+      "path": "freeze/okf/clusters/legacy-modernization/index.md",
+      "sha256": "85031335df61d71d0e60cd953de78fea38c8f61d690ded5fd050269ff4a127b1"
+    },
+    {
+      "path": "freeze/okf/clusters/multi-agent-architecture/ai-agent-enumerate-or-delegate.md",
+      "sha256": "bf87c121bd5a3ffcac80f8e85c7d8fb5c6b287045c83209ac6dd0055ba1085a6"
+    },
+    {
+      "path": "freeze/okf/clusters/multi-agent-architecture/ai-augmented-cicd.md",
+      "sha256": "ff73b9ce7c37c49eaaa03271c0cfa643e763711eee6d26a6ddeb59d7ffe64684"
+    },
+    {
+      "path": "freeze/okf/clusters/multi-agent-architecture/context-engineering-multi-agent-reliability.md",
+      "sha256": "74843fbd952fb6b835dc24e0fbfe2604a6cef59522856ad6bb23ee4ad7f70203"
+    },
+    {
+      "path": "freeze/okf/clusters/multi-agent-architecture/index.md",
+      "sha256": "00fa58c2e6ab132bbbded7fe903f2822f6c336ee51b63f14bc89ba2d3deabf1b"
+    },
+    {
+      "path": "freeze/okf/clusters/multi-agent-architecture/mcp-tool-docs.md",
+      "sha256": "49dc909a015b0f633cf986fc62562c6e2274dd883832d04fbd01939b21a3468d"
+    },
+    {
+      "path": "freeze/okf/clusters/multi-agent-architecture/orchestrating-ai-agents-subagent-architecture.md",
+      "sha256": "e54900b4d5028132b81a6baaa877455f644750a54245125b0b01f8f4ec1c3a3e"
+    },
+    {
+      "path": "freeze/okf/clusters/security-supply-chain/ai-supply-chain-attack-vectors.md",
+      "sha256": "933ba91e443e6cc4c707ab68aeba366ca6b323d75bbcba19f576a0585aa73c81"
+    },
+    {
+      "path": "freeze/okf/clusters/security-supply-chain/index.md",
+      "sha256": "c1703c9635fc0c04a00e9f5ab3ea44f8c80b26b9d0800260f80d72bad14b9ba5"
+    },
+    {
+      "path": "freeze/okf/clusters/subagent-orchestration-tooling/index.md",
+      "sha256": "7dae4b60cf4557088b7fb9634270ab6c02b8de3a5c04e37ca0eeecf991fcbcb5"
+    },
+    {
+      "path": "freeze/okf/index.md",
+      "sha256": "7d09dccf648bec9b91f54665b327eb0890fa4191b5499379e0b84ea8f5fb054c"
+    }
+  ],
+  "note": "Post-#2414 freeze fetched 2026-11-22 (see 03-build.json for the run's STOP status). This freeze supersedes the pilot pins in results/pilot-v2.3-2026-11-22/ after clouatre.ca PR #2414 (bare slugs in citation edge lines): llms.txt is byte-identical to the pilot pin and okf/index.md is byte-identical to the pilot freeze; knowledge-graph.json differs only in meta.gitRef (7926f20 -> d4cff9f)."
+}

@@ -1,0 +1,18 @@
+{
+  "group": "okf-bundle",
+  "session_id": "v4-okf-bundle-run-016",
+  "item_id": "q-20261125-016",
+  "family": "F4",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "finish_reason": "stop",
+  "prompt_tokens": 17332,
+  "completion_tokens": 906,
+  "reasoning_tokens": null,
+  "wall_clock_seconds": 23,
+  "raw_response": "```json\n{\"answer\": [\"DevOps and Implementation Practice\", \"Subagent Orchestration Tooling\"]}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "abstained": false,
+  "item_score": true,
+  "note": null
+}

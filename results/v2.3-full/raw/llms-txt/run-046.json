@@ -1,0 +1,18 @@
+{
+  "group": "llms-txt",
+  "session_id": "v4-llms-txt-run-046",
+  "item_id": "q-20261125-046",
+  "family": "F4",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "finish_reason": "stop",
+  "prompt_tokens": 4314,
+  "completion_tokens": 919,
+  "reasoning_tokens": null,
+  "wall_clock_seconds": 21,
+  "raw_response": "```json\n{\"answer\": [\"governance-oversight\"]}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "abstained": false,
+  "item_score": true,
+  "note": null
+}

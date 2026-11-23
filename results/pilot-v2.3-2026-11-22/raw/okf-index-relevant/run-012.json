@@ -1,0 +1,18 @@
+{
+  "group": "okf-index-relevant",
+  "session_id": "v2-okf-index-relevant-run-012",
+  "item_id": "q-20261124-012",
+  "family": "F4",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "finish_reason": "stop",
+  "prompt_tokens": 14139,
+  "completion_tokens": 1179,
+  "reasoning_tokens": null,
+  "wall_clock_seconds": 24,
+  "raw_response": "```json\n{\"answer\": [\"Evaluation and Production Reliability\", \"Multi-Agent Architecture and Context\"]}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "abstained": false,
+  "item_score": true,
+  "note": null
+}
