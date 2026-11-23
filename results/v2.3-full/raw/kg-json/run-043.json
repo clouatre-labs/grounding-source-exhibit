@@ -1,0 +1,18 @@
+{
+  "group": "kg-json",
+  "session_id": "v4-kg-json-run-043",
+  "item_id": "q-20261125-043",
+  "family": "F4",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "finish_reason": "stop",
+  "prompt_tokens": 19322,
+  "completion_tokens": 1634,
+  "reasoning_tokens": null,
+  "wall_clock_seconds": 33,
+  "raw_response": "```json\n{\"answer\": [\"governance-oversight\", \"multi-agent-architecture\", \"security-supply-chain\", \"devops-implementation\", \"subagent-orchestration-tooling\"]}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "abstained": false,
+  "item_score": true,
+  "note": null
+}

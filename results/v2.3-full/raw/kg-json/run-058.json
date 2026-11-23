@@ -1,0 +1,18 @@
+{
+  "group": "kg-json",
+  "session_id": "v4-kg-json-run-058",
+  "item_id": "q-20261125-058",
+  "family": "F1",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "finish_reason": "stop",
+  "prompt_tokens": 19326,
+  "completion_tokens": 2899,
+  "reasoning_tokens": null,
+  "wall_clock_seconds": 74,
+  "raw_response": "```json\n{\"answer\": [\"ai-assisted-development\", \"ai-agent-enumerate-or-delegate\", \"ai-augmented-cicd\", \"zero-downtime-dns-migration\"]}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "abstained": false,
+  "item_score": true,
+  "note": null
+}

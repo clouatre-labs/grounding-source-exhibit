@@ -1,0 +1,18 @@
+{
+  "group": "okf-bundle",
+  "session_id": "v4-okf-bundle-run-024",
+  "item_id": "q-20261125-024",
+  "family": "F4",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "finish_reason": "stop",
+  "prompt_tokens": 17336,
+  "completion_tokens": 1510,
+  "reasoning_tokens": null,
+  "wall_clock_seconds": 46,
+  "raw_response": "```json\n{\"answer\": [\"DevOps and Implementation Practice\", \"AI Governance and Human Oversight\"]}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "abstained": false,
+  "item_score": true,
+  "note": null
+}

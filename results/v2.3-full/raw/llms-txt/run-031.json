@@ -1,0 +1,18 @@
+{
+  "group": "llms-txt",
+  "session_id": "v4-llms-txt-run-031",
+  "item_id": "q-20261125-031",
+  "family": "F4",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "finish_reason": "stop",
+  "prompt_tokens": 4317,
+  "completion_tokens": 1213,
+  "reasoning_tokens": null,
+  "wall_clock_seconds": 28,
+  "raw_response": "```json\n{\"answer\": [\"multi-agent-architecture\", \"evaluation-reliability\"]}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "abstained": false,
+  "item_score": true,
+  "note": null
+}

@@ -1,0 +1,18 @@
+{
+  "group": "kg-json",
+  "session_id": "v4-kg-json-run-005",
+  "item_id": "q-20261125-005",
+  "family": "F1",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "finish_reason": "stop",
+  "prompt_tokens": 19331,
+  "completion_tokens": 1546,
+  "reasoning_tokens": null,
+  "wall_clock_seconds": 23,
+  "raw_response": "```json\n{\"answer\": [\"ai-assisted-development\", \"orchestrating-ai-agents-subagent-architecture\", \"ai-approval-gates\", \"ai-observability-gaps\", \"ai-adoption-engineering\", \"ai-augmented-cicd\", \"ai-supply-chain-attack-vectors\"]}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "abstained": false,
+  "item_score": true,
+  "note": null
+}

@@ -1,0 +1,18 @@
+{
+  "group": "kg-json",
+  "session_id": "v4-kg-json-run-062",
+  "item_id": "q-20261125-062",
+  "family": "F1",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "finish_reason": "stop",
+  "prompt_tokens": 19329,
+  "completion_tokens": 3342,
+  "reasoning_tokens": null,
+  "wall_clock_seconds": 75,
+  "raw_response": "```json\n{\"answer\": [\"ai-sdlc-governance-stack\", \"frontmatter-okf-knowledge-graph\", \"context-engineering-multi-agent-reliability\", \"orchestrating-ai-agents-subagent-architecture\", \"agent-payments-x402\", \"webmcp-beyond-checkout\"]}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "abstained": false,
+  "item_score": true,
+  "note": null
+}

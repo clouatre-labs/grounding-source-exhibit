@@ -1,0 +1,281 @@
+{
+  "schema_version": "2.3.0",
+  "experiment": "grounding-source-exhibit-v2.3-full",
+  "analyzed_at": "2026-11-23T03:15:50.676445+00:00",
+  "seal": "2.3.0",
+  "statistics": {
+    "primary": "overall item_score; pairwise McNemar exact test with Holm-Bonferroni across 6 arm pairs, alpha 0.05",
+    "wilson": "Wilson 95% score intervals per arm (descriptive only, not hypothesis tests)",
+    "permutation_seed": 20261123
+  },
+  "arms": {
+    "llms-txt": {
+      "n": 63,
+      "item_score_count": 55,
+      "item_score_rate": 0.873015873015873,
+      "wilson95": {
+        "lo": 0.7689296552173034,
+        "hi": 0.9342267514386327,
+        "label": "descriptive"
+      },
+      "per_family": {
+        "F1": {
+          "n": 20,
+          "scored": 20,
+          "correct": 12,
+          "rate": 0.6
+        },
+        "F2": {
+          "n": 20,
+          "scored": 20,
+          "correct": 20,
+          "rate": 1.0
+        },
+        "F3": {
+          "n": 7,
+          "scored": 7,
+          "correct": 7,
+          "rate": 1.0
+        },
+        "F4": {
+          "n": 16,
+          "scored": 16,
+          "correct": 16,
+          "rate": 1.0
+        }
+      },
+      "truncations": 3,
+      "abstentions": 32,
+      "abstention_accuracy": 1.0
+    },
+    "kg-json": {
+      "n": 63,
+      "item_score_count": 61,
+      "item_score_rate": 0.9682539682539683,
+      "wilson95": {
+        "lo": 0.8914352295339256,
+        "hi": 0.9912504724384196,
+        "label": "descriptive"
+      },
+      "per_family": {
+        "F1": {
+          "n": 20,
+          "scored": 20,
+          "correct": 18,
+          "rate": 0.9
+        },
+        "F2": {
+          "n": 20,
+          "scored": 20,
+          "correct": 20,
+          "rate": 1.0
+        },
+        "F3": {
+          "n": 7,
+          "scored": 7,
+          "correct": 7,
+          "rate": 1.0
+        },
+        "F4": {
+          "n": 16,
+          "scored": 16,
+          "correct": 16,
+          "rate": 1.0
+        }
+      },
+      "truncations": 2,
+      "abstentions": 2,
+      "abstention_accuracy": 0.0
+    },
+    "okf-bundle": {
+      "n": 63,
+      "item_score_count": 50,
+      "item_score_rate": 0.7936507936507936,
+      "wilson95": {
+        "lo": 0.6783018567138666,
+        "hi": 0.8752468038450617,
+        "label": "descriptive"
+      },
+      "per_family": {
+        "F1": {
+          "n": 20,
+          "scored": 20,
+          "correct": 14,
+          "rate": 0.7
+        },
+        "F2": {
+          "n": 20,
+          "scored": 20,
+          "correct": 20,
+          "rate": 1.0
+        },
+        "F3": {
+          "n": 7,
+          "scored": 7,
+          "correct": 0,
+          "rate": 0.0
+        },
+        "F4": {
+          "n": 16,
+          "scored": 16,
+          "correct": 16,
+          "rate": 1.0
+        }
+      },
+      "truncations": 9,
+      "abstentions": 9,
+      "abstention_accuracy": 0.0
+    },
+    "okf-index-relevant": {
+      "n": 63,
+      "item_score_count": 53,
+      "item_score_rate": 0.8412698412698413,
+      "wilson95": {
+        "lo": 0.7318842321822745,
+        "hi": 0.9114290760348585,
+        "label": "descriptive"
+      },
+      "per_family": {
+        "F1": {
+          "n": 20,
+          "scored": 20,
+          "correct": 19,
+          "rate": 0.95
+        },
+        "F2": {
+          "n": 20,
+          "scored": 20,
+          "correct": 20,
+          "rate": 1.0
+        },
+        "F3": {
+          "n": 7,
+          "scored": 7,
+          "correct": 1,
+          "rate": 0.14285714285714285
+        },
+        "F4": {
+          "n": 16,
+          "scored": 16,
+          "correct": 13,
+          "rate": 0.8125
+        }
+      },
+      "truncations": 3,
+      "abstentions": 4,
+      "abstention_accuracy": 0.0
+    }
+  },
+  "comparisons": {
+    "llms-txt_vs_kg-json": {
+      "n_paired": 63,
+      "discordant": [
+        1,
+        7
+      ],
+      "mcnemar_exact_p": 0.0703125,
+      "p_value_holm": 0.28125,
+      "significant_at_0.05": false,
+      "direction": "kg-json higher"
+    },
+    "llms-txt_vs_okf-bundle": {
+      "n_paired": 63,
+      "discordant": [
+        11,
+        6
+      ],
+      "mcnemar_exact_p": 0.332305908203125,
+      "p_value_holm": 0.996917724609375,
+      "significant_at_0.05": false,
+      "direction": "llms-txt higher"
+    },
+    "llms-txt_vs_okf-index-relevant": {
+      "n_paired": 63,
+      "discordant": [
+        10,
+        8
+      ],
+      "mcnemar_exact_p": 0.8145294189453125,
+      "p_value_holm": 1.0,
+      "significant_at_0.05": false,
+      "direction": "llms-txt higher"
+    },
+    "kg-json_vs_okf-bundle": {
+      "n_paired": 63,
+      "discordant": [
+        11,
+        0
+      ],
+      "mcnemar_exact_p": 0.0009765625,
+      "p_value_holm": 0.005859375,
+      "significant_at_0.05": true,
+      "direction": "kg-json higher"
+    },
+    "kg-json_vs_okf-index-relevant": {
+      "n_paired": 63,
+      "discordant": [
+        10,
+        2
+      ],
+      "mcnemar_exact_p": 0.03857421875,
+      "p_value_holm": 0.19287109375,
+      "significant_at_0.05": false,
+      "direction": "kg-json higher"
+    },
+    "okf-bundle_vs_okf-index-relevant": {
+      "n_paired": 63,
+      "discordant": [
+        3,
+        6
+      ],
+      "mcnemar_exact_p": 0.5078125,
+      "p_value_holm": 1.0,
+      "significant_at_0.05": false,
+      "direction": "okf-index-relevant higher"
+    }
+  },
+  "per_fix": {
+    "edgeStats_F2": {
+      "family": "F2",
+      "arms": {
+        "okf-bundle": {
+          "before": 1.0,
+          "after": 1.0
+        },
+        "okf-index-relevant": {
+          "before": 0.65,
+          "after": 1.0
+        }
+      },
+      "verdict": "unchanged"
+    },
+    "directional_cites_F1": {
+      "family": "F1",
+      "arms": {
+        "okf-bundle": {
+          "before": 0.1,
+          "after": 0.7
+        },
+        "okf-index-relevant": {
+          "before": 0.05,
+          "after": 0.95
+        }
+      },
+      "verdict": "improved"
+    },
+    "frontmatter_membership_F3_F4": {
+      "family": "F3",
+      "arms": {
+        "llms-txt": {
+          "before": 1.0,
+          "after": 1.0
+        },
+        "kg-json": {
+          "before": 1.0,
+          "after": 1.0
+        }
+      },
+      "verdict": "unchanged"
+    }
+  }
+}

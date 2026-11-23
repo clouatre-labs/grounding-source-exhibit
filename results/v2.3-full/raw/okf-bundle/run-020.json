@@ -1,0 +1,18 @@
+{
+  "group": "okf-bundle",
+  "session_id": "v4-okf-bundle-run-020",
+  "item_id": "q-20261125-020",
+  "family": "F4",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "finish_reason": "stop",
+  "prompt_tokens": 17335,
+  "completion_tokens": 2014,
+  "reasoning_tokens": null,
+  "wall_clock_seconds": 34,
+  "raw_response": "```json\n{\"answer\": [\"Cost, ROI, and Economic Decisioning\", \"Evaluation and Production Reliability\", \"AI Governance and Human Oversight\"]}\n```",
+  "exact_match": true,
+  "partial_credit": 1.0,
+  "abstained": false,
+  "item_score": true,
+  "note": null
+}
