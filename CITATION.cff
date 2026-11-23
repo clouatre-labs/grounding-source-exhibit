@@ -10,15 +10,18 @@ authors:
 repository-code: https://github.com/clouatre-labs/grounding-source-exhibit
 license: Apache-2.0
 date-released: "2026-11-22"
-version: "2.2.0"
+version: "2.3.0"
 abstract: >
-  Pre-registered, three-arm comparison of grounding-source payloads
-  (frozen llms.txt, full frozen knowledge-graph.json, and the frozen OKF
-  v0.3 bundle) on 63 sealed questions per arm across four preregistered
-  families with a per-family answerability map (correct abstention scores
-  1). Item score: kg-json 61/63, llms.txt 55/63 (McNemar exact, Holm
-  p=0.070), okf-bundle 31/63 (Holm p<1e-5 against both). Supersedes
-  version 0.1.0 (v1 seal, DOI 10.5281/zenodo.24410381).
+  Pre-registered, four-arm comparison of grounding-source payloads
+  (frozen llms.txt, full frozen knowledge-graph.json, the regenerated
+  content-complete OKF v0.3 bundle, and the per-question index-relevant
+  OKF slice) on 63 sealed questions per arm across four preregistered
+  families with a per-family answerability map (correct abstention
+  scores 1). Item score: kg-json 61/63, llms.txt 55/63 (unchanged),
+  okf-bundle 50/63, okf-index-relevant 53/63; after Holm-Bonferroni
+  only kg-json vs okf-bundle separates (p=0.0059) and neither OKF arm
+  separates from llms.txt. Supersedes version 0.1.0 (v1 seal, DOI
+  10.5281/zenodo.24410381).
 keywords:
   - llm-agents
   - knowledge-graph
@@ -33,3 +36,6 @@ identifiers:
   - type: doi
     value: 10.5281/zenodo.24441791
     description: Version DOI (v2.2.0, four-arm run with capture-repair audit trail; single-zip artifact set)
+  - type: doi
+    value: 10.5281/zenodo.24453471
+    description: Version DOI (v2.3.0, sealed four-arm rerun on the content-complete OKF bundle; single-zip artifact set)
